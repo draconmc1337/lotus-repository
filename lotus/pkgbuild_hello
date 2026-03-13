@@ -1,0 +1,31 @@
+pkgname="hello"
+pkgver="2.12"
+pkgrel="1"
+
+depends=("glibc")
+makedepends=("gcc" "make")
+
+source="https://ftp.gnu.org/gnu/hello/hello-${pkgver}.tar.gz"
+
+build() {
+    tar -xf hello-${pkgver}.tar.gz
+    cd hello-${pkgver}
+
+    ./configure --prefix=/usr
+    make -j$(nproc)
+}
+
+check() {
+    cd hello-${pkgver}
+    make check
+}
+
+package() {
+    cd hello-${pkgver}
+    make DESTDIR="${pkgdir}" install
+}
+
+uninstall() {
+    rm -f /usr/bin/hello
+    rm -f /usr/share/info/hello.info*
+}
