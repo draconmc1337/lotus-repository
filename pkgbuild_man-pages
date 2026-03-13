@@ -1,0 +1,15 @@
+pkgname="man-pages"
+pkgver="6.15"
+pkgrel="1"
+source="https://www.kernel.org/pub/linux/docs/man-pages/man-pages-${pkgver}.tar.xz"
+
+build() {
+ tar -xf man-pages-${pkgver}.tar.xz
+ cd man-pages-${pkgver}
+ rm -v man3/crypt*
+}
+
+package() {
+ cd man-pages-${pkgver} 
+ make -R GIT=false prefix=/usr install
+}
