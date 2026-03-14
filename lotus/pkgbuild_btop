@@ -3,19 +3,23 @@ pkgver="1.4.6"
 pkgrel="1"
 depends=("gcc" "glibc")
 recommends=()
-makedepends=()
+makedepends=("cmake" "ninja")
 
-source="https://github.com/aristocratos/btop/archive/refs/tags/v${pkgver}/btop-v${pkgver}.tar.gz""
+source="https://github.com/aristocratos/btop/archive/refs/tags/v${pkgver}/btop-v${pkgver}.tar.gz"
 
 build() {
-    tar -xf btop-1.4.6.tar.xz
-    cd btop-1.4.6
-    make
+    tar -xf btop-v${pkgver}.tar.gz
+    cd btop-${pkgver}
+    cmake -B build \
+        -DCMAKE_BUILD_TYPE=Release \
+        -DCMAKE_INSTALL_PREFIX=/usr \
+        -G Ninja
+    ninja -C build -j$(nproc)
 }
 
 package() {
-    cd btop-1.4.6
-    make DESTDIR="${pkgdir}" install
+    cd btop-${pkgver}
+    DESTDIR="${pkgdir}" ninja -C build install
 }
 
 uninstall() {
