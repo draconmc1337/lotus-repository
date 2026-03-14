@@ -1,0 +1,52 @@
+pkgname="make-ca"
+pkgver="1.16.1"
+pkgrel="1"
+depends=("p11-kit>=0.25.5")
+recommends=("nss")
+makedepends=()
+
+source="https://github.com/lfs-book/make-ca/archive/v${pkgver}/make-ca-${pkgver}.tar.gz"
+
+build() {
+    tar -xf make-ca-${pkgver}.tar.gz
+    cd make-ca-${pkgver}
+    # shell script — no compile needed
+}
+
+package() {
+    cd make-ca-${pkgver}
+    make DESTDIR="${pkgdir}" install
+
+    # create local cert dir
+    install -dm755 "${pkgdir}/etc/ssl/local"
+
+    # python3 pip cert profile
+    install -dm755 "${pkgdir}/etc/profile.d"
+    cat > "${pkgdir}/etc/profile.d/pythoncerts.sh" << 'EOF'
+# Begin /etc/profile.d/pythoncerts.sh
+export _PIP_STANDALONE_CERT=/etc/pki/tls/certs/ca-bundle.crt
+# End /etc/profile.d/pythoncerts.sh
+EOF
+
+    # fetch + generate CA store sau khi install
+    # chạy trên / thật (không phải pkgdir) vì cần network
+    /usr/sbin/make-ca -g || true
+
+    # cron job weekly update nếu có /etc/cron.weekly
+    if [[ -d /etc/cron.weekly ]]; then
+        cat > /etc/cron.weekly/update-pki.sh << 'EOF'
+#!/bin/bash
+/usr/sbin/make-ca -g
+EOF
+        chmod 754 /etc/cron.weekly/update-pki.sh
+    fi
+}
+
+uninstall() {
+    rm -f /usr/sbin/make-ca
+    rm -f /usr/share/man/man8/make-ca.8
+    rm -rf /etc/make-ca
+    rm -f /etc/profile.d/pythoncerts.sh
+    rm -f /etc/cron.weekly/update-pki.sh
+    # không xóa /etc/ssl/local — user data
+}

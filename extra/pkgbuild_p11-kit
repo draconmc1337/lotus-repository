@@ -1,0 +1,35 @@
+pkgname="p11-kit"
+pkgver="0.25.5"
+pkgrel="1"
+depends=()
+recommends=("libtasn1")
+makedepends=()
+
+source=""
+
+build() {
+    tar -xf p11-kit-0.25.5.tar.xz
+    cd p11-kit-0.25.5
+
+    ./configure \
+        --prefix=/usr \
+        --sysconfdir=/etc \
+        --localstatedir=/var
+
+    make -j$(nproc)
+}
+
+check() {
+    cd p11-kit-0.25.5
+    make check
+}
+
+package() {
+    cd p11-kit-0.25.5
+    make DESTDIR="${pkgdir}" install
+}
+
+uninstall() {
+    rm -f /usr/bin/p11-kit
+    rm -rf /usr/share/p11-kit
+}
