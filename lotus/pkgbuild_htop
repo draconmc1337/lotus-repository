@@ -1,0 +1,27 @@
+pkgname="htop"
+pkgver="3.3.0"
+pkgrel="1"
+depends=("glibc" "ncurses" "libcap")
+recommends=()
+makedepends=()
+
+source="https://github.com/htop-dev/htop/archive/refs/tags/3.3.0.tar.gz"
+
+build() {
+    tar -xf htop-3.3.0.tar.xz
+    cd htop-3.3.0
+    ./autogen.sh
+   ./configure --prefix=/usr
+   make -j$(nproc)
+}
+
+
+package() {
+    cd htop-3.3.0
+    make DESTDIR="${pkgdir}" install
+}
+
+uninstall() {
+    rm -f /usr/bin/htop
+    rm -rf /usr/share/htop
+}
