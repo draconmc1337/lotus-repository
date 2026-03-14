@@ -5,7 +5,7 @@ depends=("glibc" "ncurses" "libcap")
 recommends=()
 makedepends=()
 
-source="https://github.com/htop-dev/htop/archive/refs/tags/3.3.0.tar.gz"
+source="https://github.com/htop-dev/htop/archive/refs/tags/htop-3.3.0.tar.gz"
 
 build() {
     tar -xf htop-3.3.0.tar.xz
