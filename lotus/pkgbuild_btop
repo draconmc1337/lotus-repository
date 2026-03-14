@@ -5,7 +5,7 @@ depends=("gcc" "glibc")
 recommends=()
 makedepends=()
 
-source="https://github.com/aristocratos/btop/archive/refs/tags/v1.4.6.tar.gz"
+source="https://github.com/aristocratos/btop/archive/refs/tags/v${pkgver}/btop-v${pkgver}.tar.gz""
 
 build() {
     tar -xf btop-1.4.6.tar.xz
