@@ -1,0 +1,20 @@
+pkgname="iana-etc"
+pkgver="20250807"
+pkgrel="1"
+depends=()
+recommends=()
+makedepends=()
+source="https://mirror-hk.koddos.net/lfs/lfs-packages/12.4/iana-etc-${pkgver}.tar.gz"
+sha256sums="SKIP"
+build() {
+    tar -xf iana-etc-${pkgver}.tar.gz
+}
+check() { : ; }
+package() {
+    cd iana-etc-${pkgver}
+    install -Dm644 services  "${pkgdir}/etc/services"
+    install -Dm644 protocols "${pkgdir}/etc/protocols"
+}
+uninstall() {
+    rm -f /etc/services /etc/protocols
+}

@@ -1,0 +1,34 @@
+pkgname="grub"
+pkgver="2.12"
+pkgrel="1"
+depends=("freetype" "fuse" "gettext")
+recommends=("os-prober")
+makedepends=("python3" "autogen")
+source="https://mirror-hk.koddos.net/lfs/lfs-packages/12.4/grub-${pkgver}.tar.xz"
+sha256sums="SKIP"
+build() {
+    tar -xf grub-${pkgver}.tar.xz
+    cd grub-${pkgver}
+    unset {C,CPP,CXX,LD}FLAGS
+    echo depends bli part_gpt >> grub-core/extra_deps.lst
+    ./configure --prefix=/usr          \
+                --sysconfdir=/etc      \
+                --disable-efiemu      \
+                --enable-grub-mkfont  \
+                --with-platform=efi   \
+                --target=x86_64       \
+                --disable-werror
+    make -j$(nproc)
+}
+check() { : ; }
+package() {
+    cd grub-${pkgver}
+    make DESTDIR="${pkgdir}" install
+    install -d "${pkgdir}/usr/share/grub"
+    mv "${pkgdir}/etc/bash_completion.d/" "${pkgdir}/usr/share/bash-completion/completions/" 2>/dev/null || true
+}
+uninstall() {
+    rm -rf /usr/lib/grub
+    rm -rf /usr/share/grub
+    rm -f /usr/sbin/grub-install
+}

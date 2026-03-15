@@ -1,0 +1,30 @@
+pkgname="bzip2"
+pkgver="1.0.8"
+pkgrel="1"
+depends=()
+makedepends=()
+source="https://mirror-hk.koddos.net/lfs/lfs-packages/12.4/bzip2-${pkgver}.tar.gz"
+sha256sums="SKIP"
+build() {
+    tar -xf bzip2-${pkgver}.tar.gz
+    cd bzip2-${pkgver}
+    sed -i 's@\(ln -s -f \)$(PREFIX)/bin/@\1@' Makefile
+    sed -i "s|man, doc|man|g" Makefile
+    make -f Makefile-libbz2_so
+    make clean
+    make -j$(nproc)
+}
+check() { : ; }
+package() {
+    cd bzip2-${pkgver}
+    make PREFIX="${pkgdir}/usr" install
+    cp -av libbz2.so.* "${pkgdir}/usr/lib"
+    ln -sv libbz2.so.1.0.8 "${pkgdir}/usr/lib/libbz2.so"
+    cp -v bzip2-shared "${pkgdir}/usr/bin/bzip2"
+    rm -fv "${pkgdir}/usr/lib/libbz2.a"
+}
+uninstall() {
+    rm -f /usr/bin/bzip2 /usr/bin/bunzip2 /usr/bin/bzcat
+    rm -f /usr/lib/libbz2.so*
+    rm -f /usr/include/bzlib.h
+}

@@ -1,0 +1,22 @@
+pkgname="tar"
+pkgver="1.35"
+pkgrel="1"
+depends=()
+makedepends=()
+source="https://mirror-hk.koddos.net/lfs/lfs-packages/12.4/tar-${pkgver}.tar.xz"
+sha256sums="SKIP"
+build() {
+    tar -xf tar-${pkgver}.tar.xz
+    cd tar-${pkgver}
+    FORCE_UNSAFE_CONFIGURE=1 ./configure \
+        --prefix=/usr \
+        --bindir=/usr/bin
+    make -j$(nproc)
+}
+check() { cd tar-${pkgver}; make check TESTSUITEFLAGS=-j$(nproc); }
+package() {
+    cd tar-${pkgver}
+    make DESTDIR="${pkgdir}" install
+    make DESTDIR="${pkgdir}" -C doc install-html docdir=/usr/share/doc/tar-${pkgver}
+}
+uninstall() { rm -f /usr/bin/tar; }

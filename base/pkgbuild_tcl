@@ -1,0 +1,41 @@
+pkgname="tcl"
+pkgver="8.6.16"
+pkgrel="1"
+depends=()
+makedepends=()
+source="https://mirror-hk.koddos.net/lfs/lfs-packages/12.4/tcl${pkgver}-src.tar.gz"
+sha256sums="SKIP"
+build() {
+    tar -xf tcl${pkgver}-src.tar.gz
+    cd tcl${pkgver}
+    SRCDIR=$(pwd)
+    cd unix
+    ./configure --prefix=/usr           \
+                --mandir=/usr/share/man
+    make -j$(nproc)
+    sed -e "s|$SRCDIR/unix|/usr/lib|" \
+        -e "s|$SRCDIR|/usr/include|"  \
+        -i tclConfig.sh
+    sed -e "s|$SRCDIR/unix/pkgs/tdbc1.1.9|/usr/lib/tdbc1.1.9|" \
+        -e "s|$SRCDIR/pkgs/tdbc1.1.9/generic|/usr/include|"    \
+        -e "s|$SRCDIR/pkgs/tdbc1.1.9/library|/usr/lib/tcl8.6|" \
+        -e "s|$SRCDIR/pkgs/tdbc1.1.9|/usr/include|"            \
+        -i pkgs/tdbc1.1.9/tdbcConfig.sh
+    sed -e "s|$SRCDIR/unix/pkgs/itcl4.3.2|/usr/lib/itcl4.3.2|" \
+        -e "s|$SRCDIR/pkgs/itcl4.3.2/generic|/usr/include|"    \
+        -e "s|$SRCDIR/pkgs/itcl4.3.2|/usr/include|"            \
+        -i pkgs/itcl4.3.2/itclConfig.sh
+}
+check() { cd tcl${pkgver}/unix; make test; }
+package() {
+    cd tcl${pkgver}/unix
+    make DESTDIR="${pkgdir}" install
+    make DESTDIR="${pkgdir}" install-private-headers
+    ln -sfv tclsh8.6 "${pkgdir}/usr/bin/tclsh"
+    mv "${pkgdir}/usr/share/man/man3"/{Thread,Tcl_Thread}.3
+    chmod -v 755 "${pkgdir}/usr/lib/libtcl8.6.so"
+}
+uninstall() {
+    rm -f /usr/bin/tclsh /usr/bin/tclsh8.6
+    rm -f /usr/lib/libtcl8.6.so
+}

@@ -1,0 +1,27 @@
+pkgname="openssl"
+pkgver="3.5.2"
+pkgrel="1"
+depends=("zlib")
+makedepends=()
+source="https://mirror-hk.koddos.net/lfs/lfs-packages/12.4/openssl-${pkgver}.tar.gz"
+sha256sums="SKIP"
+build() {
+    tar -xf openssl-${pkgver}.tar.gz
+    cd openssl-${pkgver}
+    ./config --prefix=/usr         \
+             --openssldir=/etc/ssl \
+             --libdir=lib          \
+             shared                \
+             zlib-dynamic
+    make -j$(nproc)
+}
+check() { cd openssl-${pkgver}; make test; }
+package() {
+    cd openssl-${pkgver}
+    sed -i '/INSTALL_LIBS/s/libcrypto.a libssl.a//' Makefile
+    make DESTDIR="${pkgdir}" install
+    mv -v "${pkgdir}/usr/share/doc/openssl" "${pkgdir}/usr/share/doc/openssl-${pkgver}"
+    install -v -dm755 "${pkgdir}/usr/share/doc/openssl-${pkgver}"
+    cp -vfr doc/* "${pkgdir}/usr/share/doc/openssl-${pkgver}"
+}
+uninstall() { rm -f /usr/bin/openssl /usr/lib/libssl*.so* /usr/lib/libcrypto*.so*; }

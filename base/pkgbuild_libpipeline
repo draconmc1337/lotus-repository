@@ -1,0 +1,19 @@
+pkgname="libpipeline"
+pkgver="1.5.8"
+pkgrel="1"
+depends=()
+makedepends=()
+source="https://mirror-hk.koddos.net/lfs/lfs-packages/12.4/libpipeline-${pkgver}.tar.gz"
+sha256sums="SKIP"
+build() {
+    tar -xf libpipeline-${pkgver}.tar.gz
+    cd libpipeline-${pkgver}
+    ./configure --prefix=/usr
+    make -j$(nproc)
+}
+check() { cd libpipeline-${pkgver}; make check; }
+package() {
+    cd libpipeline-${pkgver}
+    make DESTDIR="${pkgdir}" install
+}
+uninstall() { rm -f /usr/lib/libpipeline*.so*; }

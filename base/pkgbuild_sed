@@ -1,0 +1,22 @@
+pkgname="sed"
+pkgver="4.9"
+pkgrel="1"
+depends=()
+makedepends=()
+source="https://mirror-hk.koddos.net/lfs/lfs-packages/12.4/sed-${pkgver}.tar.xz"
+sha256sums="SKIP"
+build() {
+    tar -xf sed-${pkgver}.tar.xz
+    cd sed-${pkgver}
+    ./configure --prefix=/usr
+    make -j$(nproc)
+    make html
+}
+check() { cd sed-${pkgver}; make check; }
+package() {
+    cd sed-${pkgver}
+    make DESTDIR="${pkgdir}" install
+    install -d -m755 "${pkgdir}/usr/share/doc/sed-${pkgver}"
+    install -m644 doc/sed.html "${pkgdir}/usr/share/doc/sed-${pkgver}"
+}
+uninstall() { rm -f /usr/bin/sed; }

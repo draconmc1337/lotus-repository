@@ -1,0 +1,22 @@
+pkgname="attr"
+pkgver="2.5.2"
+pkgrel="1"
+depends=()
+makedepends=()
+source="https://mirror-hk.koddos.net/lfs/lfs-packages/12.4/attr-${pkgver}.tar.gz"
+sha256sums="SKIP"
+build() {
+    tar -xf attr-${pkgver}.tar.gz
+    cd attr-${pkgver}
+    ./configure --prefix=/usr     \
+                --disable-static  \
+                --sysconfdir=/etc \
+                --docdir=/usr/share/doc/attr-${pkgver}
+    make -j$(nproc)
+}
+check() { cd attr-${pkgver}; make check; }
+package() {
+    cd attr-${pkgver}
+    make DESTDIR="${pkgdir}" install
+}
+uninstall() { rm -f /usr/bin/attr /usr/lib/libattr*.so*; }

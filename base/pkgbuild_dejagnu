@@ -1,0 +1,24 @@
+pkgname="dejagnu"
+pkgver="1.6.3"
+pkgrel="1"
+depends=("expect")
+makedepends=()
+source="https://mirror-hk.koddos.net/lfs/lfs-packages/12.4/dejagnu-${pkgver}.tar.gz"
+sha256sums="SKIP"
+build() {
+    tar -xf dejagnu-${pkgver}.tar.gz
+    cd dejagnu-${pkgver}
+    mkdir -v build && cd build
+    ../configure --prefix=/usr
+    makeinfo --html --no-split -o doc/dejagnu.html ../doc/dejagnu.texi
+    makeinfo --plaintext -o doc/dejagnu.txt ../doc/dejagnu.texi
+    make -j$(nproc)
+}
+check() { cd dejagnu-${pkgver}/build; make check; }
+package() {
+    cd dejagnu-${pkgver}/build
+    make DESTDIR="${pkgdir}" install
+    install -v -dm755 "${pkgdir}/usr/share/doc/dejagnu-${pkgver}"
+    install -v -m644 doc/dejagnu.{html,txt} "${pkgdir}/usr/share/doc/dejagnu-${pkgver}"
+}
+uninstall() { rm -f /usr/bin/runtest; }

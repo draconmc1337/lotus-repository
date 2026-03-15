@@ -1,0 +1,48 @@
+pkgname="udev"
+pkgver="257.8"
+pkgrel="1"
+depends=("acl" "libcap" "openssl" "kmod")
+makedepends=("meson" "ninja" "python3" "jinja2")
+source="https://mirror-hk.koddos.net/lfs/lfs-packages/12.4/systemd-${pkgver}.tar.gz"
+sha256sums="SKIP"
+build() {
+    tar -xf systemd-${pkgver}.tar.gz
+    cd systemd-${pkgver}
+    sed -i -e 's/GROUP="render"/GROUP="video"/' \
+           -e 's/GROUP="sgx", //'               \
+           rules.d/50-udev-default.rules.in
+    sed '/systemd-sysctl/d' -i rules.d/99-systemd.rules.in
+    sed '/NETWORK_DIRS/d' -i src/basic/path-lookup.c
+    mkdir -v build && cd build
+    meson setup \
+          --prefix=/usr                  \
+          --buildtype=release            \
+          -D mode=release                \
+          -D dev-kvm-mode=0660           \
+          -D link-udev-shared=false      \
+          -D logind=false                \
+          -D vconsole=false              \
+          ..
+    ninja udevadm systemd-hwdb \
+          $(grep -o 'build src/libudev[^:]*:' build.ninja | awk '{ print $2 }') \
+          $(grep -o 'build src/udev[^:]*:' build.ninja | awk '{ print $2 }') \
+          rules.d hwdb.d
+}
+check() { : ; }
+package() {
+    cd systemd-${pkgver}/build
+    DESTDIR="${pkgdir}" ninja install-udevadm              \
+                              install-systemd-hwdb         \
+                              install-libudev_shared       \
+                              install-libudev.pc           \
+                              install-udev_headers         \
+                              install-udev-rules           \
+                              install-hwdb                 \
+                              install-factory-udev-rules   \
+                              install-udev-link-units      \
+                              install-udev-conf
+    tar -xf ../../udev-lfs-20230818.tar.xz 2>/dev/null || true
+    make -f udev-lfs-20230818/Makefile.lfs DESTDIR="${pkgdir}" install 2>/dev/null || true
+    udevadm hwdb --update
+}
+uninstall() { rm -f /usr/bin/udevadm /usr/sbin/udevd; }

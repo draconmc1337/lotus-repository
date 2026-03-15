@@ -1,0 +1,21 @@
+pkgname="acl"
+pkgver="2.3.2"
+pkgrel="1"
+depends=("attr")
+makedepends=()
+source="https://mirror-hk.koddos.net/lfs/lfs-packages/12.4/acl-${pkgver}.tar.xz"
+sha256sums="SKIP"
+build() {
+    tar -xf acl-${pkgver}.tar.xz
+    cd acl-${pkgver}
+    ./configure --prefix=/usr         \
+                --disable-static      \
+                --docdir=/usr/share/doc/acl-${pkgver}
+    make -j$(nproc)
+}
+check() { : ; }
+package() {
+    cd acl-${pkgver}
+    make DESTDIR="${pkgdir}" install
+}
+uninstall() { rm -f /usr/bin/getfacl /usr/bin/setfacl /usr/lib/libacl*.so*; }

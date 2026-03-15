@@ -1,0 +1,19 @@
+pkgname="psmisc"
+pkgver="23.7"
+pkgrel="1"
+depends=("ncurses")
+makedepends=()
+source="https://mirror-hk.koddos.net/lfs/lfs-packages/12.4/psmisc-${pkgver}.tar.xz"
+sha256sums="SKIP"
+build() {
+    tar -xf psmisc-${pkgver}.tar.xz
+    cd psmisc-${pkgver}
+    ./configure --prefix=/usr
+    make -j$(nproc)
+}
+check() { : ; }
+package() {
+    cd psmisc-${pkgver}
+    make DESTDIR="${pkgdir}" install
+}
+uninstall() { rm -f /usr/bin/fuser /usr/bin/killall /usr/bin/pstree; }

@@ -1,0 +1,30 @@
+pkgname="readline"
+pkgver="8.3"
+pkgrel="1"
+depends=()
+makedepends=()
+source="https://mirror-hk.koddos.net/lfs/lfs-packages/12.4/readline-${pkgver}.tar.gz"
+sha256sums="SKIP"
+build() {
+    tar -xf readline-${pkgver}.tar.gz
+    cd readline-${pkgver}
+    sed -i '/MV.*old/d' Makefile.in
+    sed -i '/{OLDSUFF}/c:' support/shlib-install
+    sed -i 's/-Wl,-rpath,[^ ]*//' support/shobj-conf
+    ./configure --prefix=/usr    \
+                --disable-static \
+                --with-curses    \
+                --docdir=/usr/share/doc/readline-${pkgver}
+    make SHLIB_LIBS="-lncursesw" -j$(nproc)
+}
+check() { : ; }
+package() {
+    cd readline-${pkgver}
+    make SHLIB_LIBS="-lncursesw" DESTDIR="${pkgdir}" install
+    install -v -m644 doc/*.{ps,pdf,html,dvi} \
+        "${pkgdir}/usr/share/doc/readline-${pkgver}"
+}
+uninstall() {
+    rm -f /usr/lib/libreadline.so* /usr/lib/libhistory.so*
+    rm -rf /usr/include/readline
+}

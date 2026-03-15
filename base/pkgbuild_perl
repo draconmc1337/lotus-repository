@@ -1,0 +1,35 @@
+pkgname="perl"
+pkgver="5.42.0"
+pkgrel="1"
+depends=("gdbm" "libxcrypt")
+makedepends=()
+source="https://mirror-hk.koddos.net/lfs/lfs-packages/12.4/perl-${pkgver}.tar.xz"
+sha256sums="SKIP"
+build() {
+    tar -xf perl-${pkgver}.tar.xz
+    cd perl-${pkgver}
+    export BUILD_ZLIB=False
+    export BUILD_BZIP2=0
+    sh Configure -des                                          \
+                 -D prefix=/usr                               \
+                 -D vendorprefix=/usr                         \
+                 -D privlib=/usr/lib/perl5/${pkgver}/core_perl \
+                 -D archlib=/usr/lib/perl5/${pkgver}/core_perl \
+                 -D sitelib=/usr/lib/perl5/${pkgver}/site_perl \
+                 -D sitearch=/usr/lib/perl5/${pkgver}/site_perl \
+                 -D vendorlib=/usr/lib/perl5/${pkgver}/vendor_perl \
+                 -D vendorarch=/usr/lib/perl5/${pkgver}/vendor_perl \
+                 -D man1dir=/usr/share/man/man1               \
+                 -D man3dir=/usr/share/man/man3               \
+                 -D pager="/usr/bin/less -isR"                \
+                 -D useshrplib                                \
+                 -D usethreads
+    make -j$(nproc)
+}
+check() { cd perl-${pkgver}; make -k test 2>&1 | tee perl-check.log || true; }
+package() {
+    cd perl-${pkgver}
+    make DESTDIR="${pkgdir}" install
+    unset BUILD_ZLIB BUILD_BZIP2
+}
+uninstall() { rm -f /usr/bin/perl; }

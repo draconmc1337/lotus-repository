@@ -1,0 +1,21 @@
+pkgname="gdbm"
+pkgver="1.26"
+pkgrel="1"
+depends=("readline")
+makedepends=()
+source="https://mirror-hk.koddos.net/lfs/lfs-packages/12.4/gdbm-${pkgver}.tar.gz"
+sha256sums="SKIP"
+build() {
+    tar -xf gdbm-${pkgver}.tar.gz
+    cd gdbm-${pkgver}
+    ./configure --prefix=/usr    \
+                --disable-static \
+                --enable-libgdbm-compat
+    make -j$(nproc)
+}
+check() { cd gdbm-${pkgver}; make check; }
+package() {
+    cd gdbm-${pkgver}
+    make DESTDIR="${pkgdir}" install
+}
+uninstall() { rm -f /usr/lib/libgdbm*.so* /usr/include/gdbm.h; }

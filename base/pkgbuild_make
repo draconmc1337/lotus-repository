@@ -1,0 +1,22 @@
+pkgname="make"
+pkgver="4.4.1"
+pkgrel="1"
+depends=()
+makedepends=()
+source="https://mirror-hk.koddos.net/lfs/lfs-packages/12.4/make-${pkgver}.tar.gz"
+sha256sums="SKIP"
+build() {
+    tar -xf make-${pkgver}.tar.gz
+    cd make-${pkgver}
+    ./configure --prefix=/usr
+    make -j$(nproc)
+}
+check() { cd make-${pkgver}; make check; }
+package() {
+    cd make-${pkgver}
+    make DESTDIR="${pkgdir}" install
+}
+uninstall() {
+    echo "error: make is a critical build tool"
+    exit 1
+}

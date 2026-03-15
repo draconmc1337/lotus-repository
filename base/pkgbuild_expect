@@ -1,0 +1,29 @@
+pkgname="expect"
+pkgver="5.45.4"
+pkgrel="1"
+depends=("tcl")
+makedepends=()
+source="https://mirror-hk.koddos.net/lfs/lfs-packages/12.4/expect${pkgver}.tar.gz"
+sha256sums="SKIP"
+build() {
+    tar -xf expect${pkgver}.tar.gz
+    cd expect${pkgver}
+    python3 -c 'import sys; print(sys.version_info)'
+    patch -Np1 -i ../expect-5.45.4-gcc14-1.patch 2>/dev/null || true
+    ./configure --prefix=/usr           \
+                --with-tcl=/usr/lib     \
+                --enable-shared         \
+                --disable-rpath         \
+                --mandir=/usr/share/man \
+                --with-tclinclude=/usr/include
+    make -j$(nproc)
+}
+check() { cd expect${pkgver}; make test; }
+package() {
+    cd expect${pkgver}
+    make DESTDIR="${pkgdir}" install
+    ln -svf expect5.45.4/libexpect5.45.4.so "${pkgdir}/usr/lib/"
+}
+uninstall() {
+    rm -f /usr/bin/expect /usr/lib/libexpect*.so
+}

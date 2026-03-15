@@ -1,0 +1,33 @@
+pkgname="coreutils"
+pkgver="9.7"
+pkgrel="1"
+depends=("attr" "acl" "gmp")
+makedepends=()
+source="https://mirror-hk.koddos.net/lfs/lfs-packages/12.4/coreutils-${pkgver}.tar.xz"
+sha256sums="SKIP"
+build() {
+    tar -xf coreutils-${pkgver}.tar.xz
+    cd coreutils-${pkgver}
+    patch -Np1 -i ../coreutils-9.7-i18n-2.patch 2>/dev/null || true
+    autoreconf -fiv 2>/dev/null || true
+    FORCE_UNSAFE_CONFIGURE=1 ./configure \
+                --prefix=/usr            \
+                --enable-no-install-program=kill,uptime
+    make -j$(nproc)
+}
+check() {
+    cd coreutils-${pkgver}
+    make NON_ROOT_USERNAME=tester check-root 2>/dev/null || true
+}
+package() {
+    cd coreutils-${pkgver}
+    make DESTDIR="${pkgdir}" install
+    mv -v "${pkgdir}/usr/bin/chroot" "${pkgdir}/usr/sbin/chroot"
+    mkdir -pv "${pkgdir}/usr/share/man/man8"
+    mv -v "${pkgdir}/usr/share/man/man1/chroot.1" "${pkgdir}/usr/share/man/man8/chroot.8"
+    sed -i 's/"1"/"8"/' "${pkgdir}/usr/share/man/man8/chroot.8"
+}
+uninstall() {
+    echo "error: coreutils is a critical package"
+    exit 1
+}

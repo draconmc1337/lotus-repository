@@ -1,0 +1,28 @@
+pkgname="man-db"
+pkgver="2.13.1"
+pkgrel="1"
+depends=("libpipeline" "groff" "gdbm")
+makedepends=()
+source="https://mirror-hk.koddos.net/lfs/lfs-packages/12.4/man-db-${pkgver}.tar.xz"
+sha256sums="SKIP"
+build() {
+    tar -xf man-db-${pkgver}.tar.xz
+    cd man-db-${pkgver}
+    ./configure --prefix=/usr                         \
+                --docdir=/usr/share/doc/man-db-${pkgver} \
+                --sysconfdir=/etc                     \
+                --disable-setuid                      \
+                --enable-cache-owner=bin              \
+                --with-browser=/usr/bin/lynx          \
+                --with-vgrind=/usr/bin/vgrind         \
+                --with-grap=/usr/bin/grap             \
+                --with-systemdtmpfilesdir=            \
+                --with-systemdsystemunitdir=
+    make -j$(nproc)
+}
+check() { cd man-db-${pkgver}; make check; }
+package() {
+    cd man-db-${pkgver}
+    make DESTDIR="${pkgdir}" install
+}
+uninstall() { rm -f /usr/bin/man /usr/bin/whatis; }

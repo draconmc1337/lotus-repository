@@ -1,0 +1,18 @@
+pkgname="wheel"
+pkgver="0.46.1"
+pkgrel="1"
+depends=("python3" "flit-core")
+makedepends=()
+source="https://mirror-hk.koddos.net/lfs/lfs-packages/12.4/wheel-${pkgver}.tar.gz"
+sha256sums="SKIP"
+build() {
+    tar -xf wheel-${pkgver}.tar.gz
+    cd wheel-${pkgver}
+}
+check() { : ; }
+package() {
+    cd wheel-${pkgver}
+    pip3 wheel -w dist --no-cache-dir --no-build-isolation --no-deps $PWD
+    pip3 install --root="${pkgdir}" --no-index --find-links dist wheel
+}
+uninstall() { pip3 uninstall -y wheel 2>/dev/null || true; }

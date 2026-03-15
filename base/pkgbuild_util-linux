@@ -1,0 +1,39 @@
+pkgname="util-linux"
+pkgver="2.41.1"
+pkgrel="1"
+depends=("ncurses" "readline" "zlib" "libcap")
+makedepends=()
+source="https://mirror-hk.koddos.net/lfs/lfs-packages/12.4/util-linux-${pkgver}.tar.xz"
+sha256sums="SKIP"
+build() {
+    tar -xf util-linux-${pkgver}.tar.xz
+    cd util-linux-${pkgver}
+    ./configure --bindir=/usr/bin    \
+                --libdir=/usr/lib    \
+                --runstatedir=/run   \
+                --sbindir=/usr/sbin  \
+                --disable-chfn-chsh  \
+                --disable-login      \
+                --disable-nologin    \
+                --disable-su         \
+                --disable-setpriv    \
+                --disable-runuser    \
+                --disable-pylibmount \
+                --disable-static     \
+                --disable-liblastlog2 \
+                --without-python     \
+                --without-systemd    \
+                --without-systemdsystemunitdir        \
+                ADJTIME_PATH=/var/lib/hwclock/adjtime  \
+                --docdir=/usr/share/doc/util-linux-${pkgver}
+    make -j$(nproc)
+}
+check() { : ; }
+package() {
+    cd util-linux-${pkgver}
+    make DESTDIR="${pkgdir}" install
+}
+uninstall() {
+    echo "error: util-linux is a critical package"
+    exit 1
+}

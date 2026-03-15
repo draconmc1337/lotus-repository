@@ -1,0 +1,23 @@
+pkgname="gawk"
+pkgver="5.3.2"
+pkgrel="1"
+depends=("gmp" "mpfr")
+makedepends=()
+source="https://mirror-hk.koddos.net/lfs/lfs-packages/12.4/gawk-${pkgver}.tar.xz"
+sha256sums="SKIP"
+build() {
+    tar -xf gawk-${pkgver}.tar.xz
+    cd gawk-${pkgver}
+    sed -i 's/extras//' Makefile.in
+    ./configure --prefix=/usr
+    make -j$(nproc)
+}
+check() { cd gawk-${pkgver}; make check; }
+package() {
+    cd gawk-${pkgver}
+    make DESTDIR="${pkgdir}" install
+    ln -sv gawk.1 "${pkgdir}/usr/share/man/man1/awk.1"
+    install -v -m644 doc/{awkforai.txt,*.{eps,pdf,jpg}} \
+        "${pkgdir}/usr/share/doc/gawk-${pkgver}" 2>/dev/null || true
+}
+uninstall() { rm -f /usr/bin/gawk /usr/bin/awk; }

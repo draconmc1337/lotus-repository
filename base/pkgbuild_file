@@ -1,0 +1,23 @@
+pkgname="file"
+pkgver="5.46"
+pkgrel="1"
+depends=()
+makedepends=()
+source="https://mirror-hk.koddos.net/lfs/lfs-packages/12.4/file-${pkgver}.tar.gz"
+sha256sums="SKIP"
+build() {
+    tar -xf file-${pkgver}.tar.gz
+    cd file-${pkgver}
+    ./configure --prefix=/usr
+    make -j$(nproc)
+}
+check() { cd file-${pkgver}; make check; }
+package() {
+    cd file-${pkgver}
+    make DESTDIR="${pkgdir}" install
+}
+uninstall() {
+    rm -f /usr/bin/file /usr/lib/libmagic.so*
+    rm -f /usr/include/magic.h
+    rm -rf /usr/share/misc/magic*
+}

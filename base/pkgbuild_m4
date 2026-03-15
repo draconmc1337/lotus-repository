@@ -1,0 +1,19 @@
+pkgname="m4"
+pkgver="1.4.20"
+pkgrel="1"
+depends=()
+makedepends=()
+source="https://mirror-hk.koddos.net/lfs/lfs-packages/12.4/m4-${pkgver}.tar.xz"
+sha256sums="SKIP"
+build() {
+    tar -xf m4-${pkgver}.tar.xz
+    cd m4-${pkgver}
+    ./configure --prefix=/usr
+    make -j$(nproc)
+}
+check() { cd m4-${pkgver}; make check; }
+package() {
+    cd m4-${pkgver}
+    make DESTDIR="${pkgdir}" install
+}
+uninstall() { rm -f /usr/bin/m4; }

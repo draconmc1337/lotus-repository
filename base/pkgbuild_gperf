@@ -1,0 +1,19 @@
+pkgname="gperf"
+pkgver="3.3"
+pkgrel="1"
+depends=()
+makedepends=()
+source="https://mirror-hk.koddos.net/lfs/lfs-packages/12.4/gperf-${pkgver}.tar.gz"
+sha256sums="SKIP"
+build() {
+    tar -xf gperf-${pkgver}.tar.gz
+    cd gperf-${pkgver}
+    ./configure --prefix=/usr --docdir=/usr/share/doc/gperf-${pkgver}
+    make -j$(nproc)
+}
+check() { cd gperf-${pkgver}; make -j1 check; }
+package() {
+    cd gperf-${pkgver}
+    make DESTDIR="${pkgdir}" install
+}
+uninstall() { rm -f /usr/bin/gperf; }

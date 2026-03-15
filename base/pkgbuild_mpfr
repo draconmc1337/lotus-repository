@@ -1,0 +1,24 @@
+pkgname="mpfr"
+pkgver="4.2.2"
+pkgrel="1"
+depends=("gmp")
+makedepends=()
+source="https://mirror-hk.koddos.net/lfs/lfs-packages/12.4/mpfr-${pkgver}.tar.xz"
+sha256sums="SKIP"
+build() {
+    tar -xf mpfr-${pkgver}.tar.xz
+    cd mpfr-${pkgver}
+    ./configure --prefix=/usr        \
+                --disable-static     \
+                --enable-thread-safe \
+                --docdir=/usr/share/doc/mpfr-${pkgver}
+    make -j$(nproc)
+    make html
+}
+check() { cd mpfr-${pkgver}; make check; }
+package() {
+    cd mpfr-${pkgver}
+    make DESTDIR="${pkgdir}" install
+    make DESTDIR="${pkgdir}" install-html
+}
+uninstall() { rm -f /usr/lib/libmpfr*.so* /usr/include/mpfr.h; }

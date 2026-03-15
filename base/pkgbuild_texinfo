@@ -1,0 +1,26 @@
+pkgname="texinfo"
+pkgver="7.2"
+pkgrel="1"
+depends=("perl" "ncurses")
+makedepends=()
+source="https://mirror-hk.koddos.net/lfs/lfs-packages/12.4/texinfo-${pkgver}.tar.xz"
+sha256sums="SKIP"
+build() {
+    tar -xf texinfo-${pkgver}.tar.xz
+    cd texinfo-${pkgver}
+    ./configure --prefix=/usr
+    make -j$(nproc)
+}
+check() { cd texinfo-${pkgver}; make check; }
+package() {
+    cd texinfo-${pkgver}
+    make DESTDIR="${pkgdir}" install
+    make DESTDIR="${pkgdir}" TEXMF=/usr/share/texmf install-tex
+    pushd "${pkgdir}/usr/share/info"
+    rm -v dir
+    for f in *; do
+        install-info $f dir 2>/dev/null || true
+    done
+    popd
+}
+uninstall() { rm -f /usr/bin/makeinfo /usr/bin/texi2any; }

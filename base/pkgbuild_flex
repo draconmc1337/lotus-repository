@@ -1,0 +1,24 @@
+pkgname="flex"
+pkgver="2.6.4"
+pkgrel="1"
+depends=("m4")
+makedepends=()
+source="https://mirror-hk.koddos.net/lfs/lfs-packages/12.4/flex-${pkgver}.tar.gz"
+sha256sums="SKIP"
+build() {
+    tar -xf flex-${pkgver}.tar.gz
+    cd flex-${pkgver}
+    ./configure --prefix=/usr --docdir=/usr/share/doc/flex-${pkgver} --disable-static
+    make -j$(nproc)
+}
+check() { cd flex-${pkgver}; make check; }
+package() {
+    cd flex-${pkgver}
+    make DESTDIR="${pkgdir}" install
+    ln -sv flex "${pkgdir}/usr/bin/lex"
+    ln -sv flex.1 "${pkgdir}/usr/share/man/man1/lex.1"
+}
+uninstall() {
+    rm -f /usr/bin/flex /usr/bin/lex
+    rm -f /usr/lib/libfl.so*
+}

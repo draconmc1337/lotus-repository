@@ -1,0 +1,37 @@
+pkgname="binutils"
+pkgver="2.45"
+pkgrel="1"
+depends=("zlib")
+makedepends=()
+source="https://mirror-hk.koddos.net/lfs/lfs-packages/12.4/binutils-${pkgver}.tar.xz"
+sha256sums="SKIP"
+build() {
+    tar -xf binutils-${pkgver}.tar.xz
+    cd binutils-${pkgver}
+    mkdir -v build && cd build
+    ../configure --prefix=/usr       \
+                 --sysconfdir=/etc   \
+                 --enable-gold       \
+                 --enable-ld=default \
+                 --enable-plugins    \
+                 --enable-shared     \
+                 --disable-werror    \
+                 --enable-64-bit-bfd \
+                 --enable-new-dtags  \
+                 --with-system-zlib  \
+                 --enable-default-hash-style=gnu
+    make tooldir=/usr -j$(nproc)
+}
+check() {
+    cd binutils-${pkgver}/build
+    make -k check || true
+}
+package() {
+    cd binutils-${pkgver}/build
+    make DESTDIR="${pkgdir}" tooldir=/usr install
+    rm -fv "${pkgdir}/usr/lib/lib"{bfd,ctf,ctf-nobfd,gprofng,opcodes,sframe}.a
+}
+uninstall() {
+    rm -f /usr/bin/ld /usr/bin/as /usr/bin/ar
+    rm -f /usr/lib/libbfd*.so /usr/lib/libopcodes*.so
+}

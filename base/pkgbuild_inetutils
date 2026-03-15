@@ -1,0 +1,30 @@
+pkgname="inetutils"
+pkgver="2.6"
+pkgrel="1"
+depends=()
+makedepends=()
+source="https://mirror-hk.koddos.net/lfs/lfs-packages/12.4/inetutils-${pkgver}.tar.xz"
+sha256sums="SKIP"
+build() {
+    tar -xf inetutils-${pkgver}.tar.xz
+    cd inetutils-${pkgver}
+    sed -i 's/def HAVE_TERMCAP_H/def HAVE_NCURSES_NCURSES_H/' telnet/telnet.c
+    ./configure --prefix=/usr        \
+                --bindir=/usr/bin    \
+                --localstatedir=/var \
+                --disable-logger     \
+                --disable-whois      \
+                --disable-rcp        \
+                --disable-rexec      \
+                --disable-rlogin     \
+                --disable-rsh        \
+                --disable-servers
+    make -j$(nproc)
+}
+check() { cd inetutils-${pkgver}; make check; }
+package() {
+    cd inetutils-${pkgver}
+    make DESTDIR="${pkgdir}" install
+    mv -v "${pkgdir}/usr/{,s}bin/ifconfig"
+}
+uninstall() { rm -f /usr/bin/hostname /usr/bin/ping /usr/bin/ftp; }

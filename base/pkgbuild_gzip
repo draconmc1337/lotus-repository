@@ -1,0 +1,19 @@
+pkgname="gzip"
+pkgver="1.14"
+pkgrel="1"
+depends=()
+makedepends=()
+source="https://mirror-hk.koddos.net/lfs/lfs-packages/12.4/gzip-${pkgver}.tar.xz"
+sha256sums="SKIP"
+build() {
+    tar -xf gzip-${pkgver}.tar.xz
+    cd gzip-${pkgver}
+    ./configure --prefix=/usr
+    make -j$(nproc)
+}
+check() { cd gzip-${pkgver}; make check; }
+package() {
+    cd gzip-${pkgver}
+    make DESTDIR="${pkgdir}" install
+}
+uninstall() { rm -f /usr/bin/gzip /usr/bin/gunzip /usr/bin/zcat; }

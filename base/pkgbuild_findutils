@@ -1,0 +1,19 @@
+pkgname="findutils"
+pkgver="4.10.0"
+pkgrel="1"
+depends=()
+makedepends=()
+source="https://mirror-hk.koddos.net/lfs/lfs-packages/12.4/findutils-${pkgver}.tar.xz"
+sha256sums="SKIP"
+build() {
+    tar -xf findutils-${pkgver}.tar.xz
+    cd findutils-${pkgver}
+    ./configure --prefix=/usr --localstatedir=/var/lib/locate
+    make -j$(nproc)
+}
+check() { cd findutils-${pkgver}; make check; }
+package() {
+    cd findutils-${pkgver}
+    make DESTDIR="${pkgdir}" install
+}
+uninstall() { rm -f /usr/bin/find /usr/bin/xargs /usr/bin/locate; }

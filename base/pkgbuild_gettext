@@ -1,0 +1,22 @@
+pkgname="gettext"
+pkgver="0.26"
+pkgrel="1"
+depends=()
+makedepends=()
+source="https://mirror-hk.koddos.net/lfs/lfs-packages/12.4/gettext-${pkgver}.tar.xz"
+sha256sums="SKIP"
+build() {
+    tar -xf gettext-${pkgver}.tar.xz
+    cd gettext-${pkgver}
+    ./configure --prefix=/usr    \
+                --disable-static \
+                --docdir=/usr/share/doc/gettext-${pkgver}
+    make -j$(nproc)
+}
+check() { cd gettext-${pkgver}; make check; }
+package() {
+    cd gettext-${pkgver}
+    make DESTDIR="${pkgdir}" install
+    chmod -v 0755 "${pkgdir}/usr/lib/preloadable_libintl.so"
+}
+uninstall() { rm -f /usr/bin/gettext /usr/lib/libintl*.so*; }

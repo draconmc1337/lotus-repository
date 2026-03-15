@@ -1,0 +1,30 @@
+pkgname="e2fsprogs"
+pkgver="1.47.3"
+pkgrel="1"
+depends=("util-linux")
+makedepends=()
+source="https://mirror-hk.koddos.net/lfs/lfs-packages/12.4/e2fsprogs-${pkgver}.tar.gz"
+sha256sums="SKIP"
+build() {
+    tar -xf e2fsprogs-${pkgver}.tar.gz
+    cd e2fsprogs-${pkgver}
+    mkdir -v build && cd build
+    ../configure --prefix=/usr           \
+                 --sysconfdir=/etc       \
+                 --enable-elf-shlibs     \
+                 --disable-libblkid      \
+                 --disable-libuuid       \
+                 --disable-uuidd         \
+                 --disable-fsck
+    make -j$(nproc)
+}
+check() { cd e2fsprogs-${pkgver}/build; make check; }
+package() {
+    cd e2fsprogs-${pkgver}/build
+    make DESTDIR="${pkgdir}" install
+    rm -fv "${pkgdir}/usr/lib/{libcom_err,libe2p,libext2fs,libss}.a"
+    gunzip -v "${pkgdir}/usr/share/info/libext2fs.info.gz"
+    install-info --dir-file="${pkgdir}/usr/share/info/dir" \
+        "${pkgdir}/usr/share/info/libext2fs.info" 2>/dev/null || true
+}
+uninstall() { rm -f /usr/sbin/mke2fs /usr/sbin/e2fsck /usr/sbin/tune2fs; }

@@ -1,0 +1,70 @@
+pkgname="dinit"
+pkgver="0.19.3"
+pkgrel="1"
+depends=("glibc>=2.40")
+recommends=()
+makedepends=()
+source="https://github.com/davmac314/dinit/archive/refs/tags/v${pkgver}/dinit-${pkgver}.tar.gz"
+sha256sums="SKIP"
+build() {
+    tar -xf dinit-${pkgver}.tar.gz
+    cd dinit-${pkgver}
+    make -j$(nproc)
+}
+check() {
+    cd dinit-${pkgver}
+    make check
+}
+package() {
+    cd dinit-${pkgver}
+    make DESTDIR="${pkgdir}" install
+    # basic service files
+    install -dm755 "${pkgdir}/etc/dinit.d"
+    # boot service
+    cat > "${pkgdir}/etc/dinit.d/boot" << 'BOOT'
+type = scripted
+command = /bin/true
+waits-for = filesystems
+waits-for = sysklogd
+waits-for = hostname
+waits-for = loopback
+BOOT
+    # filesystems
+    cat > "${pkgdir}/etc/dinit.d/filesystems" << 'FS'
+type = scripted
+command = /sbin/mount -a
+stop-command = /sbin/umount -a -r
+FS
+    # hostname
+    cat > "${pkgdir}/etc/dinit.d/hostname" << 'HN'
+type = scripted
+command = /bin/hostname lotus
+HN
+    # loopback
+    cat > "${pkgdir}/etc/dinit.d/loopback" << 'LO'
+type = scripted
+command = /sbin/ip link set lo up
+stop-command = /sbin/ip link set lo down
+waits-for = filesystems
+LO
+    # sysklogd
+    cat > "${pkgdir}/etc/dinit.d/sysklogd" << 'SLOG'
+type = process
+command = /sbin/syslogd -n
+restart = true
+waits-for = filesystems
+SLOG
+    # getty tty1-6
+    for i in 1 2 3 4 5 6; do
+        cat > "${pkgdir}/etc/dinit.d/getty-tty${i}" << GETTY
+type = process
+command = /sbin/agetty --noclear tty${i} linux
+restart = true
+waits-for = filesystems
+GETTY
+    done
+}
+uninstall() {
+    echo "error: dinit is the init system and cannot be removed"
+    exit 1
+}

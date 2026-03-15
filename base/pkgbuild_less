@@ -1,0 +1,19 @@
+pkgname="less"
+pkgver="679"
+pkgrel="1"
+depends=("ncurses")
+makedepends=()
+source="https://mirror-hk.koddos.net/lfs/lfs-packages/12.4/less-${pkgver}.tar.gz"
+sha256sums="SKIP"
+build() {
+    tar -xf less-${pkgver}.tar.gz
+    cd less-${pkgver}
+    ./configure --prefix=/usr --sysconfdir=/etc
+    make -j$(nproc)
+}
+check() { : ; }
+package() {
+    cd less-${pkgver}
+    make DESTDIR="${pkgdir}" install
+}
+uninstall() { rm -f /usr/bin/less /usr/bin/lesskey; }

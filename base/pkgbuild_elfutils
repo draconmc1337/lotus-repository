@@ -1,0 +1,22 @@
+pkgname="elfutils"
+pkgver="0.193"
+pkgrel="1"
+depends=("zlib" "zstd" "bzip2" "xz")
+makedepends=()
+source="https://mirror-hk.koddos.net/lfs/lfs-packages/12.4/elfutils-${pkgver}.tar.bz2"
+sha256sums="SKIP"
+build() {
+    tar -xf elfutils-${pkgver}.tar.bz2
+    cd elfutils-${pkgver}
+    ./configure --prefix=/usr                \
+                --disable-debuginfod         \
+                --enable-libdebuginfod=dummy
+    make -j$(nproc)
+}
+check() { cd elfutils-${pkgver}; make check; }
+package() {
+    cd elfutils-${pkgver}
+    make DESTDIR="${pkgdir}" install
+    rm -f "${pkgdir}/usr/lib/libelf.a"
+}
+uninstall() { rm -f /usr/lib/libelf*.so* /usr/lib/libasm*.so*; }

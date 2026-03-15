@@ -1,0 +1,21 @@
+pkgname="libffi"
+pkgver="3.5.2"
+pkgrel="1"
+depends=()
+makedepends=()
+source="https://mirror-hk.koddos.net/lfs/lfs-packages/12.4/libffi-${pkgver}.tar.gz"
+sha256sums="SKIP"
+build() {
+    tar -xf libffi-${pkgver}.tar.gz
+    cd libffi-${pkgver}
+    ./configure --prefix=/usr          \
+                --disable-static       \
+                --with-gcc-arch=native
+    make -j$(nproc)
+}
+check() { cd libffi-${pkgver}; make check; }
+package() {
+    cd libffi-${pkgver}
+    make DESTDIR="${pkgdir}" install
+}
+uninstall() { rm -f /usr/lib/libffi*.so* /usr/include/ffi.h; }

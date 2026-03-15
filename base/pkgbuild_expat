@@ -1,0 +1,22 @@
+pkgname="expat"
+pkgver="2.7.1"
+pkgrel="1"
+depends=()
+makedepends=()
+source="https://mirror-hk.koddos.net/lfs/lfs-packages/12.4/expat-${pkgver}.tar.xz"
+sha256sums="SKIP"
+build() {
+    tar -xf expat-${pkgver}.tar.xz
+    cd expat-${pkgver}
+    ./configure --prefix=/usr    \
+                --disable-static \
+                --docdir=/usr/share/doc/expat-${pkgver}
+    make -j$(nproc)
+}
+check() { cd expat-${pkgver}; make check; }
+package() {
+    cd expat-${pkgver}
+    make DESTDIR="${pkgdir}" install
+    install -v -m644 doc/*.{html,css} "${pkgdir}/usr/share/doc/expat-${pkgver}"
+}
+uninstall() { rm -f /usr/lib/libexpat*.so* /usr/include/expat.h; }

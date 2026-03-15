@@ -1,0 +1,31 @@
+pkgname="ncurses"
+pkgver="6.5"
+pkgrel="1"
+depends=()
+makedepends=()
+source="https://mirror-hk.koddos.net/lfs/lfs-packages/12.4/ncurses-${pkgver}.tar.gz"
+sha256sums="SKIP"
+build() {
+    tar -xf ncurses-${pkgver}.tar.gz
+    cd ncurses-${pkgver}
+    ./configure --prefix=/usr           \
+                --mandir=/usr/share/man \
+                --with-shared           \
+                --without-debug         \
+                --without-normal        \
+                --with-cxx-shared       \
+                --enable-pc-files       \
+                --with-pkg-config-libdir=/usr/lib/pkgconfig
+    make -j$(nproc)
+}
+check() { : ; }
+package() {
+    cd ncurses-${pkgver}
+    make DESTDIR="${pkgdir}" install
+    for lib in ncurses form panel menu; do
+        ln -sfv lib${lib}w.so "${pkgdir}/usr/lib/lib${lib}.so"
+        ln -sfv ${lib}w.pc    "${pkgdir}/usr/lib/pkgconfig/${lib}.pc"
+    done
+    ln -sfv libncursesw.so "${pkgdir}/usr/lib/libcurses.so"
+}
+uninstall() { rm -f /usr/lib/libncurses*.so* /usr/lib/libcurses.so; }

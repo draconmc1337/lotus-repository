@@ -1,0 +1,24 @@
+pkgname="gmp"
+pkgver="6.3.0"
+pkgrel="1"
+depends=()
+makedepends=()
+source="https://mirror-hk.koddos.net/lfs/lfs-packages/12.4/gmp-${pkgver}.tar.xz"
+sha256sums="SKIP"
+build() {
+    tar -xf gmp-${pkgver}.tar.xz
+    cd gmp-${pkgver}
+    ./configure --prefix=/usr    \
+                --enable-cxx     \
+                --disable-static \
+                --docdir=/usr/share/doc/gmp-${pkgver}
+    make -j$(nproc)
+    make html
+}
+check() { cd gmp-${pkgver}; make check 2>&1 | tee gmp-check-log; awk '/# PASS/{total+=$3} ; END{print total}' gmp-check-log; }
+package() {
+    cd gmp-${pkgver}
+    make DESTDIR="${pkgdir}" install
+    make DESTDIR="${pkgdir}" install-html
+}
+uninstall() { rm -f /usr/lib/libgmp*.so* /usr/include/gmp.h; }

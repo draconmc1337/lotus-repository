@@ -1,0 +1,19 @@
+pkgname="libcap"
+pkgver="2.76"
+pkgrel="1"
+depends=()
+makedepends=()
+source="https://mirror-hk.koddos.net/lfs/lfs-packages/12.4/libcap-${pkgver}.tar.xz"
+sha256sums="SKIP"
+build() {
+    tar -xf libcap-${pkgver}.tar.xz
+    cd libcap-${pkgver}
+    sed -i '/install -m.*STA/d' libcap/Makefile
+    make prefix=/usr lib=lib -j$(nproc)
+}
+check() { cd libcap-${pkgver}; make test; }
+package() {
+    cd libcap-${pkgver}
+    make prefix=/usr lib=lib DESTDIR="${pkgdir}" install
+}
+uninstall() { rm -f /usr/sbin/capsh /usr/lib/libcap*.so*; }

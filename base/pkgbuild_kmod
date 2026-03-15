@@ -1,0 +1,29 @@
+pkgname="kmod"
+pkgver="34.2"
+pkgrel="1"
+depends=("openssl" "zlib" "zstd" "xz")
+makedepends=()
+source="https://mirror-hk.koddos.net/lfs/lfs-packages/12.4/kmod-${pkgver}.tar.xz"
+sha256sums="SKIP"
+build() {
+    tar -xf kmod-${pkgver}.tar.xz
+    cd kmod-${pkgver}
+    ./configure --prefix=/usr          \
+                --sysconfdir=/etc      \
+                --with-openssl         \
+                --with-xz              \
+                --with-zstd            \
+                --with-zlib            \
+                --disable-manpages
+    make -j$(nproc)
+}
+check() { : ; }
+package() {
+    cd kmod-${pkgver}
+    make DESTDIR="${pkgdir}" install
+    for target in depmod insmod modinfo modprobe rmmod; do
+        ln -sfv kmod "${pkgdir}/usr/bin/${target}"
+    done
+    ln -sfv kmod "${pkgdir}/usr/sbin/lsmod"
+}
+uninstall() { rm -f /usr/bin/kmod; }

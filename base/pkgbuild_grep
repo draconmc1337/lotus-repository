@@ -1,0 +1,20 @@
+pkgname="grep"
+pkgver="3.12"
+pkgrel="1"
+depends=()
+makedepends=()
+source="https://mirror-hk.koddos.net/lfs/lfs-packages/12.4/grep-${pkgver}.tar.xz"
+sha256sums="SKIP"
+build() {
+    tar -xf grep-${pkgver}.tar.xz
+    cd grep-${pkgver}
+    sed -i "s/echo/#echo/" src/egrep.sh
+    ./configure --prefix=/usr
+    make -j$(nproc)
+}
+check() { cd grep-${pkgver}; make check; }
+package() {
+    cd grep-${pkgver}
+    make DESTDIR="${pkgdir}" install
+}
+uninstall() { rm -f /usr/bin/grep /usr/bin/egrep /usr/bin/fgrep; }

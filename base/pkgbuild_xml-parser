@@ -1,0 +1,19 @@
+pkgname="xml-parser"
+pkgver="2.47"
+pkgrel="1"
+depends=("perl" "expat")
+makedepends=()
+source="https://mirror-hk.koddos.net/lfs/lfs-packages/12.4/XML-Parser-${pkgver}.tar.gz"
+sha256sums="SKIP"
+build() {
+    tar -xf XML-Parser-${pkgver}.tar.gz
+    cd XML-Parser-${pkgver}
+    perl Makefile.PL
+    make -j$(nproc)
+}
+check() { cd XML-Parser-${pkgver}; make test; }
+package() {
+    cd XML-Parser-${pkgver}
+    make DESTDIR="${pkgdir}" install
+}
+uninstall() { : ; }

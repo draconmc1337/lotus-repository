@@ -1,0 +1,23 @@
+pkgname="procps-ng"
+pkgver="4.0.5"
+pkgrel="1"
+depends=("ncurses")
+makedepends=()
+source="https://mirror-hk.koddos.net/lfs/lfs-packages/12.4/procps-ng-${pkgver}.tar.xz"
+sha256sums="SKIP"
+build() {
+    tar -xf procps-ng-${pkgver}.tar.xz
+    cd procps-ng-${pkgver}
+    ./configure --prefix=/usr                            \
+                --docdir=/usr/share/doc/procps-ng-${pkgver} \
+                --disable-static                         \
+                --disable-kill                           \
+                --with-systemd=no
+    make -j$(nproc)
+}
+check() { cd procps-ng-${pkgver}; make check; }
+package() {
+    cd procps-ng-${pkgver}
+    make DESTDIR="${pkgdir}" install
+}
+uninstall() { rm -f /usr/bin/ps /usr/bin/top /usr/bin/free; }

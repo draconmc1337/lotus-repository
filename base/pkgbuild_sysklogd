@@ -1,0 +1,32 @@
+pkgname="sysklogd"
+pkgver="2.7.2"
+pkgrel="1"
+depends=()
+makedepends=()
+source="https://mirror-hk.koddos.net/lfs/lfs-packages/12.4/sysklogd-${pkgver}.tar.gz"
+sha256sums="SKIP"
+build() {
+    tar -xf sysklogd-${pkgver}.tar.gz
+    cd sysklogd-${pkgver}
+    ./configure --prefix=/usr      \
+                --sysconfdir=/etc  \
+                --runstatedir=/run \
+                --without-logger
+    make -j$(nproc)
+}
+check() { : ; }
+package() {
+    cd sysklogd-${pkgver}
+    make DESTDIR="${pkgdir}" install
+    cat > "${pkgdir}/etc/syslog.conf" << 'SYSLOGCONF'
+auth,authpriv.* -/var/log/auth.log
+*.*;auth,authpriv.none -/var/log/sys.log
+daemon.* -/var/log/daemon.log
+kern.* -/var/log/kern.log
+mail.* -/var/log/mail.log
+user.* -/var/log/user.log
+*.emerg *
+secure.* -/var/log/secure.log
+SYSLOGCONF
+}
+uninstall() { rm -f /usr/sbin/syslogd /usr/sbin/klogd; }

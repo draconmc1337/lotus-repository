@@ -1,0 +1,44 @@
+pkgname="glibc"
+pkgver="2.42"
+pkgrel="1"
+depends=()
+recommends=()
+makedepends=("python3" "gawk")
+source="https://mirror-hk.koddos.net/lfs/lfs-packages/12.4/glibc-${pkgver}.tar.xz"
+source2="https://mirror-hk.koddos.net/lfs/lfs-packages/12.4/glibc-2.42-fhs-1.patch"
+sha256sums="SKIP"
+build() {
+    tar -xf glibc-${pkgver}.tar.xz
+    cd glibc-${pkgver}
+    patch -Np1 -i ../glibc-2.42-fhs-1.patch
+    mkdir -v build && cd build
+    echo "rootsbindir=/usr/sbin" > configparms
+    ../configure \
+        --prefix=/usr              \
+        --disable-werror           \
+        --enable-kernel=5.4        \
+        --enable-stack-protector=strong \
+        --disable-nscd             \
+        libc_cv_slibdir=/usr/lib
+    make -j$(nproc)
+}
+check() {
+    cd glibc-${pkgver}/build
+    make check 2>&1 | tee check.log || true
+}
+package() {
+    cd glibc-${pkgver}/build
+    make DESTDIR="${pkgdir}" install
+    sed '/RTLDLIST=/s@/usr@@g' -i "${pkgdir}/usr/bin/ldd"
+    make DESTDIR="${pkgdir}" localedata/install-locales
+    install -dm755 "${pkgdir}/etc/ld.so.conf.d"
+    cat > "${pkgdir}/etc/ld.so.conf" << CONF
+/usr/local/lib
+/opt/lib
+include /etc/ld.so.conf.d/*.conf
+CONF
+}
+uninstall() {
+    echo "error: glibc cannot be removed from a running system"
+    exit 1
+}

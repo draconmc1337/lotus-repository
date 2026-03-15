@@ -1,0 +1,21 @@
+pkgname="lz4"
+pkgver="1.10.0"
+pkgrel="1"
+depends=()
+makedepends=()
+source="https://mirror-hk.koddos.net/lfs/lfs-packages/12.4/lz4-${pkgver}.tar.gz"
+sha256sums="SKIP"
+build() {
+    tar -xf lz4-${pkgver}.tar.gz
+    cd lz4-${pkgver}
+    make BUILD_STATIC=no PREFIX=/usr -j$(nproc)
+}
+check() { cd lz4-${pkgver}; make -j1 check; }
+package() {
+    cd lz4-${pkgver}
+    make BUILD_STATIC=no PREFIX=/usr DESTDIR="${pkgdir}" install
+}
+uninstall() {
+    rm -f /usr/bin/lz4 /usr/lib/liblz4.so*
+    rm -f /usr/include/lz4.h /usr/include/lz4frame.h
+}

@@ -1,0 +1,19 @@
+pkgname="autoconf"
+pkgver="2.72"
+pkgrel="1"
+depends=("m4" "perl")
+makedepends=()
+source="https://mirror-hk.koddos.net/lfs/lfs-packages/12.4/autoconf-${pkgver}.tar.xz"
+sha256sums="SKIP"
+build() {
+    tar -xf autoconf-${pkgver}.tar.xz
+    cd autoconf-${pkgver}
+    ./configure --prefix=/usr
+    make -j$(nproc)
+}
+check() { cd autoconf-${pkgver}; make check TESTSUITEFLAGS=-j$(nproc); }
+package() {
+    cd autoconf-${pkgver}
+    make DESTDIR="${pkgdir}" install
+}
+uninstall() { rm -f /usr/bin/autoconf /usr/bin/autoheader; }

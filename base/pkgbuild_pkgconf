@@ -1,0 +1,22 @@
+pkgname="pkgconf"
+pkgver="2.5.1"
+pkgrel="1"
+depends=()
+makedepends=()
+source="https://mirror-hk.koddos.net/lfs/lfs-packages/12.4/pkgconf-${pkgver}.tar.xz"
+sha256sums="SKIP"
+build() {
+    tar -xf pkgconf-${pkgver}.tar.xz
+    cd pkgconf-${pkgver}
+    ./configure --prefix=/usr              \
+                --disable-static           \
+                --docdir=/usr/share/doc/pkgconf-${pkgver}
+    make -j$(nproc)
+}
+check() { : ; }
+package() {
+    cd pkgconf-${pkgver}
+    make DESTDIR="${pkgdir}" install
+    ln -sv pkgconf "${pkgdir}/usr/bin/pkg-config"
+}
+uninstall() { rm -f /usr/bin/pkgconf /usr/bin/pkg-config; }

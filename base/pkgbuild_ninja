@@ -1,0 +1,24 @@
+pkgname="ninja"
+pkgver="1.13.1"
+pkgrel="1"
+depends=()
+makedepends=("python3")
+source="https://mirror-hk.koddos.net/lfs/lfs-packages/12.4/ninja-${pkgver}.tar.gz"
+sha256sums="SKIP"
+build() {
+    tar -xf ninja-${pkgver}.tar.gz
+    cd ninja-${pkgver}
+    python3 configure.py --bootstrap
+}
+check() {
+    cd ninja-${pkgver}
+    ./ninja ninja_test
+    ./ninja_test --gtest_filter=-ChmodTest
+}
+package() {
+    cd ninja-${pkgver}
+    install -vDm755 ninja "${pkgdir}/usr/bin/ninja"
+    install -vDm644 misc/bash-completion "${pkgdir}/usr/share/bash-completion/completions/ninja"
+    install -vDm644 misc/zsh-completion "${pkgdir}/usr/share/zsh/site-functions/_ninja"
+}
+uninstall() { rm -f /usr/bin/ninja; }

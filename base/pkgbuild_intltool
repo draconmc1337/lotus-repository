@@ -1,0 +1,21 @@
+pkgname="intltool"
+pkgver="0.51.0"
+pkgrel="1"
+depends=("perl" "xml-parser")
+makedepends=()
+source="https://mirror-hk.koddos.net/lfs/lfs-packages/12.4/intltool-${pkgver}.tar.gz"
+sha256sums="SKIP"
+build() {
+    tar -xf intltool-${pkgver}.tar.gz
+    cd intltool-${pkgver}
+    sed -i 's:\\\${:\\\$\\{:' intltool-update.in
+    ./configure --prefix=/usr
+    make -j$(nproc)
+}
+check() { cd intltool-${pkgver}; make check; }
+package() {
+    cd intltool-${pkgver}
+    make DESTDIR="${pkgdir}" install
+    install -v -Dm644 doc/I18N-HOWTO "${pkgdir}/usr/share/doc/intltool-${pkgver}/I18N-HOWTO"
+}
+uninstall() { rm -f /usr/bin/intltool-*; }

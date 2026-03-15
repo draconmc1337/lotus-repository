@@ -1,0 +1,18 @@
+pkgname="flit-core"
+pkgver="3.12.0"
+pkgrel="1"
+depends=("python3")
+makedepends=()
+source="https://mirror-hk.koddos.net/lfs/lfs-packages/12.4/flit_core-${pkgver}.tar.gz"
+sha256sums="SKIP"
+build() {
+    tar -xf flit_core-${pkgver}.tar.gz
+    cd flit_core-${pkgver}
+}
+check() { : ; }
+package() {
+    cd flit_core-${pkgver}
+    pip3 wheel -w dist --no-cache-dir --no-build-isolation --no-deps $PWD
+    pip3 install --root="${pkgdir}" --no-index --find-links dist flit_core
+}
+uninstall() { pip3 uninstall -y flit_core 2>/dev/null || true; }

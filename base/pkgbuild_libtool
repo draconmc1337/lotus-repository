@@ -1,0 +1,20 @@
+pkgname="libtool"
+pkgver="2.5.4"
+pkgrel="1"
+depends=()
+makedepends=()
+source="https://mirror-hk.koddos.net/lfs/lfs-packages/12.4/libtool-${pkgver}.tar.xz"
+sha256sums="SKIP"
+build() {
+    tar -xf libtool-${pkgver}.tar.xz
+    cd libtool-${pkgver}
+    ./configure --prefix=/usr
+    make -j$(nproc)
+}
+check() { cd libtool-${pkgver}; make -k check TESTSUITEFLAGS=-j$(nproc) 2>&1 | tee libtool-check.log || true; }
+package() {
+    cd libtool-${pkgver}
+    make DESTDIR="${pkgdir}" install
+    rm -fv "${pkgdir}/usr/lib/libltdl.a"
+}
+uninstall() { rm -f /usr/bin/libtool /usr/lib/libltdl*.so*; }

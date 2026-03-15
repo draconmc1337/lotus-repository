@@ -1,0 +1,26 @@
+pkgname="xz"
+pkgver="5.8.1"
+pkgrel="1"
+depends=()
+makedepends=()
+source="https://mirror-hk.koddos.net/lfs/lfs-packages/12.4/xz-${pkgver}.tar.xz"
+sha256sums="SKIP"
+build() {
+    tar -xf xz-${pkgver}.tar.xz
+    cd xz-${pkgver}
+    ./configure --prefix=/usr    \
+                --disable-static \
+                --docdir=/usr/share/doc/xz-${pkgver}
+    make -j$(nproc)
+}
+check() { cd xz-${pkgver}; make check; }
+package() {
+    cd xz-${pkgver}
+    make DESTDIR="${pkgdir}" install
+}
+uninstall() {
+    rm -f /usr/bin/xz /usr/bin/unxz /usr/bin/xzcat
+    rm -f /usr/lib/liblzma.so*
+    rm -f /usr/include/lzma.h
+    rm -rf /usr/include/lzma
+}
