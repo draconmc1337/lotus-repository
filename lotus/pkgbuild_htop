@@ -1,15 +1,15 @@
 pkgname="htop"
-pkgver="3.3.0"
+pkgver="3.4.1"
 pkgrel="1"
 depends=("glibc" "ncurses" "libcap")
 recommends=()
 makedepends=()
-
-source="https://github.com/htop-dev/htop/archive/refs/tags/htop-3.3.0.tar.gz"
+sha256sums="af9ec878f831b7c27d33e775c668ec79d569aa781861c995a0fbadc1bdb666cf"
+source="https://github.com/htop-dev/htop/archive/refs/tags/3.4.1.tar.gz"
 
 build() {
-    tar -xf htop-3.3.0.tar.xz
-    cd htop-3.3.0
+    tar -xf htop-3.4.1.tar.xz
+    cd htop-3.4.1
     ./autogen.sh
    ./configure --prefix=/usr
    make -j$(nproc)
@@ -17,7 +17,7 @@ build() {
 
 
 package() {
-    cd htop-3.3.0
+    cd htop-3.4.1
     make DESTDIR="${pkgdir}" install
 }
 
