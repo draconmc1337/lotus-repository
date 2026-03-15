@@ -4,7 +4,7 @@ pkgrel="1"
 depends=()
 makedepends=()
 source="https://mirror-hk.koddos.net/lfs/lfs-packages/12.4/tcl${pkgver}-src.tar.gz"
-sha256sums="SKIP"
+md5sums="eaef5d0a27239fb840f04af8ec608242"
 build() {
     tar -xf tcl${pkgver}-src.tar.gz
     cd tcl${pkgver}

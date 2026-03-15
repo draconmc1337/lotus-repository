@@ -4,7 +4,7 @@ pkgrel="1"
 depends=()
 makedepends=()
 source="https://mirror-hk.koddos.net/lfs/lfs-packages/12.4/gperf-${pkgver}.tar.gz"
-sha256sums="SKIP"
+md5sums="31753b021ea78a21f154bf9eecb8b079"
 build() {
     tar -xf gperf-${pkgver}.tar.gz
     cd gperf-${pkgver}

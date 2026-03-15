@@ -4,7 +4,7 @@ pkgrel="1"
 depends=("libxcrypt")
 makedepends=()
 source="https://mirror-hk.koddos.net/lfs/lfs-packages/12.4/shadow-${pkgver}.tar.xz"
-sha256sums="SKIP"
+md5sums="30ef46f54363db1d624587be68794ef2"
 build() {
     tar -xf shadow-${pkgver}.tar.xz
     cd shadow-${pkgver}

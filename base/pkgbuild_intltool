@@ -4,7 +4,7 @@ pkgrel="1"
 depends=("perl" "xml-parser")
 makedepends=()
 source="https://mirror-hk.koddos.net/lfs/lfs-packages/12.4/intltool-${pkgver}.tar.gz"
-sha256sums="SKIP"
+md5sums="12e517cac2b57a0121cda351570f1e63"
 build() {
     tar -xf intltool-${pkgver}.tar.gz
     cd intltool-${pkgver}

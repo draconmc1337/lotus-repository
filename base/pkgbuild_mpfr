@@ -4,7 +4,7 @@ pkgrel="1"
 depends=("gmp")
 makedepends=()
 source="https://mirror-hk.koddos.net/lfs/lfs-packages/12.4/mpfr-${pkgver}.tar.xz"
-sha256sums="SKIP"
+md5sums="7c32c39b8b6e3ae85f25156228156061"
 build() {
     tar -xf mpfr-${pkgver}.tar.xz
     cd mpfr-${pkgver}

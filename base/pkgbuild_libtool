@@ -4,7 +4,7 @@ pkgrel="1"
 depends=()
 makedepends=()
 source="https://mirror-hk.koddos.net/lfs/lfs-packages/12.4/libtool-${pkgver}.tar.xz"
-sha256sums="SKIP"
+md5sums="22e0a29df8af5fdde276ea3a7d351d30"
 build() {
     tar -xf libtool-${pkgver}.tar.xz
     cd libtool-${pkgver}

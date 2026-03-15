@@ -4,7 +4,7 @@ pkgrel="1"
 depends=()
 makedepends=("python3")
 source="https://mirror-hk.koddos.net/lfs/lfs-packages/12.4/ninja-${pkgver}.tar.gz"
-sha256sums="SKIP"
+md5sums="c35f8f55f4cf60f1a916068d8f45a0f8"
 build() {
     tar -xf ninja-${pkgver}.tar.gz
     cd ninja-${pkgver}

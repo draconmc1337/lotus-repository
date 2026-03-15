@@ -4,7 +4,7 @@ pkgrel="1"
 depends=("libelf" "libcap" "openssl")
 makedepends=()
 source="https://mirror-hk.koddos.net/lfs/lfs-packages/12.4/iproute2-${pkgver}.tar.xz"
-sha256sums="SKIP"
+md5sums="80e1f91bf59d572acc15d5c6eb4f3e7c"
 build() {
     tar -xf iproute2-${pkgver}.tar.xz
     cd iproute2-${pkgver}

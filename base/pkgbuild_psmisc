@@ -4,7 +4,7 @@ pkgrel="1"
 depends=("ncurses")
 makedepends=()
 source="https://mirror-hk.koddos.net/lfs/lfs-packages/12.4/psmisc-${pkgver}.tar.xz"
-sha256sums="SKIP"
+md5sums="53eae841735189a896d614cba440eb10"
 build() {
     tar -xf psmisc-${pkgver}.tar.xz
     cd psmisc-${pkgver}

@@ -4,7 +4,7 @@ pkgrel="1"
 depends=()
 makedepends=()
 source="https://mirror-hk.koddos.net/lfs/lfs-packages/12.4/expat-${pkgver}.tar.xz"
-sha256sums="SKIP"
+md5sums="9f0c266ff4b9720beae0c6bd53ae4469"
 build() {
     tar -xf expat-${pkgver}.tar.xz
     cd expat-${pkgver}

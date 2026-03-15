@@ -4,7 +4,7 @@ pkgrel="1"
 depends=("autoconf" "perl")
 makedepends=()
 source="https://mirror-hk.koddos.net/lfs/lfs-packages/12.4/automake-${pkgver}.tar.xz"
-sha256sums="SKIP"
+md5sums="cea31dbf1120f890cbf2a3032cfb9a68"
 build() {
     tar -xf automake-${pkgver}.tar.xz
     cd automake-${pkgver}

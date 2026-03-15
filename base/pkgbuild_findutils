@@ -4,7 +4,7 @@ pkgrel="1"
 depends=()
 makedepends=()
 source="https://mirror-hk.koddos.net/lfs/lfs-packages/12.4/findutils-${pkgver}.tar.xz"
-sha256sums="SKIP"
+md5sums="870cfd71c07d37ebe56f9f4aaf4ad872"
 build() {
     tar -xf findutils-${pkgver}.tar.xz
     cd findutils-${pkgver}

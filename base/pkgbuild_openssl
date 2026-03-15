@@ -4,7 +4,7 @@ pkgrel="1"
 depends=("zlib")
 makedepends=()
 source="https://mirror-hk.koddos.net/lfs/lfs-packages/12.4/openssl-${pkgver}.tar.gz"
-sha256sums="SKIP"
+md5sums="890fc59f86fc21b5e4d1c031a698dbde"
 build() {
     tar -xf openssl-${pkgver}.tar.gz
     cd openssl-${pkgver}

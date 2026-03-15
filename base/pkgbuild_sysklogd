@@ -4,7 +4,7 @@ pkgrel="1"
 depends=()
 makedepends=()
 source="https://mirror-hk.koddos.net/lfs/lfs-packages/12.4/sysklogd-${pkgver}.tar.gz"
-sha256sums="SKIP"
+md5sums="af60786956a2dc84054fbf46652e515e"
 build() {
     tar -xf sysklogd-${pkgver}.tar.gz
     cd sysklogd-${pkgver}

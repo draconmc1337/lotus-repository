@@ -4,7 +4,7 @@ pkgrel="1"
 depends=("ncurses")
 makedepends=()
 source="https://mirror-hk.koddos.net/lfs/lfs-packages/12.4/vim-${pkgver}.tar.gz"
-sha256sums="SKIP"
+md5sums="4f856c3233c1c4570bc17572e4f9e8e4"
 build() {
     tar -xf vim-${pkgver}.tar.gz
     cd vim-${pkgver}

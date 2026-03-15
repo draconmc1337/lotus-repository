@@ -6,7 +6,8 @@ recommends=()
 makedepends=("python3" "gawk")
 source="https://mirror-hk.koddos.net/lfs/lfs-packages/12.4/glibc-${pkgver}.tar.xz"
 source2="https://mirror-hk.koddos.net/lfs/lfs-packages/12.4/glibc-2.42-fhs-1.patch"
-sha256sums="SKIP"
+md5sums=("23c6f5a27932b435cae94e087cb8b1f5"
+         "9a5997c3452909b1769918c759eff8a2")
 build() {
     tar -xf glibc-${pkgver}.tar.xz
     cd glibc-${pkgver}

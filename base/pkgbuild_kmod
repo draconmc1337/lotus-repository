@@ -4,7 +4,7 @@ pkgrel="1"
 depends=("openssl" "zlib" "zstd" "xz")
 makedepends=()
 source="https://mirror-hk.koddos.net/lfs/lfs-packages/12.4/kmod-${pkgver}.tar.xz"
-sha256sums="SKIP"
+md5sums="36f2cc483745e81ede3406fa55e1065a"
 build() {
     tar -xf kmod-${pkgver}.tar.xz
     cd kmod-${pkgver}

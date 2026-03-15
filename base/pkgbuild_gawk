@@ -4,7 +4,7 @@ pkgrel="1"
 depends=("gmp" "mpfr")
 makedepends=()
 source="https://mirror-hk.koddos.net/lfs/lfs-packages/12.4/gawk-${pkgver}.tar.xz"
-sha256sums="SKIP"
+md5sums="b7014650c5f45e5d4837c31209dc0037"
 build() {
     tar -xf gawk-${pkgver}.tar.xz
     cd gawk-${pkgver}

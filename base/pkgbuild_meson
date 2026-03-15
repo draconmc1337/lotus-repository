@@ -4,7 +4,7 @@ pkgrel="1"
 depends=("python3" "ninja")
 makedepends=()
 source="https://mirror-hk.koddos.net/lfs/lfs-packages/12.4/meson-${pkgver}.tar.gz"
-sha256sums="SKIP"
+md5sums="08221d2f515e759686f666ff6409a903"
 build() {
     tar -xf meson-${pkgver}.tar.gz
     cd meson-${pkgver}

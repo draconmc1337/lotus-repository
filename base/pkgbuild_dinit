@@ -5,7 +5,7 @@ depends=("glibc>=2.40")
 recommends=()
 makedepends=()
 source="https://github.com/davmac314/dinit/archive/refs/tags/v${pkgver}/dinit-${pkgver}.tar.gz"
-sha256sums="SKIP"
+sha256sum="3a78b70948b496a73c708693f43c85cf58d7e63e0fcb844c621431264e69aa1b"
 build() {
     tar -xf dinit-${pkgver}.tar.gz
     cd dinit-${pkgver}

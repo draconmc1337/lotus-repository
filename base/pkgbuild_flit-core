@@ -4,7 +4,7 @@ pkgrel="1"
 depends=("python3")
 makedepends=()
 source="https://mirror-hk.koddos.net/lfs/lfs-packages/12.4/flit_core-${pkgver}.tar.gz"
-sha256sums="SKIP"
+md5sums="c538415c1f27bd69cbbbf3cdd5135d39"
 build() {
     tar -xf flit_core-${pkgver}.tar.gz
     cd flit_core-${pkgver}

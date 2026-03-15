@@ -4,7 +4,7 @@ pkgrel="1"
 depends=("attr" "acl" "gmp")
 makedepends=()
 source="https://mirror-hk.koddos.net/lfs/lfs-packages/12.4/coreutils-${pkgver}.tar.xz"
-sha256sums="SKIP"
+md5sums="6b7285faf7d5eb91592bdd689270d3f1"
 build() {
     tar -xf coreutils-${pkgver}.tar.xz
     cd coreutils-${pkgver}

@@ -4,7 +4,7 @@ pkgrel="1"
 depends=()
 makedepends=()
 source="https://mirror-hk.koddos.net/lfs/lfs-packages/12.4/ncurses-${pkgver}.tar.gz"
-sha256sums="SKIP"
+md5sums="SKIP"
 build() {
     tar -xf ncurses-${pkgver}.tar.gz
     cd ncurses-${pkgver}

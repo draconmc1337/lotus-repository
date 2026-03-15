@@ -4,7 +4,7 @@ pkgrel="1"
 depends=("readline")
 makedepends=()
 source="https://mirror-hk.koddos.net/lfs/lfs-packages/12.4/gdbm-${pkgver}.tar.gz"
-sha256sums="SKIP"
+md5sums="aaa600665bc89e2febb3c7bd90679115"
 build() {
     tar -xf gdbm-${pkgver}.tar.gz
     cd gdbm-${pkgver}

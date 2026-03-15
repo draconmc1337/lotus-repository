@@ -4,7 +4,7 @@ pkgrel="1"
 depends=("python3" "wheel")
 makedepends=()
 source="https://mirror-hk.koddos.net/lfs/lfs-packages/12.4/setuptools-${pkgver}.tar.gz"
-sha256sums="SKIP"
+md5sums="82e1d67883b713f9493659b50d13b436"
 build() {
     tar -xf setuptools-${pkgver}.tar.gz
     cd setuptools-${pkgver}

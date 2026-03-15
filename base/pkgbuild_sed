@@ -4,7 +4,7 @@ pkgrel="1"
 depends=()
 makedepends=()
 source="https://mirror-hk.koddos.net/lfs/lfs-packages/12.4/sed-${pkgver}.tar.xz"
-sha256sums="SKIP"
+md5sums="6aac9b2dbafcd5b7a67a8a9bcb8036c3"
 build() {
     tar -xf sed-${pkgver}.tar.xz
     cd sed-${pkgver}

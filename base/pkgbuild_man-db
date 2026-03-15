@@ -4,7 +4,7 @@ pkgrel="1"
 depends=("libpipeline" "groff" "gdbm")
 makedepends=()
 source="https://mirror-hk.koddos.net/lfs/lfs-packages/12.4/man-db-${pkgver}.tar.xz"
-sha256sums="SKIP"
+md5sums="b6335533cbeac3b24cd7be31fdee8c83"
 build() {
     tar -xf man-db-${pkgver}.tar.xz
     cd man-db-${pkgver}

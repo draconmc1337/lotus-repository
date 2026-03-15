@@ -4,7 +4,7 @@ pkgrel="1"
 depends=()
 makedepends=()
 source="https://mirror-hk.koddos.net/lfs/lfs-packages/12.4/patch-${pkgver}.tar.xz"
-sha256sums="SKIP"
+md5sums="149327a021d41c8f88d034eab41c039f"
 build() {
     tar -xf patch-${pkgver}.tar.xz
     cd patch-${pkgver}

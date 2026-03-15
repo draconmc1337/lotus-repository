@@ -4,7 +4,7 @@ pkgrel="1"
 depends=("glibc" "binutils" "gmp" "mpfr" "mpc")
 makedepends=()
 source="https://mirror-hk.koddos.net/lfs/lfs-packages/12.4/gcc-${pkgver}.tar.xz"
-sha256sums="SKIP"
+md5sums="b861b092bf1af683c46a8aa2e689a6fd"
 build() {
     tar -xf gcc-${pkgver}.tar.xz
     cd gcc-${pkgver}

@@ -5,7 +5,7 @@ depends=("freetype" "fuse" "gettext")
 recommends=("os-prober")
 makedepends=("python3" "autogen")
 source="https://mirror-hk.koddos.net/lfs/lfs-packages/12.4/grub-${pkgver}.tar.xz"
-sha256sums="SKIP"
+md5sums="60c564b1bdc39d8e43b3aab4bc0fb140"
 build() {
     tar -xf grub-${pkgver}.tar.xz
     cd grub-${pkgver}

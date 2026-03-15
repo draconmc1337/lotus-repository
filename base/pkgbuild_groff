@@ -4,7 +4,7 @@ pkgrel="1"
 depends=("perl")
 makedepends=()
 source="https://mirror-hk.koddos.net/lfs/lfs-packages/12.4/groff-${pkgver}.tar.gz"
-sha256sums="SKIP"
+md5sums="5e4f40315a22bb8a158748e7d5094c7d"
 build() {
     tar -xf groff-${pkgver}.tar.gz
     cd groff-${pkgver}

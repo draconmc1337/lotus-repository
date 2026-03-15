@@ -4,7 +4,7 @@ pkgrel="1"
 depends=("expect")
 makedepends=()
 source="https://mirror-hk.koddos.net/lfs/lfs-packages/12.4/dejagnu-${pkgver}.tar.gz"
-sha256sums="SKIP"
+md5sums="68c5208c58236eba447d7d6d1326b821"
 build() {
     tar -xf dejagnu-${pkgver}.tar.gz
     cd dejagnu-${pkgver}

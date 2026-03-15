@@ -4,7 +4,7 @@ pkgrel="1"
 depends=("m4")
 makedepends=()
 source="https://mirror-hk.koddos.net/lfs/lfs-packages/12.4/flex-${pkgver}.tar.gz"
-sha256sums="SKIP"
+md5sums="2882e3179748cc9f9c23ec593d6adc8d"
 build() {
     tar -xf flex-${pkgver}.tar.gz
     cd flex-${pkgver}

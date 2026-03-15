@@ -4,7 +4,7 @@ pkgrel="1"
 depends=("readline")
 makedepends=()
 source="https://mirror-hk.koddos.net/lfs/lfs-packages/12.4/bc-${pkgver}.tar.xz"
-sha256sums="SKIP"
+md5sums="ad4db5a0eb4fdbb3f6813be4b6b3da74"
 build() {
     tar -xf bc-${pkgver}.tar.xz
     cd bc-${pkgver}

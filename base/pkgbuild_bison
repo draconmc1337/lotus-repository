@@ -4,7 +4,7 @@ pkgrel="1"
 depends=("m4")
 makedepends=()
 source="https://mirror-hk.koddos.net/lfs/lfs-packages/12.4/bison-${pkgver}.tar.xz"
-sha256sums="SKIP"
+md5sums="c28f119f405a2304ff0a7ccdcc629713"
 build() {
     tar -xf bison-${pkgver}.tar.xz
     cd bison-${pkgver}

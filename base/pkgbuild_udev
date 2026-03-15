@@ -4,7 +4,7 @@ pkgrel="1"
 depends=("acl" "libcap" "openssl" "kmod")
 makedepends=("meson" "ninja" "python3" "jinja2")
 source="https://mirror-hk.koddos.net/lfs/lfs-packages/12.4/systemd-${pkgver}.tar.gz"
-sha256sums="SKIP"
+md5sums="25fe5d328e22641254761f1baa74cee0"
 build() {
     tar -xf systemd-${pkgver}.tar.gz
     cd systemd-${pkgver}

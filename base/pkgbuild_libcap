@@ -4,7 +4,7 @@ pkgrel="1"
 depends=()
 makedepends=()
 source="https://mirror-hk.koddos.net/lfs/lfs-packages/12.4/libcap-${pkgver}.tar.xz"
-sha256sums="SKIP"
+md5sums="449ade7d620b5c4eeb15a632fbaa4f74"
 build() {
     tar -xf libcap-${pkgver}.tar.xz
     cd libcap-${pkgver}

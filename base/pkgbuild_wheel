@@ -4,7 +4,7 @@ pkgrel="1"
 depends=("python3" "flit-core")
 makedepends=()
 source="https://mirror-hk.koddos.net/lfs/lfs-packages/12.4/wheel-${pkgver}.tar.gz"
-sha256sums="SKIP"
+md5sums="65e09ee84af36821e3b1e9564aa91bd5"
 build() {
     tar -xf wheel-${pkgver}.tar.gz
     cd wheel-${pkgver}

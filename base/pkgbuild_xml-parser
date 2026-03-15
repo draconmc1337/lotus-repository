@@ -4,7 +4,7 @@ pkgrel="1"
 depends=("perl" "expat")
 makedepends=()
 source="https://mirror-hk.koddos.net/lfs/lfs-packages/12.4/XML-Parser-${pkgver}.tar.gz"
-sha256sums="SKIP"
+md5sums="89a8e82cfd2ad948b349c0a69c494463"
 build() {
     tar -xf XML-Parser-${pkgver}.tar.gz
     cd XML-Parser-${pkgver}

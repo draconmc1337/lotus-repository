@@ -4,7 +4,7 @@ pkgrel="1"
 depends=()
 makedepends=()
 source="https://mirror-hk.koddos.net/lfs/lfs-packages/12.4/inetutils-${pkgver}.tar.xz"
-sha256sums="SKIP"
+md5sums="401d7d07682a193960bcdecafd03de94"
 build() {
     tar -xf inetutils-${pkgver}.tar.xz
     cd inetutils-${pkgver}

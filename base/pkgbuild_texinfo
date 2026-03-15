@@ -4,7 +4,7 @@ pkgrel="1"
 depends=("perl" "ncurses")
 makedepends=()
 source="https://mirror-hk.koddos.net/lfs/lfs-packages/12.4/texinfo-${pkgver}.tar.xz"
-sha256sums="SKIP"
+md5sums="11939a7624572814912a18e76c8d8972"
 build() {
     tar -xf texinfo-${pkgver}.tar.xz
     cd texinfo-${pkgver}

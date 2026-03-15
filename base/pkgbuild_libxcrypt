@@ -4,7 +4,7 @@ pkgrel="1"
 depends=()
 makedepends=()
 source="https://mirror-hk.koddos.net/lfs/lfs-packages/12.4/libxcrypt-${pkgver}.tar.xz"
-sha256sums="SKIP"
+md5sums="1796a5d20098e9dd9e3f576803c83000"
 build() {
     tar -xf libxcrypt-${pkgver}.tar.xz
     cd libxcrypt-${pkgver}

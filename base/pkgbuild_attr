@@ -4,7 +4,7 @@ pkgrel="1"
 depends=()
 makedepends=()
 source="https://mirror-hk.koddos.net/lfs/lfs-packages/12.4/attr-${pkgver}.tar.gz"
-sha256sums="SKIP"
+md5sums="227043ec2f6ca03c0948df5517f9c927"
 build() {
     tar -xf attr-${pkgver}.tar.gz
     cd attr-${pkgver}

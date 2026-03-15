@@ -4,7 +4,7 @@ pkgrel="1"
 depends=("ncurses")
 makedepends=()
 source="https://mirror-hk.koddos.net/lfs/lfs-packages/12.4/procps-ng-${pkgver}.tar.xz"
-sha256sums="SKIP"
+md5sums="90803e64f51f192f3325d25c3335d057"
 build() {
     tar -xf procps-ng-${pkgver}.tar.xz
     cd procps-ng-${pkgver}

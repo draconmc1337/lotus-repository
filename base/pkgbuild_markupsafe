@@ -4,7 +4,7 @@ pkgrel="1"
 depends=("python3")
 makedepends=()
 source="https://mirror-hk.koddos.net/lfs/lfs-packages/12.4/MarkupSafe-${pkgver}.tar.gz"
-sha256sums="SKIP"
+md5sums="cb0071711b573b155cc8f86e1de72167"
 build() {
     tar -xf MarkupSafe-${pkgver}.tar.gz
     cd MarkupSafe-${pkgver}

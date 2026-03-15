@@ -5,7 +5,7 @@ depends=()
 recommends=()
 makedepends=()
 source="https://mirror-hk.koddos.net/lfs/lfs-packages/12.4/iana-etc-${pkgver}.tar.gz"
-sha256sums="SKIP"
+md5sums="de0a909103d4ff59d1424c5ec7ac9e4a"
 build() {
     tar -xf iana-etc-${pkgver}.tar.gz
 }

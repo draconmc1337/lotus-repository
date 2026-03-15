@@ -4,7 +4,7 @@ pkgrel="1"
 depends=("attr")
 makedepends=()
 source="https://mirror-hk.koddos.net/lfs/lfs-packages/12.4/acl-${pkgver}.tar.xz"
-sha256sums="SKIP"
+md5sums="590765dee95907dbc3c856f7255bd669"
 build() {
     tar -xf acl-${pkgver}.tar.xz
     cd acl-${pkgver}
