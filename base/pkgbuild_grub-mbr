@@ -1,0 +1,79 @@
+pkgname="grub-bios"
+pkgver="2.12"
+pkgrel="1"
+depends=("freetype" "gettext")
+recommends=("os-prober")
+makedepends=("python3" "autogen")
+source="https://mirror-hk.koddos.net/lfs/lfs-packages/12.4/grub-${pkgver}.tar.xz"
+md5sums="60c564b1bdc39d8e43b3aab4bc0fb140"
+
+build() {
+    tar -xf grub-${pkgver}.tar.xz
+    cd grub-${pkgver}
+    unset {C,CPP,CXX,LD}FLAGS
+    ./configure --prefix=/usr         \
+                --sysconfdir=/etc     \
+                --disable-efiemu     \
+                --with-platform=pc   \
+                --target=x86_64      \
+                --disable-werror
+    make -j$(nproc)
+}
+
+check() { : ; }
+
+package() {
+    cd grub-${pkgver}
+    make DESTDIR="${pkgdir}" install
+    install -d "${pkgdir}/usr/share/grub"
+
+    # grub.cfg template cho BIOS
+    install -dm755 "${pkgdir}/boot/grub"
+    cat > "${pkgdir}/boot/grub/grub.cfg" << 'GRUBCFG'
+# Lotus Linux v1.0.1-alpha — BIOS/MBR
+set default=0
+set timeout=5
+
+insmod part_msdos
+insmod ext2
+
+menuentry "Lotus Linux v1.0.1-alpha" {
+    insmod gzio
+    insmod part_msdos
+    insmod ext2
+    set root=(hd0,msdos1)
+    linux /boot/vmlinuz-6.16.1 root=/dev/sda1 rw quiet
+    initrd /boot/initramfs.img
+}
+
+menuentry "Lotus Linux v1.0.1-alpha (rescue)" {
+    insmod gzio
+    insmod part_msdos
+    insmod ext2
+    set root=(hd0,msdos1)
+    linux /boot/vmlinuz-6.16.1 root=/dev/sda1 rw
+}
+GRUBCFG
+
+    # install script cho BIOS
+    cat > "${pkgdir}/usr/bin/grub-lotus-install" << 'SCRIPT'
+#!/bin/bash
+# Lotus Linux GRUB BIOS installer
+set -e
+DISK="${1:-/dev/sda}"
+echo ":: Installing GRUB (BIOS) to ${DISK}..."
+grub-install --target=i386-pc \
+             --recheck \
+             "${DISK}"
+grub-mkconfig -o /boot/grub/grub.cfg
+echo ":: GRUB installed. Edit /boot/grub/grub.cfg if needed."
+SCRIPT
+    chmod +x "${pkgdir}/usr/bin/grub-lotus-install"
+}
+
+uninstall() {
+    rm -rf /usr/lib/grub
+    rm -rf /usr/share/grub
+    rm -f /usr/sbin/grub-install
+    rm -f /usr/bin/grub-lotus-install
+}
