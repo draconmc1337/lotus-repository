@@ -6,29 +6,80 @@ recommends=("os-prober")
 makedepends=("python3" "autogen")
 source="https://mirror-hk.koddos.net/lfs/lfs-packages/12.4/grub-${pkgver}.tar.xz"
 md5sums="60c564b1bdc39d8e43b3aab4bc0fb140"
+
 build() {
     tar -xf grub-${pkgver}.tar.xz
     cd grub-${pkgver}
     unset {C,CPP,CXX,LD}FLAGS
     echo depends bli part_gpt >> grub-core/extra_deps.lst
-    ./configure --prefix=/usr          \
-                --sysconfdir=/etc      \
-                --disable-efiemu      \
-                --enable-grub-mkfont  \
-                --with-platform=efi   \
-                --target=x86_64       \
+    ./configure --prefix=/usr         \
+                --sysconfdir=/etc     \
+                --disable-efiemu     \
+                --enable-grub-mkfont \
+                --with-platform=efi  \
+                --target=x86_64      \
                 --disable-werror
     make -j$(nproc)
 }
+
 check() { : ; }
+
 package() {
     cd grub-${pkgver}
     make DESTDIR="${pkgdir}" install
     install -d "${pkgdir}/usr/share/grub"
-    mv "${pkgdir}/etc/bash_completion.d/" "${pkgdir}/usr/share/bash-completion/completions/" 2>/dev/null || true
+    mv "${pkgdir}/etc/bash_completion.d/" \
+       "${pkgdir}/usr/share/bash-completion/completions/" 2>/dev/null || true
+
+    # grub.cfg template cho UEFI
+    install -dm755 "${pkgdir}/boot/grub"
+    cat > "${pkgdir}/boot/grub/grub.cfg" << 'GRUBCFG'
+# Lotus Linux v1.0.1-alpha — UEFI/GPT
+set default=0
+set timeout=5
+
+insmod part_gpt
+insmod fat
+insmod ext2
+
+menuentry "Lotus Linux v1.0.1-alpha" {
+    insmod gzio
+    insmod part_gpt
+    insmod ext2
+    set root=(hd0,gpt3)
+    linux /boot/vmlinuz-6.16.1 root=/dev/sda3 rw quiet
+    initrd /boot/initramfs.img
 }
+
+menuentry "Lotus Linux v1.0.1-alpha (rescue)" {
+    insmod gzio
+    insmod part_gpt
+    insmod ext2
+    set root=(hd0,gpt3)
+    linux /boot/vmlinuz-6.16.1 root=/dev/sda3 rw
+}
+GRUBCFG
+
+    # install script cho UEFI
+    cat > "${pkgdir}/usr/bin/grub-lotus-install" << 'SCRIPT'
+#!/bin/bash
+# Lotus Linux GRUB UEFI installer
+set -e
+ESP="${1:-/boot/efi}"
+echo ":: Installing GRUB (UEFI) to ${ESP}..."
+grub-install --target=x86_64-efi \
+             --efi-directory="${ESP}" \
+             --bootloader-id="LotusLinux" \
+             --recheck
+grub-mkconfig -o /boot/grub/grub.cfg
+echo ":: GRUB installed. Edit /boot/grub/grub.cfg if needed."
+SCRIPT
+    chmod +x "${pkgdir}/usr/bin/grub-lotus-install"
+}
+
 uninstall() {
     rm -rf /usr/lib/grub
     rm -rf /usr/share/grub
     rm -f /usr/sbin/grub-install
+    rm -f /usr/bin/grub-lotus-install
 }
