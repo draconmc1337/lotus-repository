@@ -3,25 +3,35 @@ pkgver="3.4.1"
 pkgrel="1"
 depends=("glibc" "ncurses" "libcap")
 recommends=()
-makedepends=()
+makedepends=("autoconf" "automake")
+source="https://github.com/htop-dev/htop/archive/refs/tags/${pkgver}.tar.gz"
 sha256sums="af9ec878f831b7c27d33e775c668ec79d569aa781861c995a0fbadc1bdb666cf"
-source="https://github.com/htop-dev/htop/archive/refs/tags/3.4.1.tar.gz"
 
 build() {
-    tar -xf htop-3.4.1.tar.xz
-    cd htop-3.4.1
+    tar -xf ${pkgver}.tar.gz
+    cd htop-${pkgver}
     ./autogen.sh
-   ./configure --prefix=/usr
-   make -j$(nproc)
+    ./configure \
+        --prefix=/usr \
+        --sysconfdir=/etc \
+        --enable-unicode \
+        --enable-affinity \
+        --enable-delayacct
+    make -j$(nproc)
 }
 
+check() {
+    cd htop-${pkgver}
+    make check || true
+}
 
 package() {
-    cd htop-3.4.1
+    cd htop-${pkgver}
     make DESTDIR="${pkgdir}" install
 }
 
 uninstall() {
     rm -f /usr/bin/htop
     rm -rf /usr/share/htop
+    rm -f /usr/share/man/man1/htop.1
 }
