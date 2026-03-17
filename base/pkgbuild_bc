@@ -8,7 +8,7 @@ md5sums="ad4db5a0eb4fdbb3f6813be4b6b3da74"
 build() {
     tar -xf bc-${pkgver}.tar.xz
     cd bc-${pkgver}
-    CC=gcc ./configure --prefix=/usr -G -O3 -r
+    CC='gcc -std=c99' ./configure --prefix=/usr -G -O3 -r
     make -j$(nproc)
 }
 check() { cd bc-${pkgver}; make test; }
