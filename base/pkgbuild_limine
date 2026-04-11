@@ -1,0 +1,23 @@
+pkgname="limine"
+pkgver="8.4.2"
+pkgrel="1"
+depends=("glibc")
+makedepends=("nasm")
+source="https://github.com/limine-bootloader/limine/releases/download/v${pkgver}/limine-${pkgver}.tar.xz"
+md5sums=""
+
+build() {
+    tar -xf limine-${pkgver}.tar.xz
+    cd limine-${pkgver}
+    ./configure --prefix=/usr
+    make -j$(nproc)
+}
+
+check() {
+    true
+}
+
+package() {
+    cd limine-${pkgver}
+    make DESTDIR="$pkgdir" install
+}

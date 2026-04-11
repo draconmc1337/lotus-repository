@@ -1,0 +1,25 @@
+pkgname="busybox"
+pkgver="1.36.1"
+pkgrel="1"
+depends=("glibc")
+makedepends=()
+source="https://busybox.net/downloads/busybox-${pkgver}.tar.bz2"
+md5sums="4c49e1fd25507b83751180f7db89c3da"
+
+build() {
+    tar -xf busybox-${pkgver}.tar.bz2
+    cd busybox-${pkgver}
+    make defconfig
+    make -j$(nproc)
+}
+
+check() {
+    cd busybox-${pkgver}
+    make check || true
+}
+
+package() {
+    cd busybox-${pkgver}
+    make DESTDIR="$pkgdir" CONFIG_PREFIX=/usr install
+    cp busybox "$pkgdir/usr/bin/busybox"
+}

@@ -1,0 +1,28 @@
+pkgname="erofs-utils"
+pkgver="1.7.1"
+pkgrel="1"
+depends=("glibc" "zlib" "lz4" "xz")
+makedepends=()
+source="https://git.kernel.org/pub/scm/linux/kernel/git/xiang/erofs-utils.git/snapshot/erofs-utils-${pkgver}.tar.gz"
+md5sums=""
+
+build() {
+    tar -xf erofs-utils-${pkgver}.tar.gz
+    cd erofs-utils-${pkgver}
+    ./autogen.sh
+    ./configure --prefix=/usr \
+                --with-zlib \
+                --with-lz4 \
+                --with-lzma
+    make -j$(nproc)
+}
+
+check() {
+    cd erofs-utils-${pkgver}
+    make check || true
+}
+
+package() {
+    cd erofs-utils-${pkgver}
+    make DESTDIR="$pkgdir" install
+}
