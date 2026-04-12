@@ -1,0 +1,23 @@
+pkgname="libnl"
+pkgver="3.12.0"
+pkgrel="1"
+depends=()
+makedepends=()
+source="https://github.com/thom311/libnl/releases/download/libnl3_12_0/libnl-${pkgver}.tar.gz"
+md5sums=""
+build() {
+    tar -xf libnl-${pkgver}.tar.gz
+    cd libnl-${pkgver}
+    ./configure --prefix=/usr     \
+                --sysconfdir=/etc \
+                --disable-static
+    make -j$(nproc)
+}
+check() {
+    cd libnl-${pkgver}
+    make check || true
+}
+package() {
+    cd libnl-${pkgver}
+    make DESTDIR="${pkgdir}" install
+}

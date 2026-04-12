@@ -1,0 +1,24 @@
+pkgname="dhcpcd"
+pkgver="10.2.4"
+pkgrel="1"
+depends=()
+makedepends=()
+source="https://github.com/NetworkConfiguration/dhcpcd/releases/download/v${pkgver}/dhcpcd-${pkgver}.tar.xz"
+md5sums=""
+build() {
+    tar -xf dhcpcd-${pkgver}.tar.xz
+    cd dhcpcd-${pkgver}
+    ./configure --prefix=/usr          \
+                --sysconfdir=/etc      \
+                --localstatedir=/var   \
+                --dbdir=/var/lib/dhcpcd
+    make -j$(nproc)
+}
+check() {
+    cd dhcpcd-${pkgver}
+    make check || true
+}
+package() {
+    cd dhcpcd-${pkgver}
+    make DESTDIR="${pkgdir}" install
+}

@@ -1,0 +1,33 @@
+pkgname="dbus"
+pkgver="1.16.2"
+pkgrel="1"
+depends=("glib2" "expat")
+makedepends=("meson" "ninja" "python3")
+source="https://dbus.freedesktop.org/releases/dbus/dbus-${pkgver}.tar.xz"
+md5sums=""
+build() {
+    tar -xf dbus-${pkgver}.tar.xz
+    cd dbus-${pkgver}
+    mkdir -p build && cd build
+    meson setup ..                                          \
+        --prefix=/usr                                       \
+        --sysconfdir=/etc                                   \
+        --localstatedir=/var                                \
+        --buildtype=release                                 \
+        -D dbus_user=messagebus                             \
+        -D system_socket=/run/dbus/system_bus_socket        \
+        -D systemd=disabled                                 \
+        -D selinux=disabled                                 \
+        -D doxygen_docs=disabled                            \
+        -D xml_docs=disabled
+    ninja -j$(nproc)
+}
+check() {
+    true
+}
+package() {
+    cd dbus-${pkgver}/build
+    DESTDIR="${pkgdir}" ninja install
+    # create dbus user/group in post-install (lpm doesn't have hooks yet)
+    # run manually: groupadd -g 18 messagebus && useradd -c "D-Bus" -d /var/run/dbus -u 18 -g messagebus -s /bin/false messagebus
+}

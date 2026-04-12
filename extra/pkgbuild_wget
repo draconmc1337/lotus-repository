@@ -1,0 +1,25 @@
+pkgname="wget"
+pkgver="1.25.0"
+pkgrel="1"
+depends=("openssl" "zlib" "pcre2")
+makedepends=()
+source="https://ftp.gnu.org/gnu/wget/wget-${pkgver}.tar.gz"
+md5sums=""
+build() {
+    tar -xf wget-${pkgver}.tar.gz
+    cd wget-${pkgver}
+    ./configure --prefix=/usr      \
+                --sysconfdir=/etc  \
+                --with-ssl=openssl \
+                --with-zlib        \
+                --with-pcre2
+    make -j$(nproc)
+}
+check() {
+    cd wget-${pkgver}
+    make check || true
+}
+package() {
+    cd wget-${pkgver}
+    make DESTDIR="${pkgdir}" install
+}

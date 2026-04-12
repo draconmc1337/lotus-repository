@@ -1,0 +1,27 @@
+pkgname="glib2"
+pkgver="2.88.0"
+pkgrel="1"
+depends=("zlib" "libffi" "pcre2" "python3")
+makedepends=("meson" "ninja")
+source="https://download.gnome.org/sources/glib/2.88/glib-${pkgver}.tar.xz"
+md5sums=""
+build() {
+    tar -xf glib-${pkgver}.tar.xz
+    cd glib-${pkgver}
+    mkdir -p build && cd build
+    meson setup ..                  \
+        --prefix=/usr               \
+        --buildtype=release         \
+        -D man-pages=disabled       \
+        -D sysprof=disabled         \
+        -D glib_debug=disabled      \
+        -D tests=false
+    ninja -j$(nproc)
+}
+check() {
+    true
+}
+package() {
+    cd glib-${pkgver}/build
+    DESTDIR="${pkgdir}" ninja install
+}

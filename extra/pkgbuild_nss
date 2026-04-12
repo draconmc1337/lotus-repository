@@ -1,0 +1,57 @@
+pkgname="nss"
+pkgver="3.116"
+pkgrel="1"
+depends=("nspr" "sqlite3" "zlib")
+makedepends=("python3")
+source="https://ftp.mozilla.org/pub/mozilla.org/security/nss/releases/NSS_3_116_RTM/src/nss-${pkgver}.tar.gz"
+md5sums=""
+build() {
+    tar -xf nss-${pkgver}.tar.gz
+    cd nss-${pkgver}/nss
+    make -j$(nproc) BUILD_OPT=1           \
+        NSPR_INCLUDE_DIR=/usr/include/nspr \
+        USE_SYSTEM_ZLIB=1                  \
+        ZLIB_LIBS=-lz                      \
+        NSS_ENABLE_WERROR=0                \
+        $([ $(uname -m) = x86_64 ] && echo USE_64=1) \
+        $([ -f /usr/include/sqlite3.h ] && echo NSS_USE_SYSTEM_SQLITE=1)
+}
+check() {
+    true
+}
+package() {
+    cd nss-${pkgver}
+    install -d "${pkgdir}/usr/lib"
+    install -d "${pkgdir}/usr/include/nss"
+    install -d "${pkgdir}/usr/bin"
+    install -d "${pkgdir}/usr/lib/pkgconfig"
+
+    NSS_INSTALL_DIR="${pkgdir}/usr"
+    for file in dist/Linux*/lib/*.so; do
+        install -m755 "$file" "${pkgdir}/usr/lib/"
+    done
+    for file in dist/Linux*/lib/*.a; do
+        install -m644 "$file" "${pkgdir}/usr/lib/"
+    done
+    for file in dist/public/nss/*.h; do
+        install -m644 "$file" "${pkgdir}/usr/include/nss/"
+    done
+    for file in dist/Linux*/bin/*; do
+        [ -f "$file" ] && install -m755 "$file" "${pkgdir}/usr/bin/"
+    done
+
+    cat > "${pkgdir}/usr/lib/pkgconfig/nss.pc" << EOF
+prefix=/usr
+exec_prefix=\${prefix}
+libdir=\${exec_prefix}/lib
+includedir=\${prefix}/include/nss
+
+Name: NSS
+Description: Network Security Services
+Version: ${pkgver}
+Requires: nspr >= 4.37
+Libs: -L\${libdir} -lnss3 -lnssutil3 -lsmime3 -lssl3
+Cflags: -I\${includedir}
+EOF
+    ln -sf nss.pc "${pkgdir}/usr/lib/pkgconfig/mozilla-nss.pc"
+}

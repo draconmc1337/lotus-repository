@@ -1,0 +1,27 @@
+pkgname="curl"
+pkgver="8.15.0"
+pkgrel="1"
+depends=("openssl" "zlib" "zstd")
+makedepends=()
+source="https://curl.se/download/curl-${pkgver}.tar.xz"
+md5sums=""
+build() {
+    tar -xf curl-${pkgver}.tar.xz
+    cd curl-${pkgver}
+    ./configure --prefix=/usr          \
+                --with-openssl         \
+                --with-zlib            \
+                --with-zstd            \
+                --enable-ipv6          \
+                --enable-unix-sockets  \
+                --disable-static
+    make -j$(nproc)
+}
+check() {
+    cd curl-${pkgver}
+    make check || true
+}
+package() {
+    cd curl-${pkgver}
+    make DESTDIR="${pkgdir}" install
+}

@@ -1,0 +1,25 @@
+pkgname="nspr"
+pkgver="4.37"
+pkgrel="1"
+depends=()
+makedepends=()
+source="https://ftp.mozilla.org/pub/mozilla.org/nspr/releases/v${pkgver}/src/nspr-${pkgver}.tar.gz"
+md5sums=""
+build() {
+    tar -xf nspr-${pkgver}.tar.gz
+    cd nspr-${pkgver}/nspr
+    ./configure --prefix=/usr    \
+                --with-mozilla   \
+                --with-pthreads  \
+                $([ $(uname -m) = x86_64 ] && echo --enable-64bit)
+    make -j$(nproc)
+}
+check() {
+    true
+}
+package() {
+    cd nspr-${pkgver}/nspr
+    make DESTDIR="${pkgdir}" install
+    rm -f "${pkgdir}/usr/bin/compile-et.pl"
+    rm -f "${pkgdir}/usr/include/nspr/md/"*
+}

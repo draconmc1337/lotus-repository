@@ -1,0 +1,31 @@
+pkgname="git"
+pkgver="2.50.1"
+pkgrel="1"
+depends=("curl" "openssl" "zlib" "perl" "python3" "pcre2")
+makedepends=()
+source="https://mirrors.edge.kernel.org/pub/software/scm/git/git-${pkgver}.tar.xz"
+md5sums=""
+build() {
+    tar -xf git-${pkgver}.tar.xz
+    cd git-${pkgver}
+    make configure
+    ./configure --prefix=/usr          \
+                --with-openssl         \
+                --with-curl            \
+                --with-libpcre2        \
+                --with-zlib            \
+                --with-perl=/usr/bin/perl \
+                --with-python=/usr/bin/python3
+    make -j$(nproc)
+}
+check() {
+    cd git-${pkgver}
+    make test || true
+}
+package() {
+    cd git-${pkgver}
+    make DESTDIR="${pkgdir}" install
+    # install contrib/completion for convenience
+    install -Dm644 contrib/completion/git-completion.bash \
+        "${pkgdir}/usr/share/bash-completion/completions/git"
+}

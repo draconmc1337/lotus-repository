@@ -1,0 +1,69 @@
+pkgname="gcc"
+pkgver="15.2.0"
+pkgrel="1"
+description="The GNU Compiler Collection — C and C++ compilers"
+license="GPL-3.0-or-later"
+depends=("glibc" "binutils" "gmp" "mpfr" "mpc")
+makedepends=()
+source="https://mirror-hk.koddos.net/lfs/lfs-packages/12.4/gcc-${pkgver}.tar.xz"
+md5sums="b861b092bf1af683c46a8aa2e689a6fd"
+build() {
+    tar -xf gcc-${pkgver}.tar.xz
+    cd gcc-${pkgver}
+    case $(uname -m) in
+  x86_64)
+    sed -e '/m64=/s/lib64/lib/' \
+        -i.orig gcc/config/i386/t-linux64
+  ;;
+esac
+    mkdir -v build && cd build
+../configure --prefix=/usr            \
+             LD=ld                    \
+             --enable-languages=c,c++ \
+             --enable-default-pie     \
+             --enable-default-ssp     \
+             --enable-host-pie        \
+             --disable-multilib       \
+             --disable-bootstrap      \
+             --disable-fixincludes    \
+             --with-system-zlib
+    make -j$(nproc)
+}
+check() {
+    cd gcc-${pkgver}/build
+    ulimit -s -H unlimited
+    sed -e '/cpython/d' -i ../gcc/testsuite/gcc.dg/plugin/plugin.exp
+    make -k check 2>&1 | tee gcc-check.log || true
+    chown -R tester .
+    su tester -c "PATH=$PATH make -k -j4 check"
+    ../contrib/test_summary | head -60
+}
+package() {
+    cd gcc-${pkgver}/build
+
+    # Install vào staging dir
+    make DESTDIR="$pkgdir" install
+
+    # Fix ownership (rất quan trọng với GCC headers)
+    chown -v -R root:root \
+        "$pkgdir/usr/lib/gcc/$(gcc -dumpmachine)/15.2.0/include" \
+        "$pkgdir/usr/lib/gcc/$(gcc -dumpmachine)/15.2.0/include-fixed"
+
+    # FHS "historical" symlink
+    ln -sv ../bin/cpp "$pkgdir/usr/lib/cpp"
+
+    # cc manpage symlink
+    mkdir -p "$pkgdir/usr/share/man/man1"
+    ln -sv gcc.1 "$pkgdir/usr/share/man/man1/cc.1"
+
+    # LTO plugin symlink
+    mkdir -p "$pkgdir/usr/lib/bfd-plugins"
+    ln -sfv ../../libexec/gcc/$(gcc -dumpmachine)/15.2.0/liblto_plugin.so \
+        "$pkgdir/usr/lib/bfd-plugins/"
+
+    # Fix gdb auto-load path
+    mkdir -pv "$pkgdir/usr/share/gdb/auto-load/usr/lib"
+    mv -v "$pkgdir/usr/lib/"*gdb.py \
+        "$pkgdir/usr/share/gdb/auto-load/usr/lib/" 2>/dev/null || true
+}
+

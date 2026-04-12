@@ -1,0 +1,38 @@
+pkgname="networkmanager"
+pkgver="1.54.0"
+pkgrel="1"
+depends=("glib2" "dbus" "openssl" "curl" "libnl" "wpa_supplicant" "dhcpcd" "iw" "polkit" "nss")
+makedepends=("meson" "ninja" "python3")
+source="https://download.gnome.org/sources/NetworkManager/1.54/NetworkManager-${pkgver}.tar.xz"
+md5sums=""
+build() {
+    tar -xf NetworkManager-${pkgver}.tar.xz
+    cd NetworkManager-${pkgver}
+    mkdir -p build && cd build
+    meson setup ..                              \
+        --prefix=/usr                           \
+        --sysconfdir=/etc                       \
+        --localstatedir=/var                    \
+        -D nm_cloud_setup=false                 \
+        -D nmtui=true                           \
+        -D ovs=false                            \
+        -D ppp=false                            \
+        -D selinux=false                        \
+        -D qt=false                             \
+        -D docs=false                           \
+        -D tests=no                             \
+        -D crypto=nss                           \
+        -D wifi_backend=wpa_supplicant          \
+        -D iwd=true                             \
+        -D dhcpcd=yes                           \
+        -D systemdsystemunitdir=/usr/lib/systemd/system \
+        -D session_tracking=no
+    ninja -j$(nproc)
+}
+check() {
+    true
+}
+package() {
+    cd NetworkManager-${pkgver}/build
+    DESTDIR="${pkgdir}" ninja install
+}

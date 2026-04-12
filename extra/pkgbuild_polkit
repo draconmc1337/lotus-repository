@@ -1,0 +1,38 @@
+pkgname="polkit"
+pkgver="127"
+pkgrel="1"
+depends=("glib2" "dbus" "duktape" "pam")
+makedepends=("meson" "ninja" "python3")
+source="https://github.com/polkit-org/polkit/archive/${pkgver}/polkit-${pkgver}.tar.gz"
+md5sums=""
+build() {
+    tar -xf polkit-${pkgver}.tar.gz
+    cd polkit-${pkgver}
+    # create polkitd user/group if not exist
+    groupadd -fg 27 polkitd 2>/dev/null || true
+    useradd -c "PolicyKit Daemon Owner" -d /etc/polkit-1 \
+            -u 27 -g polkitd -s /bin/false polkitd 2>/dev/null || true
+    mkdir -p build && cd build
+    meson setup ..                                          \
+        --prefix=/usr                                       \
+        --sysconfdir=/etc                                   \
+        --localstatedir=/var                                \
+        --buildtype=release                                 \
+        -D man=false                                        \
+        -D session_tracking=elogind                         \
+        -D systemdsystemunitdir=/tmp/polkit-systemd         \
+        -D os_type=lfs                                      \
+        -D authfw=shadow                                    \
+        -D introspection=false                              \
+        -D tests=false
+    ninja -j$(nproc)
+}
+check() {
+    true
+}
+package() {
+    cd polkit-${pkgver}/build
+    DESTDIR="${pkgdir}" ninja install
+    # cleanup temp systemd dir
+    rm -rf "${pkgdir}/tmp/polkit-systemd"
+}

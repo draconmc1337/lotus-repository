@@ -1,0 +1,19 @@
+pkgname="iw"
+pkgver="6.9"
+pkgrel="1"
+depends=("libnl")
+makedepends=()
+source="https://mirrors.edge.kernel.org/pub/software/network/iw/iw-${pkgver}.tar.xz"
+md5sums=""
+build() {
+    tar -xf iw-${pkgver}.tar.xz
+    cd iw-${pkgver}
+    make -j$(nproc)
+}
+check() {
+    true
+}
+package() {
+    cd iw-${pkgver}
+    make DESTDIR="${pkgdir}" PREFIX=/usr install
+}
