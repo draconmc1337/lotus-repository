@@ -1,20 +1,35 @@
-pkgname="iana-etc"
-pkgver="20250807"
-pkgrel="1"
-depends=()
-recommends=()
-makedepends=()
-source="https://mirror-hk.koddos.net/lfs/lfs-packages/12.4/iana-etc-${pkgver}.tar.gz"
-md5sums="de0a909103d4ff59d1424c5ec7ac9e4a"
+# pkgbuild_iana-etc
+# Lotus Linux base system package
+# pkgtype = "source"
+
+# Size-optimized: -Os for smaller footprint
+CFLAGS_EXTRA   = "-Os -march=x86-64-v2 -mtune=generic -ffunction-sections -fdata-sections"
+LDFLAGS_EXTRA  = "-Wl,--gc-sections" -> compiled from source
+# pkgtype = "binary" -> pre-built, unpack only
+
+pkgname = "iana-etc"
+pkgver  = "20260202"
+pkgrel  = "1"
+pkgdesc = "/etc/protocols and /etc/services from IANA"
+license = "Public Domain"
+pkgtype = "source"
+
+depends     = ()
+makedepends = ()
+replaces    = ()
+conflicts   = ()
+backup      = ()
+
+source    = "sources/iana-etc-20260202.tar.gz"
+md5sums   = "fe91258a0760912f61f1d6b200a1d885"
+
 build() {
-    tar -xf iana-etc-${pkgver}.tar.gz
+    cd iana-etc-${pkgver}
+    true  # nothing to compile
 }
-check() { : ; }
+
 package() {
     cd iana-etc-${pkgver}
-    install -Dm644 services  "${pkgdir}/etc/services"
-    install -Dm644 protocols "${pkgdir}/etc/protocols"
-}
-uninstall() {
-    rm -f /etc/services /etc/protocols
+    install -Dm644 protocols "$pkgdir/etc/protocols"
+    install -Dm644 services  "$pkgdir/etc/services" 
 }

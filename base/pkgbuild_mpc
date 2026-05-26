@@ -1,23 +1,46 @@
-pkgname="mpc"
-pkgver="1.3.1"
-pkgrel="1"
-depends=("gmp" "mpfr")
-makedepends=()
-source="https://mirror-hk.koddos.net/lfs/lfs-packages/12.4/mpc-${pkgver}.tar.gz"
-md5sums="5c9bc658c9fd0f940e8e3e0f09530c62"
+# pkgbuild_mpc
+# Lotus Linux base system package
+# pkgtype = "source" -> compiled from source
+# pkgtype = "binary" -> pre-built, unpack only
+
+pkgname = "mpc"
+pkgver  = "1.3.1"
+pkgrel  = "1"
+pkgdesc = "GNU MPC — complex number arithmetic library"
+license = "LGPL-3.0"
+pkgtype = "source"
+
+depends     = ("gmp"; "mpfr")
+makedepends = ()
+replaces    = ()
+conflicts   = ()
+backup      = ()
+
+source    = "sources/mpc-1.3.1.tar.gz"
+md5sums   = "5c9bc658c9fd0f940e8e3e0f09530c62"
+
 build() {
-    tar -xf mpc-${pkgver}.tar.gz
     cd mpc-${pkgver}
-    ./configure --prefix=/usr    \
-                --disable-static \
-                --docdir=/usr/share/doc/mpc-${pkgver}
+    ./configure --prefix=/usr \
+        --sysconfdir=/etc \
+        --localstatedir=/var
     make -j$(nproc)
-    make html
 }
-check() { cd mpc-${pkgver}; make check; }
+
 package() {
     cd mpc-${pkgver}
-    make DESTDIR="${pkgdir}" install
-    make DESTDIR="${pkgdir}" install-html
+    make DESTDIR="$pkgdir" install
+    # Strip binaries/libs to reduce size
+    find "$pkgdir" -type f -name '*.so*' | while read f; do
+        strip --strip-unneeded "$f" 2>/dev/null || true
+    done
+    find "$pkgdir" -type f | while read f; do
+        case "$(file -b "$f" 2>/dev/null)" in
+            *ELF*executable*) strip --strip-all "$f" 2>/dev/null || true ;;
+        esac
+    done
+    # Remove static libs, la files, docs to save space
+    find "$pkgdir" -name '*.la'   -delete 2>/dev/null || true
+    find "$pkgdir" -name '*.a'    -delete 2>/dev/null || true
+    rm -rf "$pkgdir"/usr/share/{info,doc,gtk-doc} 2>/dev/null || true
 }
-uninstall() { rm -f /usr/lib/libmpc*.so* /usr/include/mpc.h; }

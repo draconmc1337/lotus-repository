@@ -1,0 +1,60 @@
+# pkgbuild_linux
+# Lotus Linux base system package
+# pkgtype = "source" -> compiled from source
+# pkgtype = "binary" -> pre-built, unpack only
+
+pkgname = "linux"
+pkgver  = "6.12.31"
+pkgrel  = "1"
+pkgdesc = "Linux kernel 6.12 LTS — Lotus Linux"
+license = "GPL-2.0"
+pkgtype = "source"
+
+depends     = ("musl")
+makedepends = ("flex"; "bison"; "perl"; "elfutils"; "openssl"; "kmod"; "zstd")
+replaces    = ()
+conflicts   = ()
+backup      = ()
+
+source    = "sources/linux-6.12.31.tar.xz"
+md5sums   = "959830224124f59015a8ec633491f201"
+
+build() {
+    cd linux-${pkgver}
+    make mrproper
+    # Use Lotus defconfig if present, else allmodconfig stripped down
+    if [ -f /etc/lotus-kernel.config ]; then
+        cp /etc/lotus-kernel.config .config
+    else
+        make defconfig
+    fi
+    # Musl-specific: disable glibc compat options
+    scripts/config --disable CONFIG_IA32_EMULATION || true
+    scripts/config --set-str CONFIG_LOCALVERSION "-lotus" || true
+    make -j$(nproc) bzImage modules
+}
+
+package() {
+    cd linux-${pkgver}
+    # Kernel image
+    install -Dm755 arch/x86/boot/bzImage "$pkgdir/boot/vmlinuz-${pkgver}-lotus"
+    # Modules
+    make INSTALL_MOD_PATH="$pkgdir" modules_install
+    # System.map
+    install -Dm644 System.map "$pkgdir/boot/System.map-${pkgver}-lotus"
+    # Config
+    install -Dm644 .config "$pkgdir/boot/config-${pkgver}-lotus" 
+    # Strip binaries/libs to reduce size
+    find "$pkgdir" -type f -name '*.so*' | while read f; do
+        strip --strip-unneeded "$f" 2>/dev/null || true
+    done
+    find "$pkgdir" -type f | while read f; do
+        case "$(file -b "$f" 2>/dev/null)" in
+            *ELF*executable*) strip --strip-all "$f" 2>/dev/null || true ;;
+        esac
+    done
+    # Remove static libs, la files, docs to save space
+    find "$pkgdir" -name '*.la'   -delete 2>/dev/null || true
+    find "$pkgdir" -name '*.a'    -delete 2>/dev/null || true
+    rm -rf "$pkgdir"/usr/share/{info,doc,gtk-doc} 2>/dev/null || true
+}

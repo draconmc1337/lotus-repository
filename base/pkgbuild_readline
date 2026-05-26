@@ -1,30 +1,48 @@
-pkgname="readline"
-pkgver="8.3"
-pkgrel="1"
-depends=()
-makedepends=()
-source="https://mirror-hk.koddos.net/lfs/lfs-packages/12.4/readline-${pkgver}.tar.gz"
-md5sums="25a73bfb2a3ad7146c5e9d4408d9f6cd"
+# pkgbuild_readline
+# Lotus Linux base system package
+# pkgtype = "source" -> compiled from source
+# pkgtype = "binary" -> pre-built, unpack only
+
+pkgname = "readline"
+pkgver  = "8.2"
+pkgrel  = "1"
+pkgdesc = "GNU readline — command-line editing library"
+license = "GPL-3.0"
+pkgtype = "source"
+
+depends     = ("ncurses")
+makedepends = ()
+replaces    = ()
+conflicts   = ()
+backup      = ()
+
+source    = "sources/readline-8.2.tar.gz"
+md5sums   = "4aa1b31be779e6b84f9a96cb66bc50f6"
+
 build() {
-    tar -xf readline-${pkgver}.tar.gz
     cd readline-${pkgver}
-    sed -i '/MV.*old/d' Makefile.in
-    sed -i '/{OLDSUFF}/c:' support/shlib-install
-    sed -i 's/-Wl,-rpath,[^ ]*//' support/shobj-conf
-    ./configure --prefix=/usr    \
-                --disable-static \
-                --with-curses    \
-                --docdir=/usr/share/doc/readline-${pkgver}
+    ./configure \
+        --prefix=/usr \
+        --disable-static \
+        --with-curses \
+        --enable-multibyte
     make SHLIB_LIBS="-lncursesw" -j$(nproc)
 }
-check() { : ; }
+
 package() {
     cd readline-${pkgver}
-    make SHLIB_LIBS="-lncursesw" DESTDIR="${pkgdir}" install
-    install -v -m644 doc/*.{ps,pdf,html,dvi} \
-        "${pkgdir}/usr/share/doc/readline-${pkgver}"
-}
-uninstall() {
-    rm -f /usr/lib/libreadline.so* /usr/lib/libhistory.so*
-    rm -rf /usr/include/readline
+    make DESTDIR="$pkgdir" SHLIB_LIBS="-lncursesw" install
+    # Strip binaries/libs to reduce size
+    find "$pkgdir" -type f -name '*.so*' | while read f; do
+        strip --strip-unneeded "$f" 2>/dev/null || true
+    done
+    find "$pkgdir" -type f | while read f; do
+        case "$(file -b "$f" 2>/dev/null)" in
+            *ELF*executable*) strip --strip-all "$f" 2>/dev/null || true ;;
+        esac
+    done
+    # Remove static libs, la files, docs to save space
+    find "$pkgdir" -name '*.la'   -delete 2>/dev/null || true
+    find "$pkgdir" -name '*.a'    -delete 2>/dev/null || true
+    rm -rf "$pkgdir"/usr/share/{info,doc,gtk-doc} 2>/dev/null || true
 }

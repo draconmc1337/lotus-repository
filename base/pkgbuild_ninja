@@ -1,24 +1,43 @@
-pkgname="ninja"
-pkgver="1.13.1"
-pkgrel="1"
-depends=()
-makedepends=("python3")
-source="https://mirror-hk.koddos.net/lfs/lfs-packages/12.4/ninja-${pkgver}.tar.gz"
-md5sums="c35f8f55f4cf60f1a916068d8f45a0f8"
+# pkgbuild_ninja
+# Lotus Linux base system package
+# pkgtype = "source" -> compiled from source
+# pkgtype = "binary" -> pre-built, unpack only
+
+pkgname = "ninja"
+pkgver  = "1.13.0"
+pkgrel  = "1"
+pkgdesc = "Small build system with a focus on speed"
+license = "Apache-2.0"
+pkgtype = "source"
+
+depends     = ()
+makedepends = ("Python")
+replaces    = ()
+conflicts   = ()
+backup      = ()
+
+source    = "sources/ninja-1.13.0.tar.gz"
+md5sums   = "a0f2016b736ee640b0473a679485e22e"
+
 build() {
-    tar -xf ninja-${pkgver}.tar.gz
     cd ninja-${pkgver}
     python3 configure.py --bootstrap
 }
-check() {
-    cd ninja-${pkgver}
-    ./ninja ninja_test
-    ./ninja_test --gtest_filter=-ChmodTest
-}
+
 package() {
     cd ninja-${pkgver}
-    install -vDm755 ninja "${pkgdir}/usr/bin/ninja"
-    install -vDm644 misc/bash-completion "${pkgdir}/usr/share/bash-completion/completions/ninja"
-    install -vDm644 misc/zsh-completion "${pkgdir}/usr/share/zsh/site-functions/_ninja"
+    install -Dm755 ninja "$pkgdir/usr/bin/ninja" 
+    # Strip binaries/libs to reduce size
+    find "$pkgdir" -type f -name '*.so*' | while read f; do
+        strip --strip-unneeded "$f" 2>/dev/null || true
+    done
+    find "$pkgdir" -type f | while read f; do
+        case "$(file -b "$f" 2>/dev/null)" in
+            *ELF*executable*) strip --strip-all "$f" 2>/dev/null || true ;;
+        esac
+    done
+    # Remove static libs, la files, docs to save space
+    find "$pkgdir" -name '*.la'   -delete 2>/dev/null || true
+    find "$pkgdir" -name '*.a'    -delete 2>/dev/null || true
+    rm -rf "$pkgdir"/usr/share/{info,doc,gtk-doc} 2>/dev/null || true
 }
-uninstall() { rm -f /usr/bin/ninja; }

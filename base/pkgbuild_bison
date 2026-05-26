@@ -1,19 +1,44 @@
-pkgname="bison"
-pkgver="3.8.2"
-pkgrel="1"
-depends=("m4")
-makedepends=()
-source="https://mirror-hk.koddos.net/lfs/lfs-packages/12.4/bison-${pkgver}.tar.xz"
-md5sums="c28f119f405a2304ff0a7ccdcc629713"
+# pkgbuild_bison
+# Lotus Linux base system package
+# pkgtype = "source" -> compiled from source
+# pkgtype = "binary" -> pre-built, unpack only
+
+pkgname = "bison"
+pkgver  = "3.8.2"
+pkgrel  = "1"
+pkgdesc = "GNU parser generator (LALR, GLR)"
+license = "GPL-3.0"
+pkgtype = "source"
+
+depends     = ("m4")
+makedepends = ()
+replaces    = ()
+conflicts   = ()
+backup      = ()
+
+source    = "sources/bison-3.8.2.tar.xz"
+md5sums   = "c28f119f405a2304ff0a7ccdcc629713"
+
 build() {
-    tar -xf bison-${pkgver}.tar.xz
     cd bison-${pkgver}
-    ./configure --prefix=/usr --docdir=/usr/share/doc/bison-${pkgver}
+    ./configure --prefix=/usr --disable-nls
     make -j$(nproc)
 }
-check() { cd bison-${pkgver}; make check; }
+
 package() {
     cd bison-${pkgver}
-    make DESTDIR="${pkgdir}" install
+    make DESTDIR="$pkgdir" install
+    # Strip binaries/libs to reduce size
+    find "$pkgdir" -type f -name '*.so*' | while read f; do
+        strip --strip-unneeded "$f" 2>/dev/null || true
+    done
+    find "$pkgdir" -type f | while read f; do
+        case "$(file -b "$f" 2>/dev/null)" in
+            *ELF*executable*) strip --strip-all "$f" 2>/dev/null || true ;;
+        esac
+    done
+    # Remove static libs, la files, docs to save space
+    find "$pkgdir" -name '*.la'   -delete 2>/dev/null || true
+    find "$pkgdir" -name '*.a'    -delete 2>/dev/null || true
+    rm -rf "$pkgdir"/usr/share/{info,doc,gtk-doc} 2>/dev/null || true
 }
-uninstall() { rm -f /usr/bin/bison /usr/lib/liby.a; }

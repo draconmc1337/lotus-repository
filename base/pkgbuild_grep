@@ -1,20 +1,48 @@
-pkgname="grep"
-pkgver="3.12"
-pkgrel="1"
-depends=()
-makedepends=()
-source="https://mirror-hk.koddos.net/lfs/lfs-packages/12.4/grep-${pkgver}.tar.xz"
-md5sums="5d9301ed9d209c4a88c8d3a6fd08b9ac"
+# pkgbuild_grep
+# Lotus Linux base system package
+# pkgtype = "source"
+
+# Size-optimized: -Os for smaller footprint
+CFLAGS_EXTRA   = "-Os -march=x86-64-v2 -mtune=generic -ffunction-sections -fdata-sections"
+LDFLAGS_EXTRA  = "-Wl,--gc-sections" -> compiled from source
+# pkgtype = "binary" -> pre-built, unpack only
+
+pkgname = "grep"
+pkgver  = "3.12"
+pkgrel  = "1"
+pkgdesc = "GNU grep — pattern matching"
+license = "GPL-3.0"
+pkgtype = "source"
+
+depends     = ("pcre2")
+makedepends = ()
+replaces    = ()
+conflicts   = ()
+backup      = ()
+
+source    = "sources/grep-3.12.tar.xz"
+md5sums   = "5d9301ed9d209c4a88c8d3a6fd08b9ac"
+
 build() {
-    tar -xf grep-${pkgver}.tar.xz
     cd grep-${pkgver}
-    sed -i "s/echo/#echo/" src/egrep.sh
-    ./configure --prefix=/usr
+    ./configure --prefix=/usr --disable-nls --with-libpcre2
     make -j$(nproc)
 }
-check() { cd grep-${pkgver}; make check; }
+
 package() {
     cd grep-${pkgver}
-    make DESTDIR="${pkgdir}" install
+    make DESTDIR="$pkgdir" install
+    # Strip binaries/libs to reduce size
+    find "$pkgdir" -type f -name '*.so*' | while read f; do
+        strip --strip-unneeded "$f" 2>/dev/null || true
+    done
+    find "$pkgdir" -type f | while read f; do
+        case "$(file -b "$f" 2>/dev/null)" in
+            *ELF*executable*) strip --strip-all "$f" 2>/dev/null || true ;;
+        esac
+    done
+    # Remove static libs, la files, docs to save space
+    find "$pkgdir" -name '*.la'   -delete 2>/dev/null || true
+    find "$pkgdir" -name '*.a'    -delete 2>/dev/null || true
+    rm -rf "$pkgdir"/usr/share/{info,doc,gtk-doc} 2>/dev/null || true
 }
-uninstall() { rm -f /usr/bin/grep /usr/bin/egrep /usr/bin/fgrep; }

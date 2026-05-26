@@ -1,22 +1,46 @@
-pkgname="attr"
-pkgver="2.5.2"
-pkgrel="1"
-depends=()
-makedepends=()
-source="https://mirror-hk.koddos.net/lfs/lfs-packages/12.4/attr-${pkgver}.tar.gz"
-md5sums="227043ec2f6ca03c0948df5517f9c927"
+# pkgbuild_attr
+# Lotus Linux base system package
+# pkgtype = "source" -> compiled from source
+# pkgtype = "binary" -> pre-built, unpack only
+
+pkgname = "attr"
+pkgver  = "2.5.2"
+pkgrel  = "1"
+pkgdesc = "Extended attribute support library and tools"
+license = "LGPL-2.1"
+pkgtype = "source"
+
+depends     = ()
+makedepends = ()
+replaces    = ()
+conflicts   = ()
+backup      = ()
+
+source    = "sources/attr-2.5.2.tar.gz"
+md5sums   = "227043ec2f6ca03c0948df5517f9c927"
+
 build() {
-    tar -xf attr-${pkgver}.tar.gz
     cd attr-${pkgver}
-    ./configure --prefix=/usr     \
-                --disable-static  \
-                --sysconfdir=/etc \
-                --docdir=/usr/share/doc/attr-${pkgver}
+    ./configure --prefix=/usr \
+        --sysconfdir=/etc \
+        --localstatedir=/var
     make -j$(nproc)
 }
-check() { cd attr-${pkgver}; make check; }
+
 package() {
     cd attr-${pkgver}
-    make DESTDIR="${pkgdir}" install
+    make DESTDIR="$pkgdir" install
+    # Strip binaries/libs to reduce size
+    find "$pkgdir" -type f -name '*.so*' | while read f; do
+        strip --strip-unneeded "$f" 2>/dev/null || true
+    done
+    find "$pkgdir" -type f | while read f; do
+        case "$(file -b "$f" 2>/dev/null)" in
+            *ELF*executable*) strip --strip-all "$f" 2>/dev/null || true ;;
+        esac
+    done
+    # Remove static libs, la files, docs to save space
+    find "$pkgdir" -name '*.la'   -delete 2>/dev/null || true
+    find "$pkgdir" -name '*.a'    -delete 2>/dev/null || true
+    rm -rf "$pkgdir"/usr/share/{info,doc,gtk-doc} 2>/dev/null || true
 }
-uninstall() { rm -f /usr/bin/attr /usr/lib/libattr*.so*; }

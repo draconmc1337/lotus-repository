@@ -1,22 +1,47 @@
-pkgname="expat"
-pkgver="2.7.1"
-pkgrel="1"
-depends=()
-makedepends=()
-source="https://mirror-hk.koddos.net/lfs/lfs-packages/12.4/expat-${pkgver}.tar.xz"
-md5sums="9f0c266ff4b9720beae0c6bd53ae4469"
+# pkgbuild_expat
+# Lotus Linux base system package
+# pkgtype = "source" -> compiled from source
+# pkgtype = "binary" -> pre-built, unpack only
+
+pkgname = "expat"
+pkgver  = "2.7.1"
+pkgrel  = "1"
+pkgdesc = "Expat XML parser library"
+license = "MIT"
+pkgtype = "source"
+
+depends     = ()
+makedepends = ()
+replaces    = ()
+conflicts   = ()
+backup      = ()
+
+source    = "sources/expat-2.7.1.tar.xz"
+md5sums   = "9f0c266ff4b9720beae0c6bd53ae4469"
+
 build() {
-    tar -xf expat-${pkgver}.tar.xz
     cd expat-${pkgver}
-    ./configure --prefix=/usr    \
-                --disable-static \
-                --docdir=/usr/share/doc/expat-${pkgver}
+    ./configure \
+        --prefix=/usr \
+        --disable-static \
+        --without-docbook
     make -j$(nproc)
 }
-check() { cd expat-${pkgver}; make check; }
+
 package() {
     cd expat-${pkgver}
-    make DESTDIR="${pkgdir}" install
-    install -v -m644 doc/*.{html,css} "${pkgdir}/usr/share/doc/expat-${pkgver}"
+    make DESTDIR="$pkgdir" install
+    # Strip binaries/libs to reduce size
+    find "$pkgdir" -type f -name '*.so*' | while read f; do
+        strip --strip-unneeded "$f" 2>/dev/null || true
+    done
+    find "$pkgdir" -type f | while read f; do
+        case "$(file -b "$f" 2>/dev/null)" in
+            *ELF*executable*) strip --strip-all "$f" 2>/dev/null || true ;;
+        esac
+    done
+    # Remove static libs, la files, docs to save space
+    find "$pkgdir" -name '*.la'   -delete 2>/dev/null || true
+    find "$pkgdir" -name '*.a'    -delete 2>/dev/null || true
+    rm -rf "$pkgdir"/usr/share/{info,doc,gtk-doc} 2>/dev/null || true
 }
-uninstall() { rm -f /usr/lib/libexpat*.so* /usr/include/expat.h; }

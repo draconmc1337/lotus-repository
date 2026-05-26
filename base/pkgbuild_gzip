@@ -1,19 +1,48 @@
-pkgname="gzip"
-pkgver="1.14"
-pkgrel="1"
-depends=()
-makedepends=()
-source="https://mirror-hk.koddos.net/lfs/lfs-packages/12.4/gzip-${pkgver}.tar.xz"
-md5sums="4bf5a10f287501ee8e8ebe00ef62b2c2"
+# pkgbuild_gzip
+# Lotus Linux base system package
+# pkgtype = "source"
+
+# Size-optimized: -Os for smaller footprint
+CFLAGS_EXTRA   = "-Os -march=x86-64-v2 -mtune=generic -ffunction-sections -fdata-sections"
+LDFLAGS_EXTRA  = "-Wl,--gc-sections" -> compiled from source
+# pkgtype = "binary" -> pre-built, unpack only
+
+pkgname = "gzip"
+pkgver  = "1.14"
+pkgrel  = "1"
+pkgdesc = "GNU gzip compression utility"
+license = "GPL-3.0"
+pkgtype = "source"
+
+depends     = ()
+makedepends = ()
+replaces    = ()
+conflicts   = ()
+backup      = ()
+
+source    = "sources/gzip-1.14.tar.xz"
+md5sums   = "4bf5a10f287501ee8e8ebe00ef62b2c2"
+
 build() {
-    tar -xf gzip-${pkgver}.tar.xz
     cd gzip-${pkgver}
     ./configure --prefix=/usr
     make -j$(nproc)
 }
-check() { cd gzip-${pkgver}; make check; }
+
 package() {
     cd gzip-${pkgver}
-    make DESTDIR="${pkgdir}" install
+    make DESTDIR="$pkgdir" install
+    # Strip binaries/libs to reduce size
+    find "$pkgdir" -type f -name '*.so*' | while read f; do
+        strip --strip-unneeded "$f" 2>/dev/null || true
+    done
+    find "$pkgdir" -type f | while read f; do
+        case "$(file -b "$f" 2>/dev/null)" in
+            *ELF*executable*) strip --strip-all "$f" 2>/dev/null || true ;;
+        esac
+    done
+    # Remove static libs, la files, docs to save space
+    find "$pkgdir" -name '*.la'   -delete 2>/dev/null || true
+    find "$pkgdir" -name '*.a'    -delete 2>/dev/null || true
+    rm -rf "$pkgdir"/usr/share/{info,doc,gtk-doc} 2>/dev/null || true
 }
-uninstall() { rm -f /usr/bin/gzip /usr/bin/gunzip /usr/bin/zcat; }

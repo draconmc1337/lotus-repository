@@ -1,0 +1,35 @@
+# pkgbuild_linux-headers
+# Lotus Linux base system package
+# pkgtype = "source" -> compiled from source
+# pkgtype = "binary" -> pre-built, unpack only
+
+pkgname = "linux-headers"
+pkgver  = "6.12.31"
+pkgrel  = "1"
+pkgdesc = "Linux kernel headers for userspace"
+license = "GPL-2.0"
+pkgtype = "source"
+
+depends     = ()
+makedepends = ()
+replaces    = ()
+conflicts   = ()
+backup      = ()
+
+source    = "sources/linux-6.12.31.tar.xz"
+md5sums   = "959830224124f59015a8ec633491f201"
+
+build() {
+    cd linux-headers-${pkgver}
+    # Only install headers, no kernel build here
+    true
+}
+
+package() {
+    cd linux-headers-${pkgver}
+    make headers_install \
+        ARCH=x86_64 \
+        INSTALL_HDR_PATH="$pkgdir/usr"
+    # Remove .install and ..install.cmd files
+    find "$pkgdir"/usr/include -name '.*' -delete
+}

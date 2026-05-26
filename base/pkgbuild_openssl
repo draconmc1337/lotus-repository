@@ -1,27 +1,57 @@
-pkgname="openssl"
-pkgver="3.5.2"
-pkgrel="1"
-depends=("zlib")
-makedepends=()
-source="https://mirror-hk.koddos.net/lfs/lfs-packages/12.4/openssl-${pkgver}.tar.gz"
-md5sums="890fc59f86fc21b5e4d1c031a698dbde"
+# pkgbuild_openssl
+# Lotus Linux base system package
+# pkgtype = "source" -> compiled from source
+# pkgtype = "binary" -> pre-built, unpack only
+
+pkgname = "openssl"
+pkgver  = "3.5.0"
+pkgrel  = "1"
+pkgdesc = "OpenSSL TLS/SSL toolkit and libcrypto"
+license = "OpenSSL"
+pkgtype = "source"
+
+depends     = ("zlib")
+makedepends = ()
+replaces    = ()
+conflicts   = ()
+backup      = ("etc/ssl/openssl.cnf")
+
+source    = "sources/openssl-3.5.0.tar.gz"
+md5sums   = "51da7d2bdf7f4f508cb024f562eb9b03"
+
 build() {
-    tar -xf openssl-${pkgver}.tar.gz
     cd openssl-${pkgver}
-    ./config --prefix=/usr         \
-             --openssldir=/etc/ssl \
-             --libdir=lib          \
-             shared                \
-             zlib-dynamic
+    ./Configure \
+        linux-x86_64 \
+        --prefix=/usr \
+        --openssldir=/etc/ssl \
+        --libdir=lib \
+        shared \
+        zlib-dynamic \
+        no-static \
+        no-comp \
+        no-idea \
+        no-mdc2 \
+        no-rc5 \
+        no-tests
     make -j$(nproc)
 }
-check() { cd openssl-${pkgver}; make test; }
+
 package() {
     cd openssl-${pkgver}
-    sed -i '/INSTALL_LIBS/s/libcrypto.a libssl.a//' Makefile
-    make DESTDIR="${pkgdir}" install
-    mv -v "${pkgdir}/usr/share/doc/openssl" "${pkgdir}/usr/share/doc/openssl-${pkgver}"
-    install -v -dm755 "${pkgdir}/usr/share/doc/openssl-${pkgver}"
-    cp -vfr doc/* "${pkgdir}/usr/share/doc/openssl-${pkgver}"
+    make DESTDIR="$pkgdir" install_sw install_ssldirs
+    chmod 755 "$pkgdir"/usr/lib/lib{crypto,ssl}.so.*
+    # Strip binaries/libs to reduce size
+    find "$pkgdir" -type f -name '*.so*' | while read f; do
+        strip --strip-unneeded "$f" 2>/dev/null || true
+    done
+    find "$pkgdir" -type f | while read f; do
+        case "$(file -b "$f" 2>/dev/null)" in
+            *ELF*executable*) strip --strip-all "$f" 2>/dev/null || true ;;
+        esac
+    done
+    # Remove static libs, la files, docs to save space
+    find "$pkgdir" -name '*.la'   -delete 2>/dev/null || true
+    find "$pkgdir" -name '*.a'    -delete 2>/dev/null || true
+    rm -rf "$pkgdir"/usr/share/{info,doc,gtk-doc} 2>/dev/null || true
 }
-uninstall() { rm -f /usr/bin/openssl /usr/lib/libssl*.so* /usr/lib/libcrypto*.so*; }

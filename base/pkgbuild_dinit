@@ -1,70 +1,54 @@
-pkgname="dinit"
-pkgver="0.19.3"
-pkgrel="1"
-depends=("glibc>=2.40")
-recommends=()
-makedepends=()
-source="https://github.com/davmac314/dinit/archive/refs/tags/v${pkgver}/dinit-${pkgver}.tar.gz"
-sha256sums="3a78b70948b496a73c708693f43c85cf58d7e63e0fcb844c621431264e69aa1b"
+# pkgbuild_dinit
+# Lotus Linux base system package
+# pkgtype = "source" -> compiled from source
+# pkgtype = "binary" -> pre-built, unpack only
+
+pkgname = "dinit"
+pkgver  = "0.20.0"
+pkgrel  = "1"
+pkgdesc = "Service manager and init system for Lotus Linux"
+license = "Apache-2.0"
+pkgtype = "source"
+
+depends     = ()
+makedepends = ()
+replaces    = ()
+conflicts   = ()
+backup      = ("etc/dinit.d/")
+
+source    = "sources/dinit-0.20.0.tar.gz"
+md5sums   = "ed38a072dd23c707907171de96bd6787"
+
 build() {
-    tar -xf dinit-${pkgver}.tar.gz
     cd dinit-${pkgver}
-    make -j$(nproc)
+    make -j$(nproc) CXXFLAGS="-O2 -pipe" prefix=/usr
 }
-check() {
-    cd dinit-${pkgver}
-    make check
-}
+
 package() {
     cd dinit-${pkgver}
-    make DESTDIR="${pkgdir}" install
-    # basic service files
-    install -dm755 "${pkgdir}/etc/dinit.d"
-    # boot service
-    cat > "${pkgdir}/etc/dinit.d/boot" << 'BOOT'
-type = scripted
-command = /bin/true
-waits-for = filesystems
-waits-for = sysklogd
-waits-for = hostname
-waits-for = loopback
-BOOT
-    # filesystems
-    cat > "${pkgdir}/etc/dinit.d/filesystems" << 'FS'
-type = scripted
-command = /sbin/mount -a
-stop-command = /sbin/umount -a -r
-FS
-    # hostname
-    cat > "${pkgdir}/etc/dinit.d/hostname" << 'HN'
-type = scripted
-command = /bin/hostname lotus
-HN
-    # loopback
-    cat > "${pkgdir}/etc/dinit.d/loopback" << 'LO'
-type = scripted
-command = /sbin/ip link set lo up
-stop-command = /sbin/ip link set lo down
-waits-for = filesystems
-LO
-    # sysklogd
-    cat > "${pkgdir}/etc/dinit.d/sysklogd" << 'SLOG'
-type = process
-command = /sbin/syslogd -n
-restart = true
-waits-for = filesystems
-SLOG
-    # getty tty1-6
-    for i in 1 2 3 4 5 6; do
-        cat > "${pkgdir}/etc/dinit.d/getty-tty${i}" << GETTY
-type = process
-command = /sbin/agetty --noclear tty${i} linux
-restart = true
-waits-for = filesystems
-GETTY
+    make DESTDIR="$pkgdir" prefix=/usr install
+    install -dm755 "$pkgdir/etc/dinit.d"
+    # Basic single-user target
+    cat > "$pkgdir/etc/dinit.d/single-user" << 'SU'
+# Lotus Linux single-user service
+type = internal
+SU
+    # Strip binaries/libs to reduce size
+    find "$pkgdir" -type f -name '*.so*' | while read f; do
+        strip --strip-unneeded "$f" 2>/dev/null || true
     done
+    find "$pkgdir" -type f | while read f; do
+        case "$(file -b "$f" 2>/dev/null)" in
+            *ELF*executable*) strip --strip-all "$f" 2>/dev/null || true ;;
+        esac
+    done
+    # Remove static libs, la files, docs to save space
+    find "$pkgdir" -name '*.la'   -delete 2>/dev/null || true
+    find "$pkgdir" -name '*.a'    -delete 2>/dev/null || true
+    rm -rf "$pkgdir"/usr/share/{info,doc,gtk-doc} 2>/dev/null || true
 }
+
 uninstall() {
-    echo "error: dinit is the init system and cannot be removed"
+    echo "warning: do not remove dinit while system is running"
     exit 1
 }

@@ -1,39 +1,62 @@
-pkgname="vim"
-pkgver="9.1.1629"
-pkgrel="1"
-depends=("ncurses")
-makedepends=()
-source="https://mirror-hk.koddos.net/lfs/lfs-packages/12.4/vim-${pkgver}.tar.gz"
-md5sums="4f856c3233c1c4570bc17572e4f9e8e4"
+# pkgbuild_vim
+# Lotus Linux base system package
+# pkgtype = "source" -> compiled from source
+# pkgtype = "binary" -> pre-built, unpack only
+
+pkgname = "vim"
+pkgver  = "9.1.1400"
+pkgrel  = "1"
+pkgdesc = "Vi IMproved — highly configurable text editor"
+license = "Vim"
+pkgtype = "source"
+
+depends     = ("ncurses"; "acl")
+makedepends = ()
+replaces    = ()
+conflicts   = ()
+backup      = ("etc/vim/vimrc")
+
+source    = "sources/vim-9.1.1400.tar.gz"
+md5sums   = "9aaf784b13ac60b501565072d12fc498"
+
 build() {
-    tar -xf vim-${pkgver}.tar.gz
     cd vim-${pkgver}
-    echo '#define SYS_VIMRC_FILE "/etc/vimrc"' >> src/feature.h
-    ./configure --prefix=/usr
+    echo '#define SYS_VIMRC_FILE "/etc/vim/vimrc"' >> src/feature.h
+    ./configure \
+        --prefix=/usr \
+        --with-features=huge \
+        --enable-multibyte \
+        --without-x \
+        --disable-gui \
+        --with-tlib=ncursesw
     make -j$(nproc)
 }
-check() {
-    cd vim-${pkgver}
-    chown -R tester .
-    su tester -c "TERM=xterm-256color LANG=en_US.UTF-8 make -j1 test" &> vim-test.log || true
-    echo "Finished vim test." && tail -50 vim-test.log
-}
+
 package() {
     cd vim-${pkgver}
-    make DESTDIR="${pkgdir}" install
-    ln -sv vim "${pkgdir}/usr/bin/vi"
-    for L in /usr/share/man/{,*/}man1/vim.1; do
-        ln -sv vim.1 $(dirname $L)/vi.1
-    done
-    ln -sv ../vim/vim${pkgver//./}/vimdoc "${pkgdir}/usr/share/doc/vim-${pkgver}"
-    cat > "${pkgdir}/etc/vimrc" << 'VIMRC'
+    make DESTDIR="$pkgdir" install
+    ln -sfv vim "$pkgdir/usr/bin/vi"
+    install -dm755 "$pkgdir/etc/vim"
+    cat > "$pkgdir/etc/vim/vimrc" << 'VIMRC'
 set nocompatible
-set backspace=2
-set mouse=
 syntax on
-if (&term == "xterm") || (&term == "putty")
-  set background=dark
-endif
+set number
+set tabstop=4 shiftwidth=4 expandtab
+set hlsearch incsearch
+set encoding=utf-8
+colorscheme desert
 VIMRC
+    # Strip binaries/libs to reduce size
+    find "$pkgdir" -type f -name '*.so*' | while read f; do
+        strip --strip-unneeded "$f" 2>/dev/null || true
+    done
+    find "$pkgdir" -type f | while read f; do
+        case "$(file -b "$f" 2>/dev/null)" in
+            *ELF*executable*) strip --strip-all "$f" 2>/dev/null || true ;;
+        esac
+    done
+    # Remove static libs, la files, docs to save space
+    find "$pkgdir" -name '*.la'   -delete 2>/dev/null || true
+    find "$pkgdir" -name '*.a'    -delete 2>/dev/null || true
+    rm -rf "$pkgdir"/usr/share/{info,doc,gtk-doc} 2>/dev/null || true
 }
-uninstall() { rm -f /usr/bin/vim /usr/bin/vi; }

@@ -1,24 +1,46 @@
-pkgname="flex"
-pkgver="2.6.4"
-pkgrel="1"
-depends=("m4")
-makedepends=()
-source="https://mirror-hk.koddos.net/lfs/lfs-packages/12.4/flex-${pkgver}.tar.gz"
-md5sums="2882e3179748cc9f9c23ec593d6adc8d"
+# pkgbuild_flex
+# Lotus Linux base system package
+# pkgtype = "source" -> compiled from source
+# pkgtype = "binary" -> pre-built, unpack only
+
+pkgname = "flex"
+pkgver  = "2.6.4"
+pkgrel  = "1"
+pkgdesc = "Fast lexical analyser generator"
+license = "BSD-2-Clause"
+pkgtype = "source"
+
+depends     = ("m4")
+makedepends = ()
+replaces    = ()
+conflicts   = ()
+backup      = ()
+
+source    = "sources/flex-2.6.4.tar.gz"
+md5sums   = "2882e3179748cc9f9c23ec593d6adc8d"
+
 build() {
-    tar -xf flex-${pkgver}.tar.gz
     cd flex-${pkgver}
-    ./configure --prefix=/usr --docdir=/usr/share/doc/flex-${pkgver} --disable-static
+    ./configure --prefix=/usr \
+        --sysconfdir=/etc \
+        --localstatedir=/var
     make -j$(nproc)
 }
-check() { cd flex-${pkgver}; make check; }
+
 package() {
     cd flex-${pkgver}
-    make DESTDIR="${pkgdir}" install
-    ln -sv flex "${pkgdir}/usr/bin/lex"
-    ln -sv flex.1 "${pkgdir}/usr/share/man/man1/lex.1"
-}
-uninstall() {
-    rm -f /usr/bin/flex /usr/bin/lex
-    rm -f /usr/lib/libfl.so*
+    make DESTDIR="$pkgdir" install
+    # Strip binaries/libs to reduce size
+    find "$pkgdir" -type f -name '*.so*' | while read f; do
+        strip --strip-unneeded "$f" 2>/dev/null || true
+    done
+    find "$pkgdir" -type f | while read f; do
+        case "$(file -b "$f" 2>/dev/null)" in
+            *ELF*executable*) strip --strip-all "$f" 2>/dev/null || true ;;
+        esac
+    done
+    # Remove static libs, la files, docs to save space
+    find "$pkgdir" -name '*.la'   -delete 2>/dev/null || true
+    find "$pkgdir" -name '*.a'    -delete 2>/dev/null || true
+    rm -rf "$pkgdir"/usr/share/{info,doc,gtk-doc} 2>/dev/null || true
 }

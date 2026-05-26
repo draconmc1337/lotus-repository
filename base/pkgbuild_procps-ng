@@ -1,23 +1,49 @@
-pkgname="procps-ng"
-pkgver="4.0.5"
-pkgrel="1"
-depends=("ncurses")
-makedepends=()
-source="https://mirror-hk.koddos.net/lfs/lfs-packages/12.4/procps-ng-${pkgver}.tar.xz"
-md5sums="90803e64f51f192f3325d25c3335d057"
+# pkgbuild_procps-ng
+# Lotus Linux base system package
+# pkgtype = "source" -> compiled from source
+# pkgtype = "binary" -> pre-built, unpack only
+
+pkgname = "procps-ng"
+pkgver  = "4.0.5"
+pkgrel  = "1"
+pkgdesc = "ps, top, free, uptime and other /proc tools"
+license = "GPL-2.0"
+pkgtype = "source"
+
+depends     = ("ncurses")
+makedepends = ()
+replaces    = ()
+conflicts   = ()
+backup      = ()
+
+source    = "sources/procps-ng-4.0.5.tar.xz"
+md5sums   = "90803e64f51f192f3325d25c3335d057"
+
 build() {
-    tar -xf procps-ng-${pkgver}.tar.xz
     cd procps-ng-${pkgver}
-    ./configure --prefix=/usr                            \
-                --docdir=/usr/share/doc/procps-ng-${pkgver} \
-                --disable-static                         \
-                --disable-kill                           \
-                --with-systemd=no
+    ./configure \
+        --prefix=/usr \
+        --disable-static \
+        --disable-kill \
+        --without-systemd \
+        --disable-nls
     make -j$(nproc)
 }
-check() { cd procps-ng-${pkgver}; make check; }
+
 package() {
     cd procps-ng-${pkgver}
-    make DESTDIR="${pkgdir}" install
+    make DESTDIR="$pkgdir" install
+    # Strip binaries/libs to reduce size
+    find "$pkgdir" -type f -name '*.so*' | while read f; do
+        strip --strip-unneeded "$f" 2>/dev/null || true
+    done
+    find "$pkgdir" -type f | while read f; do
+        case "$(file -b "$f" 2>/dev/null)" in
+            *ELF*executable*) strip --strip-all "$f" 2>/dev/null || true ;;
+        esac
+    done
+    # Remove static libs, la files, docs to save space
+    find "$pkgdir" -name '*.la'   -delete 2>/dev/null || true
+    find "$pkgdir" -name '*.a'    -delete 2>/dev/null || true
+    rm -rf "$pkgdir"/usr/share/{info,doc,gtk-doc} 2>/dev/null || true
 }
-uninstall() { rm -f /usr/bin/ps /usr/bin/top /usr/bin/free; }

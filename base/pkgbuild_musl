@@ -1,0 +1,46 @@
+# pkgbuild_musl
+# Lotus Linux base system package
+# pkgtype = "source" -> compiled from source
+# pkgtype = "binary" -> pre-built, unpack only
+
+pkgname = "musl"
+pkgver  = "1.2.6"
+pkgrel  = "1"
+pkgdesc = "musl libc — lightweight POSIX C standard library"
+license = "MIT"
+pkgtype = "source"
+
+depends     = ()
+makedepends = ()
+replaces    = ()
+conflicts   = ()
+backup      = ("etc/musl/ld.so.conf")
+
+source    = "sources/musl-1.2.6.tar.gz"
+md5sums   = "d5eec260f2c89aefc9906715104b8327"
+
+build() {
+    cd musl-${pkgver}
+    ./configure \
+        --prefix=/usr \
+        --sysconfdir=/etc \
+        --enable-shared \
+        --enable-static
+    make -j$(nproc)
+}
+
+package() {
+    cd musl-${pkgver}
+    make DESTDIR="$pkgdir" install
+    # Dynamic linker symlink
+    mkdir -pv "$pkgdir"/lib
+    ln -sfv /usr/lib/libc.so "$pkgdir"/lib/ld-musl-x86_64.so.1
+    # musl-gcc wrapper
+    ln -sfv /usr/bin/musl-gcc "$pkgdir"/usr/bin/musl-gcc 2>/dev/null || true
+}
+
+uninstall() {
+    # Never fully remove musl — it is the system libc
+    echo "warning: musl removal skipped (system libc)"
+    exit 1
+}

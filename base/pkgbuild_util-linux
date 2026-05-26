@@ -1,39 +1,59 @@
-pkgname="util-linux"
-pkgver="2.41.1"
-pkgrel="1"
-depends=("ncurses" "readline" "zlib" "libcap")
-makedepends=()
-source="https://mirror-hk.koddos.net/lfs/lfs-packages/12.4/util-linux-${pkgver}.tar.xz"
-md5sums="7e5e68845e2f347cf96f5448165f1764"
+# pkgbuild_util-linux
+# Lotus Linux base system package
+# pkgtype = "source" -> compiled from source
+# pkgtype = "binary" -> pre-built, unpack only
+
+pkgname = "util-linux"
+pkgver  = "2.41"
+pkgrel  = "1"
+pkgdesc = "Miscellaneous Linux utilities — mount, fdisk, lsblk, etc."
+license = "GPL-2.0"
+pkgtype = "source"
+
+depends     = ("musl"; "ncurses"; "zlib")
+makedepends = ()
+replaces    = ()
+conflicts   = ()
+backup      = ()
+
+source    = "sources/util-linux-2.41.tar.xz"
+md5sums   = "e666a34b03554c18a1073347b16661ce"
+
 build() {
-    tar -xf util-linux-${pkgver}.tar.xz
     cd util-linux-${pkgver}
-    ./configure --bindir=/usr/bin    \
-                --libdir=/usr/lib    \
-                --runstatedir=/run   \
-                --sbindir=/usr/sbin  \
-                --disable-chfn-chsh  \
-                --disable-login      \
-                --disable-nologin    \
-                --disable-su         \
-                --disable-setpriv    \
-                --disable-runuser    \
-                --disable-pylibmount \
-                --disable-static     \
-                --disable-liblastlog2 \
-                --without-python     \
-                --without-systemd    \
-                --without-systemdsystemunitdir        \
-                ADJTIME_PATH=/var/lib/hwclock/adjtime  \
-                --docdir=/usr/share/doc/util-linux-${pkgver}
+    ./configure \
+        --prefix=/usr \
+        --bindir=/usr/bin \
+        --sbindir=/usr/sbin \
+        --libdir=/usr/lib \
+        --sysconfdir=/etc \
+        --localstatedir=/var \
+        --runstatedir=/run \
+        --disable-nls \
+        --disable-makeinstall-chown \
+        --without-python \
+        --without-systemd \
+        --without-udev \
+        --enable-libblkid \
+        --enable-libmount \
+        --enable-libuuid
     make -j$(nproc)
 }
-check() { : ; }
+
 package() {
     cd util-linux-${pkgver}
-    make DESTDIR="${pkgdir}" install
-}
-uninstall() {
-    echo "error: util-linux is a critical package"
-    exit 1
+    make DESTDIR="$pkgdir" install
+    # Strip binaries/libs to reduce size
+    find "$pkgdir" -type f -name '*.so*' | while read f; do
+        strip --strip-unneeded "$f" 2>/dev/null || true
+    done
+    find "$pkgdir" -type f | while read f; do
+        case "$(file -b "$f" 2>/dev/null)" in
+            *ELF*executable*) strip --strip-all "$f" 2>/dev/null || true ;;
+        esac
+    done
+    # Remove static libs, la files, docs to save space
+    find "$pkgdir" -name '*.la'   -delete 2>/dev/null || true
+    find "$pkgdir" -name '*.a'    -delete 2>/dev/null || true
+    rm -rf "$pkgdir"/usr/share/{info,doc,gtk-doc} 2>/dev/null || true
 }

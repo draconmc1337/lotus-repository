@@ -1,22 +1,47 @@
-pkgname="gettext"
-pkgver="0.26"
-pkgrel="1"
-depends=()
-makedepends=()
-source="https://mirror-hk.koddos.net/lfs/lfs-packages/12.4/gettext-${pkgver}.tar.xz"
-md5sums="8e14e926f088e292f5f2bce95b81d10e"
+# pkgbuild_gettext
+# Lotus Linux base system package
+# pkgtype = "source" -> compiled from source
+# pkgtype = "binary" -> pre-built, unpack only
+
+pkgname = "gettext"
+pkgver  = "1.0"
+pkgrel  = "1"
+pkgdesc = "GNU internationalization library and tools"
+license = "GPL-3.0"
+pkgtype = "source"
+
+depends     = ()
+makedepends = ()
+replaces    = ()
+conflicts   = ()
+backup      = ()
+
+source    = "sources/gettext-1.0.tar.xz"
+md5sums   = "dc8b2911535929cec1e263706b0a13a1"
+
 build() {
-    tar -xf gettext-${pkgver}.tar.xz
     cd gettext-${pkgver}
-    ./configure --prefix=/usr    \
-                --disable-static \
-                --docdir=/usr/share/doc/gettext-${pkgver}
+    ./configure \
+        --prefix=/usr \
+        --disable-static \
+        --docdir=/usr/share/doc/gettext
     make -j$(nproc)
 }
-check() { cd gettext-${pkgver}; make check; }
+
 package() {
     cd gettext-${pkgver}
-    make DESTDIR="${pkgdir}" install
-    chmod -v 0755 "${pkgdir}/usr/lib/preloadable_libintl.so"
+    make DESTDIR="$pkgdir" install
+    # Strip binaries/libs to reduce size
+    find "$pkgdir" -type f -name '*.so*' | while read f; do
+        strip --strip-unneeded "$f" 2>/dev/null || true
+    done
+    find "$pkgdir" -type f | while read f; do
+        case "$(file -b "$f" 2>/dev/null)" in
+            *ELF*executable*) strip --strip-all "$f" 2>/dev/null || true ;;
+        esac
+    done
+    # Remove static libs, la files, docs to save space
+    find "$pkgdir" -name '*.la'   -delete 2>/dev/null || true
+    find "$pkgdir" -name '*.a'    -delete 2>/dev/null || true
+    rm -rf "$pkgdir"/usr/share/{info,doc,gtk-doc} 2>/dev/null || true
 }
-uninstall() { rm -f /usr/bin/gettext /usr/lib/libintl*.so*; }

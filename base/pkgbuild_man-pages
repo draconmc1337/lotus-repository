@@ -1,21 +1,34 @@
-pkgname="man-pages"
-pkgver="6.15"
-pkgrel="1"
-depends=()
-recommends=()
-makedepends=()
-source="https://mirror-hk.koddos.net/lfs/lfs-packages/12.4/man-pages-${pkgver}.tar.xz"
-md5sums="16f68d70139dd2bbcae4102be4705753"
+# pkgbuild_man-pages
+# Lotus Linux base system package
+# pkgtype = "source"
+
+# Size-optimized: -Os for smaller footprint
+CFLAGS_EXTRA   = "-Os -march=x86-64-v2 -mtune=generic -ffunction-sections -fdata-sections"
+LDFLAGS_EXTRA  = "-Wl,--gc-sections" -> compiled from source
+# pkgtype = "binary" -> pre-built, unpack only
+
+pkgname = "man-pages"
+pkgver  = "6.13"
+pkgrel  = "1"
+pkgdesc = "Linux manual pages — sections 1-8"
+license = "GPL-2.0"
+pkgtype = "source"
+
+depends     = ()
+makedepends = ()
+replaces    = ()
+conflicts   = ()
+backup      = ()
+
+source    = "sources/man-pages-6.13.tar.xz"
+md5sums   = "5349329fef307e755933266b26eac873"
+
 build() {
-    tar -xf man-pages-${pkgver}.tar.xz
     cd man-pages-${pkgver}
-    rm -v man3/crypt*
+    true  # no build step
 }
-check() { : ; }
+
 package() {
     cd man-pages-${pkgver}
-    make -R GIT=false prefix=/usr DESTDIR="${pkgdir}" install
-}
-uninstall() {
-    rm -rf /usr/share/man
+    make prefix=/usr DESTDIR="$pkgdir" install
 }

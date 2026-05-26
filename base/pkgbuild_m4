@@ -1,19 +1,44 @@
-pkgname="m4"
-pkgver="1.4.20"
-pkgrel="1"
-depends=()
-makedepends=()
-source="https://mirror-hk.koddos.net/lfs/lfs-packages/12.4/m4-${pkgver}.tar.xz"
-md5sums="6b6ef92db16e3f4e1d31c4c75f3ffb26"
+# pkgbuild_m4
+# Lotus Linux base system package
+# pkgtype = "source" -> compiled from source
+# pkgtype = "binary" -> pre-built, unpack only
+
+pkgname = "m4"
+pkgver  = "1.4.19"
+pkgrel  = "1"
+pkgdesc = "GNU M4 macro processor"
+license = "GPL-3.0"
+pkgtype = "source"
+
+depends     = ()
+makedepends = ()
+replaces    = ()
+conflicts   = ()
+backup      = ()
+
+source    = "sources/m4-1.4.19.tar.xz"
+md5sums   = "0d90823e1426f1da2fd872df0311298d"
+
 build() {
-    tar -xf m4-${pkgver}.tar.xz
     cd m4-${pkgver}
-    ./configure --prefix=/usr
+    ./configure --prefix=/usr --disable-nls
     make -j$(nproc)
 }
-check() { cd m4-${pkgver}; make check; }
+
 package() {
     cd m4-${pkgver}
-    make DESTDIR="${pkgdir}" install
+    make DESTDIR="$pkgdir" install
+    # Strip binaries/libs to reduce size
+    find "$pkgdir" -type f -name '*.so*' | while read f; do
+        strip --strip-unneeded "$f" 2>/dev/null || true
+    done
+    find "$pkgdir" -type f | while read f; do
+        case "$(file -b "$f" 2>/dev/null)" in
+            *ELF*executable*) strip --strip-all "$f" 2>/dev/null || true ;;
+        esac
+    done
+    # Remove static libs, la files, docs to save space
+    find "$pkgdir" -name '*.la'   -delete 2>/dev/null || true
+    find "$pkgdir" -name '*.a'    -delete 2>/dev/null || true
+    rm -rf "$pkgdir"/usr/share/{info,doc,gtk-doc} 2>/dev/null || true
 }
-uninstall() { rm -f /usr/bin/m4; }

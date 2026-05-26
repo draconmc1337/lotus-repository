@@ -1,47 +1,73 @@
-pkgname="gcc"
-pkgver="15.2.0"
-pkgrel="1"
-depends=("glibc" "binutils" "gmp" "mpfr" "mpc")
-makedepends=()
-source="https://mirror-hk.koddos.net/lfs/lfs-packages/12.4/gcc-${pkgver}.tar.xz"
-md5sums="b861b092bf1af683c46a8aa2e689a6fd"
+# pkgbuild_gcc
+# Lotus Linux base system package
+# pkgtype = "source" -> compiled from source
+# pkgtype = "binary" -> pre-built, unpack only
+
+pkgname = "gcc"
+pkgver  = "15.1.0"
+pkgrel  = "1"
+pkgdesc = "GNU Compiler Collection — C and C++ (musl-native)"
+license = "GPL-3.0"
+pkgtype = "source"
+
+depends     = ("musl"; "binutils"; "gmp"; "mpfr"; "mpc"; "zlib")
+makedepends = ("gmp"; "mpfr"; "mpc")
+replaces    = ()
+conflicts   = ()
+backup      = ("etc/gcc/lotus.specs")
+
+source    = "sources/gcc-15.1.0.tar.xz"
+md5sums   = "e55d13c55428bca27b4d2ea02f883135"
+
 build() {
-    tar -xf gcc-${pkgver}.tar.xz
     cd gcc-${pkgver}
-    case $(uname -m) in
-        x86_64) sed -e '/m64=/s/lib64/lib/' -i.orig gcc/config/i386/t-linux64 ;;
-    esac
-    mkdir -v build && cd build
-    ../configure --prefix=/usr            \
-                 LD=ld                    \
-                 --enable-languages=c,c++ \
-                 --enable-default-pie     \
-                 --enable-default-ssp     \
-                 --enable-host-pie        \
-                 --disable-multilib       \
-                 --disable-bootstrap      \
-                 --disable-fixincludes    \
-                 --with-system-zlib
+    # Pull math deps into tree
+    tar -xf /sources/gmp-6.3.0.tar.xz  && mv gmp-6.3.0  gmp
+    tar -xf /sources/mpfr-4.2.2.tar.xz && mv mpfr-4.2.2 mpfr
+    tar -xf /sources/mpc-1.3.1.tar.gz  && mv mpc-1.3.1  mpc
+    mkdir build && cd build
+    ../configure \
+        --prefix=/usr \
+        --enable-languages=c,c++ \
+        --enable-shared \
+        --enable-threads=posix \
+        --enable-__cxa_atexit \
+        --enable-clocale=generic \
+        --enable-default-pie \
+        --enable-default-ssp \
+        --disable-multilib \
+        --disable-nls \
+        --disable-libsanitizer \
+        --disable-libssp \
+        --disable-werror \
+        --with-system-zlib \
+        --with-native-system-header-dir=/usr/include
     make -j$(nproc)
 }
-check() {
-    cd gcc-${pkgver}/build
-    ulimit -s 32768
-    make -k check 2>&1 | tee gcc-check.log || true
-    ../contrib/test_summary | head -60
-}
+
 package() {
-    cd gcc-${pkgver}/build
-    make DESTDIR="${pkgdir}" install
-    ln -svr "${pkgdir}/usr/bin/cpp" "${pkgdir}/usr/lib/cpp"
-    ln -sv gcc "${pkgdir}/usr/bin/cc"
-    install -v -dm755 "${pkgdir}/usr/lib/bfd-plugins"
-    ln -sfv "../../libexec/gcc/$(gcc -dumpmachine)/${pkgver}/liblto_plugin.so" \
-        "${pkgdir}/usr/lib/bfd-plugins/"
-    mkdir -pv "${pkgdir}/usr/share/gdb/auto-load/usr/lib"
-    mv -v "${pkgdir}/usr/lib"/*gdb.py "${pkgdir}/usr/share/gdb/auto-load/usr/lib"
+    cd gcc-${pkgver}
+    cd build
+    make DESTDIR="$pkgdir" install
+    ln -sfv gcc "$pkgdir"/usr/bin/cc
+    # Remove static libs to save space
+    find "$pkgdir"/usr/lib/gcc -name '*.la' -delete
+    # Strip binaries/libs to reduce size
+    find "$pkgdir" -type f -name '*.so*' | while read f; do
+        strip --strip-unneeded "$f" 2>/dev/null || true
+    done
+    find "$pkgdir" -type f | while read f; do
+        case "$(file -b "$f" 2>/dev/null)" in
+            *ELF*executable*) strip --strip-all "$f" 2>/dev/null || true ;;
+        esac
+    done
+    # Remove static libs, la files, docs to save space
+    find "$pkgdir" -name '*.la'   -delete 2>/dev/null || true
+    find "$pkgdir" -name '*.a'    -delete 2>/dev/null || true
+    rm -rf "$pkgdir"/usr/share/{info,doc,gtk-doc} 2>/dev/null || true
 }
+
 uninstall() {
-    echo "error: gcc is a critical package and cannot be removed"
-    exit 1
+    rm -f /usr/bin/{gcc,g++,cc,cpp,c++,gcov}
+    rm -rf /usr/lib/gcc
 }

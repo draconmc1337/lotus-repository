@@ -1,26 +1,47 @@
-pkgname="xz"
-pkgver="5.8.1"
-pkgrel="1"
-depends=()
-makedepends=()
-source="https://mirror-hk.koddos.net/lfs/lfs-packages/12.4/xz-${pkgver}.tar.xz"
-md5sums="cf5e1feb023d22c6bdaa30e84ef3abe3"
+# pkgbuild_xz
+# Lotus Linux base system package
+# pkgtype = "source" -> compiled from source
+# pkgtype = "binary" -> pre-built, unpack only
+
+pkgname = "xz"
+pkgver  = "5.8.1"
+pkgrel  = "1"
+pkgdesc = "XZ compression utilities and liblzma"
+license = "LGPL-2.1"
+pkgtype = "source"
+
+depends     = ()
+makedepends = ()
+replaces    = ()
+conflicts   = ()
+backup      = ()
+
+source    = "sources/xz-5.8.1.tar.xz"
+md5sums   = "cf5e1feb023d22c6bdaa30e84ef3abe3"
+
 build() {
-    tar -xf xz-${pkgver}.tar.xz
     cd xz-${pkgver}
-    ./configure --prefix=/usr    \
-                --disable-static \
-                --docdir=/usr/share/doc/xz-${pkgver}
+    ./configure \
+        --prefix=/usr \
+        --disable-static \
+        --disable-nls
     make -j$(nproc)
 }
-check() { cd xz-${pkgver}; make check; }
+
 package() {
     cd xz-${pkgver}
-    make DESTDIR="${pkgdir}" install
-}
-uninstall() {
-    rm -f /usr/bin/xz /usr/bin/unxz /usr/bin/xzcat
-    rm -f /usr/lib/liblzma.so*
-    rm -f /usr/include/lzma.h
-    rm -rf /usr/include/lzma
+    make DESTDIR="$pkgdir" install
+    # Strip binaries/libs to reduce size
+    find "$pkgdir" -type f -name '*.so*' | while read f; do
+        strip --strip-unneeded "$f" 2>/dev/null || true
+    done
+    find "$pkgdir" -type f | while read f; do
+        case "$(file -b "$f" 2>/dev/null)" in
+            *ELF*executable*) strip --strip-all "$f" 2>/dev/null || true ;;
+        esac
+    done
+    # Remove static libs, la files, docs to save space
+    find "$pkgdir" -name '*.la'   -delete 2>/dev/null || true
+    find "$pkgdir" -name '*.a'    -delete 2>/dev/null || true
+    rm -rf "$pkgdir"/usr/share/{info,doc,gtk-doc} 2>/dev/null || true
 }

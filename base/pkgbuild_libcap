@@ -1,19 +1,44 @@
-pkgname="libcap"
-pkgver="2.76"
-pkgrel="1"
-depends=()
-makedepends=()
-source="https://mirror-hk.koddos.net/lfs/lfs-packages/12.4/libcap-${pkgver}.tar.xz"
-md5sums="449ade7d620b5c4eeb15a632fbaa4f74"
+# pkgbuild_libcap
+# Lotus Linux base system package
+# pkgtype = "source" -> compiled from source
+# pkgtype = "binary" -> pre-built, unpack only
+
+pkgname = "libcap"
+pkgver  = "2.73"
+pkgrel  = "1"
+pkgdesc = "POSIX 1003.1e capabilities support library"
+license = "BSD-3-Clause"
+pkgtype = "source"
+
+depends     = ()
+makedepends = ("perl")
+replaces    = ()
+conflicts   = ()
+backup      = ()
+
+source    = "sources/libcap-2.73.tar.xz"
+md5sums   = "0e186df9de9b1e925593a96684fe2e32"
+
 build() {
-    tar -xf libcap-${pkgver}.tar.xz
     cd libcap-${pkgver}
-    sed -i '/install -m.*STA/d' libcap/Makefile
-    make prefix=/usr lib=lib -j$(nproc)
+    make -j$(nproc) prefix=/usr lib=lib
 }
-check() { cd libcap-${pkgver}; make test; }
+
 package() {
     cd libcap-${pkgver}
-    make prefix=/usr lib=lib DESTDIR="${pkgdir}" install
+    make DESTDIR="$pkgdir" prefix=/usr lib=lib install
+    chmod -v 755 "$pkgdir"/usr/lib/libcap.so.2.*
+    # Strip binaries/libs to reduce size
+    find "$pkgdir" -type f -name '*.so*' | while read f; do
+        strip --strip-unneeded "$f" 2>/dev/null || true
+    done
+    find "$pkgdir" -type f | while read f; do
+        case "$(file -b "$f" 2>/dev/null)" in
+            *ELF*executable*) strip --strip-all "$f" 2>/dev/null || true ;;
+        esac
+    done
+    # Remove static libs, la files, docs to save space
+    find "$pkgdir" -name '*.la'   -delete 2>/dev/null || true
+    find "$pkgdir" -name '*.a'    -delete 2>/dev/null || true
+    rm -rf "$pkgdir"/usr/share/{info,doc,gtk-doc} 2>/dev/null || true
 }
-uninstall() { rm -f /usr/sbin/capsh /usr/lib/libcap*.so*; }

@@ -1,0 +1,50 @@
+# pkgbuild_curl
+# Lotus Linux base system package
+# pkgtype = "source" -> compiled from source
+# pkgtype = "binary" -> pre-built, unpack only
+
+pkgname = "curl"
+pkgver  = "8.13.0"
+pkgrel  = "1"
+pkgdesc = "Command-line HTTP/FTP client and libcurl"
+license = "MIT"
+pkgtype = "source"
+
+depends     = ("openssl"; "zlib"; "zstd")
+makedepends = ()
+replaces    = ()
+conflicts   = ()
+backup      = ()
+
+source    = "sources/curl-8.13.0.tar.xz"
+md5sums   = "b94f85cf7c03fcc31b3750e45a424f26"
+
+build() {
+    cd curl-${pkgver}
+    ./configure \
+        --prefix=/usr \
+        --disable-static \
+        --with-openssl \
+        --with-ca-bundle=/etc/ssl/certs/ca-certificates.crt \
+        --enable-threaded-resolver \
+        --with-zstd
+    make -j$(nproc)
+}
+
+package() {
+    cd curl-${pkgver}
+    make DESTDIR="$pkgdir" install
+    # Strip binaries/libs to reduce size
+    find "$pkgdir" -type f -name '*.so*' | while read f; do
+        strip --strip-unneeded "$f" 2>/dev/null || true
+    done
+    find "$pkgdir" -type f | while read f; do
+        case "$(file -b "$f" 2>/dev/null)" in
+            *ELF*executable*) strip --strip-all "$f" 2>/dev/null || true ;;
+        esac
+    done
+    # Remove static libs, la files, docs to save space
+    find "$pkgdir" -name '*.la'   -delete 2>/dev/null || true
+    find "$pkgdir" -name '*.a'    -delete 2>/dev/null || true
+    rm -rf "$pkgdir"/usr/share/{info,doc,gtk-doc} 2>/dev/null || true
+}
