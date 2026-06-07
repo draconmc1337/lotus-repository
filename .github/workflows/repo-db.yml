@@ -1,0 +1,54 @@
+# .github/workflows/repo-db.yml
+# Auto-regenerate repo.db whenever a PKGBUILD or .lpkg changes.
+# Commits the updated repo.db back to main automatically.
+
+name: Update repo.db
+
+on:
+  push:
+    branches: [ main ]
+    paths:
+      - "**/pkgbuild_*"   # any PKGBUILD added/modified/removed
+      - "**/*.lpkg"        # any binary package added
+
+  workflow_dispatch:        # allow manual trigger from Actions tab
+
+jobs:
+  gen-db:
+    runs-on: ubuntu-latest
+
+    permissions:
+      contents: write
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Generate repo databases
+        run: |
+          chmod +x gen-repo-db.sh
+          # run from repo root — generates all repos automatically
+          ./gen-repo-db.sh
+
+      - name: Commit and push
+        run: |
+          git config user.name  "lotus-ci"
+          git config user.email "ci@lotus-linux"
+
+          # stage all repo.db files
+          find . -name repo.db -not -path './.git/*' | xargs git add
+
+          # only commit if something changed
+          if git diff --cached --quiet; then
+            echo ":: repo.db unchanged — nothing to commit"
+            exit 0
+          fi
+
+          # show what changed
+          echo ":: Changed files:"
+          git diff --cached --name-only
+
+          git commit -m "ci: update repo.db [skip ci]"
+          git push
