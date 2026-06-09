@@ -6,7 +6,7 @@
 pkgname = "btop"
 pkgver  = "1.4.7"
 pkgrel  = "1"
-pkgdesc = "TODO: add description"
+pkgdesc = "Resource monitor that shows usage and stats for processor, memory, disks, network and processes."
 license = "Apache-2.0"
 pkgtype = "source"
 
@@ -17,7 +17,7 @@ conflicts   = ()
 backup      = ()
 
 source  = "https://github.com/aristocratos/btop/archive/refs/tags/v1.4.7.tar.gz"
-md5sums = "933de2e4d1b2211a638be463eb6e8616891bfba73aef5d38060bd8319baeefc6"
+md5sums = "854f11d5284b9d09fe52678dcbbed672"
 
 prepare() {
 	cd "$srcdir/$pkgname-$pkgver"

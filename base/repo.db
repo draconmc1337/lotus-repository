@@ -1,151 +1,151 @@
-acl=2.3.2-1 pkgtype=source dlsize=0 instsize=0
-atk=2.38.0-1 pkgtype=source dlsize=0 instsize=0
-at-spi2-core=2.54.2-1 pkgtype=source dlsize=0 instsize=0
-attr=2.5.2-1 pkgtype=source dlsize=0 instsize=0
-autoconf=2.72-1 pkgtype=source dlsize=0 instsize=0
-automake=1.17-1 pkgtype=source dlsize=0 instsize=0
-bash=5.3-1 pkgtype=source dlsize=0 instsize=0
-binutils=2.44-1 pkgtype=source dlsize=0 instsize=0
-bison=3.8.2-1 pkgtype=source dlsize=0 instsize=0
-busybox=1.37.0-1 pkgtype=source dlsize=0 instsize=0
-bzip2=1.0.8-1 pkgtype=source dlsize=0 instsize=0
-cairo=1.18.4-1 pkgtype=source dlsize=0 instsize=0
-curl=8.13.0-1 pkgtype=source dlsize=0 instsize=0
-dbus=1.15.12-1 pkgtype=source dlsize=0 instsize=0
-dbus-devel=1.15.12-1 pkgtype=source dlsize=0 instsize=0
-dhcpcd=10.2.4-1 pkgtype=source dlsize=0 instsize=0
-diffutils=3.11-1 pkgtype=source dlsize=0 instsize=0
-dinit=0.20.0-1 pkgtype=source dlsize=0 instsize=0
-e2fsprogs=1.47.3-1 pkgtype=source dlsize=0 instsize=0
-elfutils=0.194-1 pkgtype=source dlsize=0 instsize=0
-eudev=3.2.14-1 pkgtype=source dlsize=0 instsize=0
-expat=2.7.1-1 pkgtype=source dlsize=0 instsize=0
-file=5.46-1 pkgtype=source dlsize=0 instsize=0
-findutils=4.10.0-1 pkgtype=source dlsize=0 instsize=0
-flex=2.6.4-1 pkgtype=source dlsize=0 instsize=0
-fontconfig=2.16.0-1 pkgtype=source dlsize=0 instsize=0
-freetype2=2.13.3-1 pkgtype=source dlsize=0 instsize=0
-gawk=5.3.1-1 pkgtype=source dlsize=0 instsize=0
-gcc=15.1.0-1 pkgtype=source dlsize=0 instsize=0
-gdbm=1.26-1 pkgtype=source dlsize=0 instsize=0
-gdk-pixbuf2=2.42.12-1 pkgtype=source dlsize=0 instsize=0
-gettext=1.0-1 pkgtype=source dlsize=0 instsize=0
-git=2.49.0-1 pkgtype=source dlsize=0 instsize=0
-glib2-devel=2.82.5-1 pkgtype=source dlsize=0 instsize=0
-glslang=15.1.0-1 pkgtype=source dlsize=0 instsize=0
-gmp=6.3.0-1 pkgtype=source dlsize=0 instsize=0
-greetd=0.10.3-1 pkgtype=source dlsize=0 instsize=0
-grep=3.12-1 pkgtype=source dlsize=0 instsize=0
-groff=1.23.0-1 pkgtype=source dlsize=0 instsize=0
-gtk3=3.24.48-1 pkgtype=source dlsize=0 instsize=0
-gtk3-devel=3.24.48-1 pkgtype=source dlsize=0 instsize=0
-gzip=1.14-1 pkgtype=source dlsize=0 instsize=0
-harfbuzz=10.2.0-1 pkgtype=source dlsize=0 instsize=0
-iana-etc=20260202-1 pkgtype=source dlsize=0 instsize=0
-iproute2=6.15.0-1 pkgtype=source dlsize=0 instsize=0
-iw=6.17-1 pkgtype=source dlsize=0 instsize=0
-kbd=2.7.1-1 pkgtype=source dlsize=0 instsize=0
-kmod=34.1-1 pkgtype=source dlsize=0 instsize=0
-less=668-1 pkgtype=source dlsize=0 instsize=0
-libcap=2.73-1 pkgtype=source dlsize=0 instsize=0
-libdrm=38ec7dbd4df3141441afafe5ac62dfc9df36a77e-1 pkgtype=source dlsize=0 instsize=0
-libevdev=1.13.3-1 pkgtype=source dlsize=0 instsize=0
-libffi=3.4.8-1 pkgtype=source dlsize=0 instsize=0
-libfontenc=1.1.9-1 pkgtype=source dlsize=0 instsize=0
-libice=1.1.2-1 pkgtype=source dlsize=0 instsize=0
-libinput=1.27.1-1 pkgtype=source dlsize=0 instsize=0
-libnl=3.12.0-1 pkgtype=source dlsize=0 instsize=0
-libpipeline=1.5.8-1 pkgtype=source dlsize=0 instsize=0
-libsm=1.2.6-1 pkgtype=source dlsize=0 instsize=0
-libtool=2.5.4-1 pkgtype=source dlsize=0 instsize=0
-libudev-zero=1.0.3-1 pkgtype=source dlsize=0 instsize=0
-libx11=1.8.13-1 pkgtype=source dlsize=0 instsize=0
-libxaw=1.0.16-1 pkgtype=source dlsize=0 instsize=0
-libxcb=1.17.0-1 pkgtype=source dlsize=0 instsize=0
-libxcomposite=0.4.7-1 pkgtype=source dlsize=0 instsize=0
-libxcrypt=4.4.38-1 pkgtype=source dlsize=0 instsize=0
-libxcursor=1.2.3-1 pkgtype=source dlsize=0 instsize=0
-libxdamage=1.1.7-1 pkgtype=source dlsize=0 instsize=0
-libxext=1.3.7-1 pkgtype=source dlsize=0 instsize=0
-libxfixes=6.0.2-1 pkgtype=source dlsize=0 instsize=0
-libxfont2=2.0.7-1 pkgtype=source dlsize=0 instsize=0
-libxft=2.3.8-1 pkgtype=source dlsize=0 instsize=0
-libxi=1.8.2-1 pkgtype=source dlsize=0 instsize=0
-libxinerama=1.1.5-1 pkgtype=source dlsize=0 instsize=0
-libxkbcommon=1.7.0-1 pkgtype=source dlsize=0 instsize=0
-libxkbfile=1.1.3-1 pkgtype=source dlsize=0 instsize=0
-libxmu=1.3.1-1 pkgtype=source dlsize=0 instsize=0
-libxpm=3.5.19-1 pkgtype=source dlsize=0 instsize=0
-libxrandr=1.5.4-1 pkgtype=source dlsize=0 instsize=0
-libxrender=0.9.12-1 pkgtype=source dlsize=0 instsize=0
-libxss=1.2.5-1 pkgtype=source dlsize=0 instsize=0
-libxt=1.3.1-1 pkgtype=source dlsize=0 instsize=0
-libxtst=1.2.5-1 pkgtype=source dlsize=0 instsize=0
-limine=9.6.7-1 pkgtype=binary dlsize=0 instsize=0
-linux=6.12.31-1 pkgtype=source dlsize=0 instsize=0
-linux-headers=6.12.31-1 pkgtype=source dlsize=0 instsize=0
-m4=1.4.19-1 pkgtype=source dlsize=0 instsize=0
-make=4.4.1-1 pkgtype=source dlsize=0 instsize=0
-man-db=2.13.1-1 pkgtype=source dlsize=0 instsize=0
-man-pages=6.13-1 pkgtype=source dlsize=0 instsize=0
-mdevd=0.1.8.1-1 pkgtype=source dlsize=0 instsize=0
-mesa=24.3.4-1 pkgtype=source dlsize=0 instsize=0
-mesa-devel=24.3.4-1 pkgtype=source dlsize=0 instsize=0
-meson=1.8.2-1 pkgtype=source dlsize=0 instsize=0
-mpc=1.3.1-1 pkgtype=source dlsize=0 instsize=0
-mpfr=4.2.2-1 pkgtype=source dlsize=0 instsize=0
-mtdev=1.1.7-1 pkgtype=source dlsize=0 instsize=0
-musl=1.2.6-1 pkgtype=source dlsize=0 instsize=0
-ncurses=6.5-1 pkgtype=source dlsize=0 instsize=0
-ninja=1.13.0-1 pkgtype=source dlsize=0 instsize=0
-openssh=10.0p2-1 pkgtype=source dlsize=0 instsize=0
-openssl=3.5.0-1 pkgtype=source dlsize=0 instsize=0
-pango=1.56.4-1 pkgtype=source dlsize=0 instsize=0
-patch=2.8-1 pkgtype=source dlsize=0 instsize=0
-pcre2=10.45-1 pkgtype=source dlsize=0 instsize=0
-perl=5.40.2-1 pkgtype=source dlsize=0 instsize=0
-pipewire=1.2.7-1 pkgtype=source dlsize=0 instsize=0
-pixman=0.44.2-1 pkgtype=source dlsize=0 instsize=0
-pkgconf=2.4.3-1 pkgtype=source dlsize=0 instsize=0
-procps-ng=4.0.5-1 pkgtype=source dlsize=0 instsize=0
-psmisc=23.7-1 pkgtype=source dlsize=0 instsize=0
-Python=3.13.3-1 pkgtype=source dlsize=0 instsize=0
-readline=8.2-1 pkgtype=source dlsize=0 instsize=0
-sed=4.9-1 pkgtype=source dlsize=0 instsize=0
-shadow=4.17.4-1 pkgtype=source dlsize=0 instsize=0
-skalibs=2.14.4.0-1 pkgtype=source dlsize=0 instsize=0
-sqlite=3500000-1 pkgtype=source dlsize=0 instsize=0
-tar=1.35-1 pkgtype=source dlsize=0 instsize=0
-util-linux=2.41-1 pkgtype=source dlsize=0 instsize=0
-vim=9.1.1400-1 pkgtype=source dlsize=0 instsize=0
-vulkan-headers=1.3.302-1 pkgtype=source dlsize=0 instsize=0
-wayland=1.23.1-1 pkgtype=source dlsize=0 instsize=0
-wayland-protocols=1.38-1 pkgtype=source dlsize=0 instsize=0
-wget=1.25.0-1 pkgtype=source dlsize=0 instsize=0
-wireplumber=0.5.8-1 pkgtype=source dlsize=0 instsize=0
-wlroots=0.19.0-1 pkgtype=source dlsize=0 instsize=0
-wpa_supplicant=2.11-1 pkgtype=source dlsize=0 instsize=0
-xcb-proto=1.17.0-1 pkgtype=source dlsize=0 instsize=0
-xcb-util=0.4.1-1 pkgtype=source dlsize=0 instsize=0
-xcb-util-cursor=0.1.5-1 pkgtype=source dlsize=0 instsize=0
-xcb-util-errors=1.0.1-1 pkgtype=source dlsize=0 instsize=0
-xcb-util-image=0.4.1-1 pkgtype=source dlsize=0 instsize=0
-xcb-util-keysyms=0.4.1-1 pkgtype=source dlsize=0 instsize=0
-xcb-util-renderutil=0.3.10-1 pkgtype=source dlsize=0 instsize=0
-xcb-util-wm=0.4.2-1 pkgtype=source dlsize=0 instsize=0
-xdg-user-dirs=0.18-1 pkgtype=source dlsize=0 instsize=0
-xdg-utils=1.2.1-1 pkgtype=source dlsize=0 instsize=0
-xf86-input-libinput=1.4.0-1 pkgtype=source dlsize=0 instsize=0
-xf86-video-amdgpu=23.0.0-1 pkgtype=source dlsize=0 instsize=0
-xf86-video-intel=2.99.917-1 pkgtype=source dlsize=0 instsize=0
-xf86-video-vesa=2.6.0-1 pkgtype=source dlsize=0 instsize=0
-xkeyboard-config=2.43-1 pkgtype=source dlsize=0 instsize=0
-xorgproto=2024.1-1 pkgtype=source dlsize=0 instsize=0
-xorg-server=21.1.21-1 pkgtype=source dlsize=0 instsize=0
-xorg-server-devel=21.1.21-1 pkgtype=source dlsize=0 instsize=0
-xorg-xauth=1.1.5-1 pkgtype=source dlsize=0 instsize=0
-xorg-xinit=1.4.3-1 pkgtype=source dlsize=0 instsize=0
-xtrans=1.6.0-1 pkgtype=source dlsize=0 instsize=0
-xz=5.8.1-1 pkgtype=source dlsize=0 instsize=0
-zlib=1.3.2-1 pkgtype=source dlsize=0 instsize=0
-zstd=1.5.7-1 pkgtype=source dlsize=0 instsize=0
+acl=2.3.2-1 pkgtype=source dlsize=0 instsize=0 desc=Access%20Control%20List%20support%20library%20and%20tools
+atk=2.38.0-1 pkgtype=source dlsize=0 instsize=0 desc=TODO:%20add%20description
+at-spi2-core=2.54.2-1 pkgtype=source dlsize=0 instsize=0 desc=TODO:%20add%20description
+attr=2.5.2-1 pkgtype=source dlsize=0 instsize=0 desc=Extended%20attribute%20support%20library%20and%20tools
+autoconf=2.72-1 pkgtype=source dlsize=0 instsize=0 desc=GNU%20Autoconf%20—%20configure%20script%20generator
+automake=1.17-1 pkgtype=source dlsize=0 instsize=0 desc=GNU%20Automake%20—%20Makefile.in%20generator
+bash=5.3-1 pkgtype=source dlsize=0 instsize=0 desc=GNU%20Bourne%20Again%20SHell
+binutils=2.44-1 pkgtype=source dlsize=0 instsize=0 desc=GNU%20Binary%20Utilities%20—%20assembler,%20linker,%20objdump
+bison=3.8.2-1 pkgtype=source dlsize=0 instsize=0 desc=GNU%20parser%20generator%20(LALR,%20GLR)
+busybox=1.37.0-1 pkgtype=source dlsize=0 instsize=0 desc=Multi-call%20binary%20with%20tiny%20UNIX%20utilities%20(musl-static)
+bzip2=1.0.8-1 pkgtype=source dlsize=0 instsize=0 desc=Block-sorting%20file%20compressor
+cairo=1.18.4-1 pkgtype=source dlsize=0 instsize=0 desc=feature[description]%20+%20%20for%20cairo%20graphics%20library
+curl=8.13.0-1 pkgtype=source dlsize=0 instsize=0 desc=Command-line%20HTTP/FTP%20client%20and%20libcurl
+dbus=1.15.12-1 pkgtype=source dlsize=0 instsize=0 desc=The%20maximum%20number%20of%20connections%20that%20can%20be%20handled%20at%20once
+dbus-devel=1.15.12-1 pkgtype=source dlsize=0 instsize=0 desc=The%20maximum%20number%20of%20connections%20that%20can%20be%20handled%20at%20once
+dhcpcd=10.2.4-1 pkgtype=source dlsize=0 instsize=0 desc=RFC2131-compliant%20DHCP%20client
+diffutils=3.11-1 pkgtype=source dlsize=0 instsize=0 desc=File%20comparison%20utilities%20—%20diff,%20cmp,%20diff3,%20sdiff
+dinit=0.20.0-1 pkgtype=source dlsize=0 instsize=0 desc=Service%20manager%20and%20init%20system%20for%20Lotus%20Linux
+e2fsprogs=1.47.3-1 pkgtype=source dlsize=0 instsize=0 desc=ext2/3/4%20filesystem%20utilities
+elfutils=0.194-1 pkgtype=source dlsize=0 instsize=0 desc=Utilities%20and%20libraries%20for%20ELF%20files%20and%20DWARF%20data
+eudev=3.2.14-1 pkgtype=source dlsize=0 instsize=0 desc=TODO:%20add%20description
+expat=2.7.1-1 pkgtype=source dlsize=0 instsize=0 desc=Expat%20XML%20parser%20library
+file=5.46-1 pkgtype=source dlsize=0 instsize=0 desc=File%20type%20identification%20utility%20and%20libmagic
+findutils=4.10.0-1 pkgtype=source dlsize=0 instsize=0 desc=GNU%20find,%20xargs,%20locate
+flex=2.6.4-1 pkgtype=source dlsize=0 instsize=0 desc=Fast%20lexical%20analyser%20generator
+fontconfig=2.16.0-1 pkgtype=source dlsize=0 instsize=0 desc=TODO:%20add%20description
+freetype2=2.13.3-1 pkgtype=source dlsize=0 instsize=0 desc=A%20free,%20high-quality,%20and%20portable%20font%20engine.
+gawk=5.3.1-1 pkgtype=source dlsize=0 instsize=0 desc=GNU%20awk%20text%20processing%20language
+gcc=15.1.0-1 pkgtype=source dlsize=0 instsize=0 desc=GNU%20Compiler%20Collection%20—%20C%20and%20C++%20(musl-native)
+gdbm=1.26-1 pkgtype=source dlsize=0 instsize=0 desc=GNU%20DBM%20key/value%20database%20library
+gdk-pixbuf2=2.42.12-1 pkgtype=source dlsize=0 instsize=0 desc=TODO:%20add%20description
+gettext=1.0-1 pkgtype=source dlsize=0 instsize=0 desc=GNU%20internationalization%20library%20and%20tools
+git=2.49.0-1 pkgtype=source dlsize=0 instsize=0 desc=Distributed%20version%20control%20system
+glib2-devel=2.82.5-1 pkgtype=source dlsize=0 instsize=0 desc=Defined%20if%20strerror_r%20returns%20char%20*
+glslang=15.1.0-1 pkgtype=source dlsize=0 instsize=0 desc=TODO:%20add%20description
+gmp=6.3.0-1 pkgtype=source dlsize=0 instsize=0 desc=GNU%20Multiple%20Precision%20Arithmetic%20Library
+greetd=0.10.3-1 pkgtype=source dlsize=0 instsize=0 desc=TODO:%20add%20description
+grep=3.12-1 pkgtype=source dlsize=0 instsize=0 desc=GNU%20grep%20—%20pattern%20matching
+groff=1.23.0-1 pkgtype=source dlsize=0 instsize=0 desc=GNU%20roff%20typesetting%20system%20(needed%20by%20man)
+gtk3=3.24.48-1 pkgtype=source dlsize=0 instsize=0 desc=TODO:%20add%20description
+gtk3-devel=3.24.48-1 pkgtype=source dlsize=0 instsize=0 desc=TODO:%20add%20description
+gzip=1.14-1 pkgtype=source dlsize=0 instsize=0 desc=GNU%20gzip%20compression%20utility
+harfbuzz=10.2.0-1 pkgtype=source dlsize=0 instsize=0 desc=TODO:%20add%20description
+iana-etc=20260202-1 pkgtype=source dlsize=0 instsize=0 desc=/etc/protocols%20and%20/etc/services%20from%20IANA
+iproute2=6.15.0-1 pkgtype=source dlsize=0 instsize=0 desc=ip,%20ss,%20tc,%20bridge%20—%20Linux%20network%20configuration
+iw=6.17-1 pkgtype=source dlsize=0 instsize=0 desc=nl80211-based%20CLI%20for%20wireless%20devices
+kbd=2.7.1-1 pkgtype=source dlsize=0 instsize=0 desc=Linux%20keyboard%20tools%20and%20console%20fonts
+kmod=34.1-1 pkgtype=source dlsize=0 instsize=0 desc=Kernel%20module%20utilities%20—%20modprobe,%20depmod,%20lsmod
+less=668-1 pkgtype=source dlsize=0 instsize=0 desc=Terminal%20pager%20—%20less%20is%20more
+libcap=2.73-1 pkgtype=source dlsize=0 instsize=0 desc=POSIX%201003.1e%20capabilities%20support%20library
+libdrm=38ec7dbd4df3141441afafe5ac62dfc9df36a77e-1 pkgtype=source dlsize=0 instsize=0 desc=TODO:%20add%20description
+libevdev=1.13.3-1 pkgtype=source dlsize=0 instsize=0 desc=Handler%20library%20for%20evdev%20events
+libffi=3.4.8-1 pkgtype=source dlsize=0 instsize=0 desc=Portable%20foreign%20function%20interface%20library
+libfontenc=1.1.9-1 pkgtype=source dlsize=0 instsize=0 desc=Enable%20non-standardized%20system%20API%20extensions
+libice=1.1.2-1 pkgtype=source dlsize=0 instsize=0 desc=TODO:%20add%20description
+libinput=1.27.1-1 pkgtype=source dlsize=0 instsize=0 desc=TODO:%20add%20description
+libnl=3.12.0-1 pkgtype=source dlsize=0 instsize=0 desc=Netlink%20protocol%20library%20—%20for%20iproute2,%20iw,%20wpa_supplicant
+libpipeline=1.5.8-1 pkgtype=source dlsize=0 instsize=0 desc=Pipeline%20manipulation%20library%20for%20man-db
+libsm=1.2.6-1 pkgtype=source dlsize=0 instsize=0 desc=TODO:%20add%20description
+libtool=2.5.4-1 pkgtype=source dlsize=0 instsize=0 desc=GNU%20Libtool%20—%20shared%20library%20portability%20wrapper
+libudev-zero=1.0.3-1 pkgtype=source dlsize=0 instsize=0 desc=TODO:%20add%20description
+libx11=1.8.13-1 pkgtype=source dlsize=0 instsize=0 desc=TODO:%20add%20description
+libxaw=1.0.16-1 pkgtype=source dlsize=0 instsize=0 desc=TODO:%20add%20description
+libxcb=1.17.0-1 pkgtype=source dlsize=0 instsize=0 desc=TODO:%20add%20description
+libxcomposite=0.4.7-1 pkgtype=source dlsize=0 instsize=0 desc=X%20Composite%20Extension%20Library
+libxcrypt=4.4.38-1 pkgtype=source dlsize=0 instsize=0 desc=Modern%20library%20for%20one-way%20hashing%20passwords
+libxcursor=1.2.3-1 pkgtype=source dlsize=0 instsize=0 desc=TODO:%20add%20description
+libxdamage=1.1.7-1 pkgtype=source dlsize=0 instsize=0 desc=X%20Damage%20Library
+libxext=1.3.7-1 pkgtype=source dlsize=0 instsize=0 desc=TODO:%20add%20description
+libxfixes=6.0.2-1 pkgtype=source dlsize=0 instsize=0 desc=X%20Fixes%20Library
+libxfont2=2.0.7-1 pkgtype=source dlsize=0 instsize=0 desc=TODO:%20add%20description
+libxft=2.3.8-1 pkgtype=source dlsize=0 instsize=0 desc=TODO:%20add%20description
+libxi=1.8.2-1 pkgtype=source dlsize=0 instsize=0 desc=TODO:%20add%20description
+libxinerama=1.1.5-1 pkgtype=source dlsize=0 instsize=0 desc=TODO:%20add%20description
+libxkbcommon=1.7.0-1 pkgtype=source dlsize=0 instsize=0 desc=XKB%20API%20common%20to%20servers%20and%20clients
+libxkbfile=1.1.3-1 pkgtype=source dlsize=0 instsize=0 desc=TODO:%20add%20description
+libxmu=1.3.1-1 pkgtype=source dlsize=0 instsize=0 desc=TODO:%20add%20description
+libxpm=3.5.19-1 pkgtype=source dlsize=0 instsize=0 desc=TODO:%20add%20description
+libxrandr=1.5.4-1 pkgtype=source dlsize=0 instsize=0 desc=TODO:%20add%20description
+libxrender=0.9.12-1 pkgtype=source dlsize=0 instsize=0 desc=TODO:%20add%20description
+libxss=1.2.5-1 pkgtype=source dlsize=0 instsize=0 desc=The%20XScrnSaver%20Library
+libxt=1.3.1-1 pkgtype=source dlsize=0 instsize=0 desc=TODO:%20add%20description
+libxtst=1.2.5-1 pkgtype=source dlsize=0 instsize=0 desc=TODO:%20add%20description
+limine=9.6.7-1 pkgtype=binary dlsize=0 instsize=0 desc=Limine%20bootloader%20—%20UEFI%20+%20BIOS%20x86_64%20(pre-built%20binary)
+linux=6.12.31-1 pkgtype=source dlsize=0 instsize=0 desc=Linux%20kernel%206.12%20LTS%20—%20Lotus%20Linux
+linux-headers=6.12.31-1 pkgtype=source dlsize=0 instsize=0 desc=Linux%20kernel%20headers%20for%20userspace
+m4=1.4.19-1 pkgtype=source dlsize=0 instsize=0 desc=GNU%20M4%20macro%20processor
+make=4.4.1-1 pkgtype=source dlsize=0 instsize=0 desc=GNU%20make%20build%20automation%20tool
+man-db=2.13.1-1 pkgtype=source dlsize=0 instsize=0 desc=Manual%20page%20database%20and%20viewer
+man-pages=6.13-1 pkgtype=source dlsize=0 instsize=0 desc=Linux%20manual%20pages%20—%20sections%201-8
+mdevd=0.1.8.1-1 pkgtype=source dlsize=0 instsize=0 desc=Netlink-based%20device%20event%20manager%20(udev%20replacement)
+mesa=24.3.4-1 pkgtype=source dlsize=0 instsize=0 desc=TODO:%20add%20description
+mesa-devel=24.3.4-1 pkgtype=source dlsize=0 instsize=0 desc=TODO:%20add%20description
+meson=1.8.2-1 pkgtype=source dlsize=0 instsize=0 desc=Fast%20and%20user-friendly%20build%20system
+mpc=1.3.1-1 pkgtype=source dlsize=0 instsize=0 desc=GNU%20MPC%20—%20complex%20number%20arithmetic%20library
+mpfr=4.2.2-1 pkgtype=source dlsize=0 instsize=0 desc=GNU%20Multiple%20Precision%20Floating-Point%20Reliable%20Library
+mtdev=1.1.7-1 pkgtype=source dlsize=0 instsize=0 desc=TODO:%20add%20description
+musl=1.2.6-1 pkgtype=source dlsize=0 instsize=0 desc=musl%20libc%20—%20lightweight%20POSIX%20C%20standard%20library
+ncurses=6.5-1 pkgtype=source dlsize=0 instsize=0 desc=Terminal%20handling%20library%20—%20ncurses/terminfo
+ninja=1.13.0-1 pkgtype=source dlsize=0 instsize=0 desc=Small%20build%20system%20with%20a%20focus%20on%20speed
+openssh=10.0p2-1 pkgtype=source dlsize=0 instsize=0 desc=OpenSSH%20client,%20server%20and%20utilities
+openssl=3.5.0-1 pkgtype=source dlsize=0 instsize=0 desc=OpenSSL%20TLS/SSL%20toolkit%20and%20libcrypto
+pango=1.56.4-1 pkgtype=source dlsize=0 instsize=0 desc=TODO:%20add%20description
+patch=2.8-1 pkgtype=source dlsize=0 instsize=0 desc=GNU%20patch%20—%20apply%20unified%20diffs
+pcre2=10.45-1 pkgtype=source dlsize=0 instsize=0 desc=Perl%20Compatible%20Regular%20Expressions%20v2%20library
+perl=5.40.2-1 pkgtype=source dlsize=0 instsize=0 desc=Perl%205%20programming%20language%20interpreter
+pipewire=1.2.7-1 pkgtype=source dlsize=0 instsize=0 desc=TODO:%20add%20description
+pixman=0.44.2-1 pkgtype=source dlsize=0 instsize=0 desc=TODO:%20add%20description
+pkgconf=2.4.3-1 pkgtype=source dlsize=0 instsize=0 desc=pkg-config%20compatible%20package%20dependency%20resolver
+procps-ng=4.0.5-1 pkgtype=source dlsize=0 instsize=0 desc=ps,%20top,%20free,%20uptime%20and%20other%20/proc%20tools
+psmisc=23.7-1 pkgtype=source dlsize=0 instsize=0 desc=pstree,%20killall,%20fuser%20—%20utilities%20using%20/proc
+Python=3.13.3-1 pkgtype=source dlsize=0 instsize=0 desc=Python%203.13%20interpreter%20(musl-linked)
+readline=8.2-1 pkgtype=source dlsize=0 instsize=0 desc=GNU%20readline%20—%20command-line%20editing%20library
+sed=4.9-1 pkgtype=source dlsize=0 instsize=0 desc=GNU%20stream%20editor
+shadow=4.17.4-1 pkgtype=source dlsize=0 instsize=0 desc=Shadow%20password%20utilities%20—%20useradd,%20passwd,%20su
+skalibs=2.14.4.0-1 pkgtype=source dlsize=0 instsize=0 desc=skarnet.org%20runtime%20C%20libraries%20(required%20by%20dinit,%20mdevd)
+sqlite=3500000-1 pkgtype=source dlsize=0 instsize=0 desc=SQLite%203.50.0%20—%20self-contained%20SQL%20database%20engine
+tar=1.35-1 pkgtype=source dlsize=0 instsize=0 desc=GNU%20tar%20archiving%20utility
+util-linux=2.41-1 pkgtype=source dlsize=0 instsize=0 desc=Miscellaneous%20Linux%20utilities%20—%20mount,%20fdisk,%20lsblk,%20etc.
+vim=9.1.1400-1 pkgtype=source dlsize=0 instsize=0 desc=Vi%20IMproved%20—%20highly%20configurable%20text%20editor
+vulkan-headers=1.3.302-1 pkgtype=source dlsize=0 instsize=0 desc=TODO:%20add%20description
+wayland=1.23.1-1 pkgtype=source dlsize=0 instsize=0 desc=TODO:%20add%20description
+wayland-protocols=1.38-1 pkgtype=source dlsize=0 instsize=0 desc=TODO:%20add%20description
+wget=1.25.0-1 pkgtype=source dlsize=0 instsize=0 desc=Non-interactive%20network%20downloader
+wireplumber=0.5.8-1 pkgtype=source dlsize=0 instsize=0 desc=TODO:%20add%20description
+wlroots=0.19.0-1 pkgtype=source dlsize=0 instsize=0 desc=Wayland%20compositor%20library
+wpa_supplicant=2.11-1 pkgtype=source dlsize=0 instsize=0 desc=WPA/WPA2/WPA3%20supplicant%20for%20wireless%20networks
+xcb-proto=1.17.0-1 pkgtype=source dlsize=0 instsize=0 desc=TODO:%20add%20description
+xcb-util=0.4.1-1 pkgtype=source dlsize=0 instsize=0 desc=TODO:%20add%20description
+xcb-util-cursor=0.1.5-1 pkgtype=source dlsize=0 instsize=0 desc=TODO:%20add%20description
+xcb-util-errors=1.0.1-1 pkgtype=source dlsize=0 instsize=0 desc=TODO:%20add%20description
+xcb-util-image=0.4.1-1 pkgtype=source dlsize=0 instsize=0 desc=TODO:%20add%20description
+xcb-util-keysyms=0.4.1-1 pkgtype=source dlsize=0 instsize=0 desc=TODO:%20add%20description
+xcb-util-renderutil=0.3.10-1 pkgtype=source dlsize=0 instsize=0 desc=TODO:%20add%20description
+xcb-util-wm=0.4.2-1 pkgtype=source dlsize=0 instsize=0 desc=TODO:%20add%20description
+xdg-user-dirs=0.18-1 pkgtype=source dlsize=0 instsize=0 desc=TODO:%20add%20description
+xdg-utils=1.2.1-1 pkgtype=source dlsize=0 instsize=0 desc=TODO:%20add%20description
+xf86-input-libinput=1.4.0-1 pkgtype=source dlsize=0 instsize=0 desc=TODO:%20add%20description
+xf86-video-amdgpu=23.0.0-1 pkgtype=source dlsize=0 instsize=0 desc=TODO:%20add%20description
+xf86-video-intel=2.99.917-1 pkgtype=source dlsize=0 instsize=0 desc=TODO:%20add%20description
+xf86-video-vesa=2.6.0-1 pkgtype=source dlsize=0 instsize=0 desc=TODO:%20add%20description
+xkeyboard-config=2.43-1 pkgtype=source dlsize=0 instsize=0 desc=X%20Keyboard%20configuration%20data
+xorgproto=2024.1-1 pkgtype=source dlsize=0 instsize=0 desc=TODO:%20add%20description
+xorg-server=21.1.21-1 pkgtype=source dlsize=0 instsize=0 desc=TODO:%20add%20description
+xorg-server-devel=21.1.21-1 pkgtype=source dlsize=0 instsize=0 desc=TODO:%20add%20description
+xorg-xauth=1.1.5-1 pkgtype=source dlsize=0 instsize=0 desc=TODO:%20add%20description
+xorg-xinit=1.4.3-1 pkgtype=source dlsize=0 instsize=0 desc=TODO:%20add%20description
+xtrans=1.6.0-1 pkgtype=source dlsize=0 instsize=0 desc=TODO:%20add%20description
+xz=5.8.1-1 pkgtype=source dlsize=0 instsize=0 desc=XZ%20compression%20utilities%20and%20liblzma
+zlib=1.3.2-1 pkgtype=source dlsize=0 instsize=0 desc=Compression%20library%20implementing%20zlib/deflate
+zstd=1.5.7-1 pkgtype=source dlsize=0 instsize=0 desc=Zstandard%20—%20fast%20real-time%20compression%20algorithm

@@ -1,19 +1,19 @@
-btop=1.4.7-1 pkgtype=source dlsize=0 instsize=0
-cliphist=0.6.1-1 pkgtype=source dlsize=0 instsize=0
-dinit=0.20.0-1 pkgtype=source dlsize=0 instsize=0
-fastfetch=2.44.0-1 pkgtype=source dlsize=0 instsize=0
-hypridle=0.1.5-1 pkgtype=source dlsize=0 instsize=0
-hyprpaper=0.7.4-1 pkgtype=source dlsize=0 instsize=0
-hyprpicker=0.4.2-1 pkgtype=source dlsize=0 instsize=0
-kitty=0.39.0-1 pkgtype=source dlsize=0 instsize=0
-neofetch=7.1.0-1 pkgtype=source dlsize=0 instsize=0
-swappy=1.5.1-1 pkgtype=source dlsize=0 instsize=0
-ttf-hack-nerd=0.0.0-1 pkgtype=source dlsize=0 instsize=0
-ttf-iosevka-nerd=0.0.0-1 pkgtype=source dlsize=0 instsize=0
-ttf-jetbrains-nerd=0Z2e72-1 pkgtype=source dlsize=0 instsize=0
-tuigreet=0.9.1-1 pkgtype=source dlsize=0 instsize=0
-wev=1.0.0-1 pkgtype=source dlsize=0 instsize=0
-wezterm=5046fc22-1 pkgtype=source dlsize=0 instsize=0
-wlr-randr=0.4.1-1 pkgtype=source dlsize=0 instsize=0
-wlsunset=0.4.0-1 pkgtype=source dlsize=0 instsize=0
-xdg-desktop-portal-hyprland=1.3.9-1 pkgtype=source dlsize=0 instsize=0
+btop=1.4.7-1 pkgtype=source dlsize=0 instsize=0 desc=Resource%20monitor%20that%20shows%20usage%20and%20stats%20for%20processor,%20memory,%20disks,%20network%20and%20processes.
+cliphist=0.6.1-1 pkgtype=source dlsize=0 instsize=0 desc=TODO:%20add%20description
+dinit=0.20.0-1 pkgtype=source dlsize=0 instsize=0 desc=TODO:%20add%20description
+fastfetch=2.44.0-1 pkgtype=source dlsize=0 instsize=0 desc=TODO:%20add%20description
+hypridle=0.1.5-1 pkgtype=source dlsize=0 instsize=0 desc=TODO:%20add%20description
+hyprpaper=0.7.4-1 pkgtype=source dlsize=0 instsize=0 desc=TODO:%20add%20description
+hyprpicker=0.4.2-1 pkgtype=source dlsize=0 instsize=0 desc=TODO:%20add%20description
+kitty=0.39.0-1 pkgtype=source dlsize=0 instsize=0 desc=TODO:%20add%20description
+neofetch=7.1.0-1 pkgtype=source dlsize=0 instsize=0 desc=TODO:%20add%20description
+swappy=1.5.1-1 pkgtype=source dlsize=0 instsize=0 desc=TODO:%20add%20description
+ttf-hack-nerd=0.0.0-1 pkgtype=source dlsize=0 instsize=0 desc=TODO:%20add%20description
+ttf-iosevka-nerd=0.0.0-1 pkgtype=source dlsize=0 instsize=0 desc=TODO:%20add%20description
+ttf-jetbrains-nerd=0Z2e72-1 pkgtype=source dlsize=0 instsize=0 desc=TODO:%20add%20description
+tuigreet=0.9.1-1 pkgtype=source dlsize=0 instsize=0 desc=TODO:%20add%20description
+wev=1.0.0-1 pkgtype=source dlsize=0 instsize=0 desc=TODO:%20add%20description
+wezterm=5046fc22-1 pkgtype=source dlsize=0 instsize=0 desc=TODO:%20add%20description
+wlr-randr=0.4.1-1 pkgtype=source dlsize=0 instsize=0 desc=TODO:%20add%20description
+wlsunset=0.4.0-1 pkgtype=source dlsize=0 instsize=0 desc=TODO:%20add%20description
+xdg-desktop-portal-hyprland=1.3.9-1 pkgtype=source dlsize=0 instsize=0 desc=TODO:%20add%20description
