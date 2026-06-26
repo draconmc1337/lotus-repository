@@ -11,7 +11,13 @@ url     = "https://TODO"
 pkgtype = "source"
 
 depends = (
-    # TODO: add runtime deps
+    "glibc"
+    "libevdev"
+    "libgcc"
+    "libwacom"
+    "lua54"
+    "mtdev"
+    "systemd-libs"
 )
 
 makedepends = (
@@ -31,6 +37,13 @@ makedepends = (
     "libsystemd"
     "glib2"
     "wayland"
+    "git"
+    "libx11"
+    "meson"
+    "python"
+    "python-libevdev"
+    "python-pyudev"
+    "python-yaml"
 )
 
 replaces  = ()

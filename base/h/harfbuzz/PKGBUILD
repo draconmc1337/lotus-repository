@@ -11,7 +11,18 @@ url     = "https://TODO"
 pkgtype = "source"
 
 depends = (
-    # TODO: add runtime deps
+    "freetype2"
+    "glib2"
+    "glibc"
+    "graphite"
+    "libfreetype"
+    "libglib-2"
+    "libgobject-2"
+    "libgraphite2"
+    "libpng"
+    "libpng16"
+    "libz"
+    "zlib"
 )
 
 makedepends = (
@@ -28,6 +39,23 @@ makedepends = (
     "chafa"
     "appleframeworks"
     "glib2"
+    "git"
+    "glew"
+    "glfw"
+    "glib2-devel"
+    "glibc"
+    "gobject-introspection"
+    "graphite"
+    "gtk-doc"
+    "help2man"
+    "icu"
+    "libgl"
+    "libpng"
+    "libstdc++"
+    "meson"
+    "python"
+    "ragel"
+    "zlib"
 )
 
 replaces  = ()

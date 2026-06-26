@@ -11,7 +11,19 @@ url     = "https://TODO"
 pkgtype = "source"
 
 depends = (
-    # TODO: add runtime deps
+    "bash"
+    "fontconfig"
+    "freetype2"
+    "glib2"
+    "glibc"
+    "libpng"
+    "libx11"
+    "libxcb"
+    "libxext"
+    "libxrender"
+    "lzo"
+    "pixman"
+    "zlib"
 )
 
 makedepends = (
@@ -39,6 +51,10 @@ makedepends = (
     "glib2"
     "libxcb"
     "libx11"
+    "git"
+    "gtk-doc"
+    "meson"
+    "valgrind"
 )
 
 replaces  = ()

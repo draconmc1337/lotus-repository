@@ -11,12 +11,14 @@ url     = "https://TODO"
 pkgtype = "source"
 
 depends = (
-    # TODO: add runtime deps
+    "glibc"
 )
 
 makedepends = (
     "expat"
     "glib2"
+    "cmake"
+    "git"
 )
 
 replaces  = ()

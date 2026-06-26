@@ -11,11 +11,14 @@ url     = "https://TODO"
 pkgtype = "source"
 
 depends = (
-    # TODO: add runtime deps
+    "glibc"
+    "libx11"
+    "libxfixes"
+    "xorgproto"
 )
 
 makedepends = (
-    # TODO: add build deps
+    "xorg-util-macros"
 )
 
 replaces  = ()

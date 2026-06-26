@@ -11,7 +11,11 @@ url     = "https://TODO"
 pkgtype = "source"
 
 depends = (
-    # TODO: add runtime deps
+    "glib2"
+    "glibc"
+    "libelf"
+    "python"
+    "python-packaging"
 )
 
 makedepends = (
@@ -25,6 +29,19 @@ makedepends = (
     "libselinux"
     "bash-completion"
     "glib2"
+    "dbus"
+    "dconf"
+    "gettext"
+    "gi-docgen"
+    "git"
+    "gobject-introspection"
+    "libelf"
+    "meson"
+    "python"
+    "python-docutils"
+    "python-packaging"
+    "shared-mime-info"
+    "util-linux"
 )
 
 replaces  = ()

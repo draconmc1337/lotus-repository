@@ -15,7 +15,8 @@ depends = (
 )
 
 makedepends = (
-    # TODO: add build deps
+    "git"
+    "man2html"
 )
 
 replaces  = ()

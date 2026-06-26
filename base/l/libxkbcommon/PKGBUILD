@@ -11,7 +11,9 @@ url     = "https://TODO"
 pkgtype = "source"
 
 depends = (
-    # TODO: add runtime deps
+    "glibc"
+    "libxml2"
+    "xkeyboard-config"
 )
 
 makedepends = (
@@ -29,6 +31,13 @@ makedepends = (
     "icu-uc"
     "wayland"
     "libxcb"
+    "doxygen"
+    "git"
+    "glibc"
+    "graphviz"
+    "libxml2"
+    "meson"
+    "xorgproto"
 )
 
 replaces  = ()

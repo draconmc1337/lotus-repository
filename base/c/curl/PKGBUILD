@@ -11,7 +11,24 @@ url     = "https://TODO"
 pkgtype = "source"
 
 depends = (
-    # TODO: add runtime deps
+    "brotli"
+    "ca-certificates"
+    "krb5"
+    "libbrotlidec"
+    "libcrypto"
+    "libgssapi_krb5"
+    "libidn2"
+    "libnghttp2"
+    "libnghttp3"
+    "libngtcp2"
+    "libpsl"
+    "libssh2"
+    "libssl"
+    "libz"
+    "libzstd"
+    "openssl"
+    "zlib"
+    "zstd"
 )
 
 makedepends = (
@@ -43,6 +60,13 @@ makedepends = (
     "libuv"
     "zlib"
     "curl"
+    "ca-certificates"
+    "git"
+    "krb5"
+    "libnghttp2"
+    "libnghttp3"
+    "libngtcp2"
+    "patchelf"
 )
 
 replaces  = ()

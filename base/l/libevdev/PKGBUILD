@@ -11,11 +11,14 @@ url     = "https://TODO"
 pkgtype = "source"
 
 depends = (
-    # TODO: add runtime deps
+    "glibc"
 )
 
 makedepends = (
     "check"
+    "meson"
+    "python"
+    "valgrind"
 )
 
 replaces  = ()

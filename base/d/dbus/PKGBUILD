@@ -11,7 +11,14 @@ url     = "https://TODO"
 pkgtype = "source"
 
 depends = (
-    # TODO: add runtime deps
+    "audit"
+    "expat"
+    "glibc"
+    "libaudit"
+    "libcap-ng"
+    "libexpat"
+    "libsystemd"
+    "systemd-libs"
 )
 
 makedepends = (
@@ -24,6 +31,15 @@ makedepends = (
     "systemd"
     "x11"
     "glib2"
+    "docbook-xsl"
+    "doxygen"
+    "git"
+    "mallard-ducktype"
+    "meson"
+    "python"
+    "qt5-tools"
+    "xmlto"
+    "yelp-tools"
 )
 
 replaces  = ()

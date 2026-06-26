@@ -11,7 +11,11 @@ url     = "https://TODO"
 pkgtype = "source"
 
 depends = (
-    # TODO: add runtime deps
+    "glibc"
+    "openssl"
+    "xz"
+    "zlib"
+    "zstd"
 )
 
 makedepends = (
@@ -20,6 +24,9 @@ makedepends = (
     "zlib"
     "libcrypto"
     "openssl"
+    "git"
+    "meson"
+    "scdoc"
 )
 
 replaces  = ()

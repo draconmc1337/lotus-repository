@@ -11,7 +11,10 @@ url     = "https://TODO"
 pkgtype = "source"
 
 depends = (
-    # TODO: add runtime deps
+    "glib2"
+    "glibc"
+    "glycin"
+    "shared-mime-info"
 )
 
 makedepends = (
@@ -24,6 +27,12 @@ makedepends = (
     "libjpeg"
     "libjpeg-turbo"
     "glib2"
+    "gi-docgen"
+    "git"
+    "glib2-devel"
+    "gobject-introspection"
+    "meson"
+    "python-docutils"
 )
 
 replaces  = ()

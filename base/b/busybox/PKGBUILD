@@ -15,7 +15,9 @@ depends = (
 )
 
 makedepends = (
-    # TODO: add build deps
+    "kernel-headers-musl"
+    "musl"
+    "ncurses"
 )
 
 replaces  = ()

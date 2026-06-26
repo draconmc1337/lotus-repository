@@ -11,7 +11,8 @@ url     = "https://TODO"
 pkgtype = "source"
 
 depends = (
-    # TODO: add runtime deps
+    "glibc"
+    "libpciaccess"
 )
 
 makedepends = (
@@ -22,6 +23,8 @@ makedepends = (
     "valgrind"
     "libdrm"
     "glib2"
+    "meson"
+    "python-docutils"
 )
 
 replaces  = ()

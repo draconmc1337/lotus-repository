@@ -11,11 +11,19 @@ url     = "https://TODO"
 pkgtype = "source"
 
 depends = (
-    # TODO: add runtime deps
+    "bash"
+    "gdbm"
+    "glibc"
+    "groff"
+    "less"
+    "libpipeline"
+    "libseccomp"
+    "zlib"
 )
 
 makedepends = (
     "libpipeline"
+    "po4a"
 )
 
 replaces  = ()
